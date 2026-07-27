@@ -1,109 +1,177 @@
-# QRify - Modern QR Code Generator
+# QRify 
 
-<div align="center">
-  <img src="./assets/images/Logo.png" alt="QRify Logo" width="120" />
-  <h3>Create, Share, Connect Instantly!</h3>
-  <p>Transform any link into a sleek QR code in seconds.</p>
-</div>
+**QRify** is a sleek, modern, cinematic QR Code generator app built with React Native and Expo SDK 57. Featuring liquid glassmorphism, interactive 3D stages, customizable theme presets, instant multi-format exports (PNG/SVG), custom logo embedding, and rich haptic feedback.
 
-## 🌟 Features
+---
 
-- **Instant QR Code Generation**: Generate QR codes from URLs with real-time preview
-- **Modern UI/UX**: Beautiful, animated interface with blur effects and gradients
-- **Save & Share**: Download QR codes to your device or share them directly
-- **Responsive Design**: Works seamlessly on both phones and tablets
-- **Error Handling**: Robust error management with user-friendly messages
-- **Smooth Animations**: Elegant transitions and loading states
+## Table of Contents
 
-## 🚀 Tech Stack
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Prerequisites](#-prerequisites)
+- [Step-by-Step Instructions Flow](#-step-by-step-instructions-flow)
+  - [1. Clone or Download Repository](#1-clone-or-download-repository)
+  - [2. Install Dependencies](#2-install-dependencies)
+  - [3. Start the Development Server](#3-start-the-development-server)
+  - [4. Launch on Device or Emulator](#4-launch-on-device-or-emulator)
+- [Application Flow & How to Use](#-application-flow--how-to-use)
+  - [Step 1: Choose QR Type](#step-1-choose-qr-type)
+  - [Step 2: Input Details](#step-2-input-details)
+  - [Step 3: Customize Style & Theme](#step-3-customize-style--theme)
+  - [Step 4: Live 3D Preview & Export](#step-4-live-3d-preview--export)
+- [📁 Project Structure](#-project-structure)
+- [🛠️ Available Scripts](#️-available-scripts)
+- [💡 Troubleshooting & Notes](#-troubleshooting--notes)
+- [📄 License](#-license)
 
-- **Framework**: [React Native](https://reactnative.dev/) + [Expo](https://expo.dev/)
-- **Navigation**: [Expo Router](https://docs.expo.dev/routing/introduction/)
-- **UI Components**:
-  - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) for animations
-  - [Expo LinearGradient](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) for gradient effects
-  - [Expo BlurView](https://docs.expo.dev/versions/latest/sdk/blur-view/) for frosted glass effects
-- **QR Code Generation**: [react-native-qrcode-svg](https://github.com/awesomejerry/react-native-qrcode-svg)
-- **File System**: [Expo FileSystem](https://docs.expo.dev/versions/latest/sdk/filesystem/)
-- **Media Management**:
-  - [Expo MediaLibrary](https://docs.expo.dev/versions/latest/sdk/media-library/)
-  - [Expo Sharing](https://docs.expo.dev/versions/latest/sdk/sharing/)
+---
 
-## 📱 Screenshots
+## Features
 
-[Add your app screenshots here]
+- **Multi-Data QR Generation**: Generate QR codes for URLs, Wi-Fi networks, Plain Text, Contacts (vCard), Emails, SMS, Phone Numbers, and Social Media profiles.
+- **Interactive 3D QR Stage**: Dynamic card preview with responsive lighting, glassmorphism UI, and smooth animations powered by React Native Reanimated.
+- **Custom Themes & Styling**: Select from preset color palettes (Cyberpunk, Midnight Neon, Sunset, Glassy White, Obsidian Gold, etc.) or create custom gradient styles.
+- **Logo & Design Customization**: Add custom icons/logos inside the QR code center with adjustable error correction levels.
+- **Export & Share**: Save high-resolution QR codes directly to device photos/gallery, or share via native device share sheets.
+- **Cross-Platform**: Optimized for iOS, Android, and Web browsers.
 
-## 🛠️ Installation
+---
 
-1. Clone the repository:
+## Tech Stack
 
+- **Framework**: [Expo SDK 57](https://docs.expo.dev/versions/v57.0.0/) & [React Native 0.86](https://reactnative.dev/)
+- **Routing**: [Expo Router v57](https://docs.expo.dev/router/introduction/) (File-based routing with `src/app`)
+- **Animation & FX**: React Native Reanimated 4, Expo Blur, Expo Haptics, Expo Linear Gradient
+- **QR Code Rendering**: `react-native-qrcode-svg` & `react-native-svg`
+- **Language**: TypeScript 6
+
+---
+
+## Prerequisites
+
+Before starting, ensure you have the following installed on your development machine:
+
+1. **Node.js** (v18.0.0 or higher) - [Download Node.js](https://nodejs.org/)
+2. **Package Manager**: `npm` (comes with Node.js) or `yarn` / `pnpm` / `bun`
+3. **Expo Go Mobile App** *(Optional for physical device testing)*:
+   - [iOS App Store](https://apps.apple.com/app/expo-go/id982107779)
+   - [Android Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
+4. **Emulators / Simulators** *(Optional)*:
+   - **iOS**: Xcode (Mac required)
+   - **Android**: Android Studio & Android Virtual Device (AVD)
+
+---
+
+## Step-by-Step Instructions Flow
+
+Follow these step-by-step instructions to get QRify up and running:
+
+### 1. Clone or Download Repository
+Open your terminal and navigate to your working directory:
 ```bash
-git clone ...
+cd "QRify"
 ```
 
-2. Install dependencies:
-
+### 2. Install Dependencies
+Install all required Node modules:
 ```bash
 npm install
 ```
 
-3. Start the development server:
-
+### 3. Start the Development Server
+Launch the Expo Metro Bundler:
 ```bash
 npx expo start
 ```
+*(Or run `npm start`)*
 
-## 📱 Running the App
+### 4. Launch on Device or Emulator
 
-- **iOS Simulator**:
+Once the terminal bundler menu opens, you can choose how to run the app:
 
-```bash
-npm run ios
-```
-
+- **Physical Device (Expo Go)**:
+  - Open **Expo Go** on Android and scan the QR code printed in terminal.
+  - On iOS, open the native **Camera** app, scan the terminal QR code, and tap the link to open in Expo Go.
+- **iOS Simulator** (Mac only):
+  - Press `i` in the terminal output, or run `npm run ios`.
 - **Android Emulator**:
-
-```bash
-npm run android
-```
-
+  - Open Android Virtual Device via Android Studio, then press `a` in the terminal output, or run `npm run android`.
 - **Web Browser**:
-
-```bash
-npm run web
-```
-
-## 🏗️ Build
-
-The app uses EAS Build for creating production builds:
-
-- **Preview Build**:
-
-```bash
-eas build --profile preview
-```
-
-- **Production Build**:
-
-```bash
-eas build --profile production
-```
-
-## 🔑 Environment Setup
-
-Ensure you have the following tools installed:
-
-- Node.js (LTS version)
-- npm or yarn
-- Expo CLI (`npm install -g expo-cli`)
-- iOS Simulator (macOS only) or Android Studio (for Android emulator)
-
-## 👨‍💻 Author
-
-Muhammad Rafiq
+  - Press `w` in the terminal output, or run `npm run web`.
 
 ---
 
-<div align="center">
-  Made with ❤️ using React Native + Expo
-</div>
+## Application Flow & How to Use
+
+```text
+┌─────────────────┐      ┌──────────────────┐      ┌────────────────────┐      ┌──────────────────┐
+│ 1. Select Type  │ ───► │ 2. Enter Content │ ───► │ 3. Customize Style │ ───► │ 4. Preview/Export│
+│ (URL, Wi-Fi...) │      │ (Text, URL, etc) │      │ (Color, Theme, Logo│      │ (Save/Share PNG) │
+└─────────────────┘      └──────────────────┘      └────────────────────┘      └──────────────────┘
+```
+
+1. **Step 1: Choose QR Type**: Select the payload type from the selector bar (URL, Text, Wi-Fi, Phone, Contact, Email, etc.).
+2. **Step 2: Input Details**: Fill in the required fields (e.g. website URL, Wi-Fi SSID & password, or contact information).
+3. **Step 3: Customize Style & Theme**:
+   - Toggle theme presets to change colors, gradients, and background styles.
+   - Adjust logo settings and frame designs.
+4. **Step 4: Live 3D Preview & Export**:
+   - Interact with the 3D QR Stage to inspect your code.
+   - Tap **Save to Gallery** or **Share** to download the high-definition image.
+
+---
+
+## Project Structure
+
+```text
+QRify/
+├── src/
+│   ├── app/                   # Expo Router screens (file-based navigation)
+│   │   ├── _layout.tsx        # Root layout & providers
+│   │   ├── index.tsx          # Main QR Generator screen
+│   │   └── explore.tsx        # Saved history / explore screen
+│   ├── components/            # Reusable UI & custom components
+│   │   ├── qr-stage-3d.tsx    # 3D interactive QR preview stage
+│   │   ├── cinematic-input.tsx# Input controls & form elements
+│   │   ├── app-tabs.tsx       # Bottom navigation tabs
+│   │   ├── theme-presets-bar.tsx # Preset theme selector
+│   │   └── action-buttons-3d.tsx # Export & action buttons
+│   ├── constants/             # Application constants & theme tokens
+│   ├── hooks/                 # Custom React hooks
+│   └── global.css             # Base styles
+├── assets/                    # App icons, splash screens, and images
+├── scripts/                   # Utility scripts (e.g. project reset)
+├── app.json                   # Expo configuration
+├── package.json               # Dependencies & scripts
+└── tsconfig.json              # TypeScript configuration
+```
+
+---
+
+## Available Scripts
+
+In the project directory, you can run:
+
+| Command | Description |
+| :--- | :--- |
+| `npm start` | Starts the Expo Metro development server |
+| `npm run ios` | Starts Expo dev server and opens iOS Simulator |
+| `npm run android` | Starts Expo dev server and opens Android Emulator |
+| `npm run web` | Starts Expo dev server and opens Web browser |
+| `npm run lint` | Runs ESLint checks across project files |
+| `npm run reset-project` | Resets starter files (moves app code to `app-example`) |
+
+---
+
+## Troubleshooting & Notes
+
+- **Permissions**: Saving QR codes to photo library requires media library access. When prompted on physical iOS/Android devices, allow gallery permissions.
+- **Expo SDK Version**: Built for Expo SDK 57 (`v57.0.0`). Check [Expo v57 Docs](https://docs.expo.dev/versions/v57.0.0/) for version-specific guides.
+- **Web Compatibility**: Web builds use static rendering support (`expo start --web`). Native haptics fallback gracefully on web browsers.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
