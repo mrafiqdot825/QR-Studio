@@ -18,7 +18,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(({
   onUseTemplate,
 }) => {
   return (
-    <GlassCard className="w-full p-5 gap-4 border border-white/40">
+    <GlassCard className="w-full p-5 gap-4">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-3">
           <LinearGradient

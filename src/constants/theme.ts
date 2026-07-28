@@ -1,37 +1,29 @@
 import '@/global.css';
 import { Platform } from 'react-native';
-import { GlassColors } from './theme/colors';
+import { GlassColors, Palette, Schemes } from './theme/colors';
 export * from './theme/tokens';
 
 export const LiquidGlassColors = GlassColors;
 
+function buildColors(scheme: typeof Schemes.light) {
+  return {
+    text: scheme.primaryText,
+    background: scheme.background,
+    backgroundElement: scheme.surface,
+    backgroundSelected: scheme.secondaryBackground,
+    textSecondary: scheme.secondaryText,
+    primary: Palette.accentBlue,
+    secondary: Palette.accentEmerald,
+    accent: Palette.accentViolet,
+    cardBg: scheme.glassSurface,
+    border: scheme.border,
+    glow: scheme.glowPrimary,
+  };
+}
+
 export const Colors = {
-  light: {
-    text: GlassColors.primaryText,
-    background: GlassColors.background,
-    backgroundElement: GlassColors.surface,
-    backgroundSelected: GlassColors.secondaryBackground,
-    textSecondary: GlassColors.secondaryText,
-    primary: GlassColors.accentBlue,
-    secondary: GlassColors.accentEmerald,
-    accent: GlassColors.accentViolet,
-    cardBg: GlassColors.glassSurface,
-    border: GlassColors.border,
-    glow: GlassColors.glowPrimary,
-  },
-  dark: {
-    text: GlassColors.primaryText,
-    background: GlassColors.background,
-    backgroundElement: GlassColors.surface,
-    backgroundSelected: GlassColors.secondaryBackground,
-    textSecondary: GlassColors.secondaryText,
-    primary: GlassColors.accentBlue,
-    secondary: GlassColors.accentEmerald,
-    accent: GlassColors.accentViolet,
-    cardBg: GlassColors.glassSurface,
-    border: GlassColors.border,
-    glow: GlassColors.glowPrimary,
-  },
+  light: buildColors(Schemes.light),
+  dark: buildColors(Schemes.dark),
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;

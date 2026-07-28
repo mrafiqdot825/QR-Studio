@@ -22,7 +22,7 @@ export function CustomizationStudioControls({
   };
 
   return (
-    <GlassCard className="p-5 my-3 w-full gap-5 border border-white/40">
+    <GlassCard className="p-5 my-3 w-full gap-5">
       <View className="flex-row items-center justify-between">
         <View>
           <Text className="text-on-surface text-base font-extrabold">Studio Customization</Text>

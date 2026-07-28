@@ -5,7 +5,8 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassChipProps {
   label: string;
@@ -22,6 +23,7 @@ export function GlassChip({
   onPress,
   className = '',
 }: GlassChipProps) {
+  const { colors, shadows, isDark } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -48,25 +50,24 @@ export function GlassChip({
   };
 
   return (
-    <Animated.View style={[selected ? Shadows.glowBlue : Shadows.subtle, animatedStyle]}>
+    <Animated.View style={[selected ? shadows.glowBlue : shadows.subtle, animatedStyle]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
+        style={!selected ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline } : undefined}
         className={`px-4 py-2.5 rounded-full flex-row items-center gap-2 border overflow-hidden relative ${
-          selected
-            ? 'bg-primary border-primary'
-            : 'bg-white/80 border-white/40'
+          selected ? 'bg-primary border-primary' : ''
         } ${className}`}>
         {!selected && (
           <BlurView
             intensity={BlurTokens.subtle}
-            tint="light"
+            tint={isDark ? 'dark' : 'light'}
             style={StyleSheet.absoluteFill}
             pointerEvents="none"
           />
         )}
-        <View style={styles.topSpecular} pointerEvents="none" />
+        <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         {icon && (
           <Ionicons
@@ -94,6 +95,5 @@ const styles = StyleSheet.create({
     left: 8,
     right: 8,
     height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
 });

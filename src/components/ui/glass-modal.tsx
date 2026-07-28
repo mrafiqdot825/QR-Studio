@@ -16,7 +16,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, SpringConfigs } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassModalProps {
   visible: boolean;
@@ -33,6 +34,7 @@ export function GlassModal({
   children,
   variant = 'modal',
 }: GlassModalProps) {
+  const { colors, shadows, isDark } = useTheme();
   const translateY = useSharedValue(300);
   const opacity = useSharedValue(0);
 
@@ -79,24 +81,25 @@ export function GlassModal({
         {/* Floating Glass Container */}
         <Animated.View
           style={[
-            Shadows.modal,
+            shadows.modal,
+            { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline },
             animatedStyle,
             isSheet ? styles.sheetRadius : styles.modalRadius,
           ]}
-          className="w-full max-w-[540px] bg-white/90 border border-white/40 overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
+          className="w-full max-w-[540px] border overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
           <BlurView
             intensity={BlurTokens.card}
-            tint="light"
+            tint={isDark ? 'dark' : 'light'}
             style={StyleSheet.absoluteFill}
             pointerEvents="none"
           />
-          <View style={styles.topSpecular} pointerEvents="none" />
+          <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
           {/* Sheet Handle */}
-          {isSheet && <View className="w-12 h-1.5 rounded-full bg-black/15 self-center mt-3 mb-1" />}
+          {isSheet && <View style={{ backgroundColor: colors.border }} className="w-12 h-1.5 rounded-full self-center mt-3 mb-1" />}
 
           {/* Header */}
-          <View className="flex-row items-center justify-between px-6 pt-4 pb-3 border-b border-black/[0.04]">
+          <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between px-6 pt-4 pb-3 border-b">
             {title ? (
               <Text className="text-on-surface text-xl font-extrabold tracking-tight">{title}</Text>
             ) : (
@@ -111,8 +114,9 @@ export function GlassModal({
                 }
                 onClose();
               }}
-              className="w-8 h-8 rounded-full items-center justify-center bg-black/5 active:bg-black/10">
-              <Ionicons name="close" size={18} color={Palette.secondaryText} />
+              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              className="w-8 h-8 rounded-full items-center justify-center active:opacity-70">
+              <Ionicons name="close" size={18} color={colors.secondaryText} />
             </Pressable>
           </View>
 
@@ -131,7 +135,6 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     height: 1,
-    backgroundColor: Palette.glassSpecularTop,
   },
   sheetRadius: {
     borderTopLeftRadius: 36,

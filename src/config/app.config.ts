@@ -11,5 +11,6 @@ export const APP_CONFIG = {
   storageKeys: {
     history: '@qrify/history_v2',
     settings: '@qrify/settings_v1',
+    appearance: '@qrify/appearance_v1',
   },
 } as const;

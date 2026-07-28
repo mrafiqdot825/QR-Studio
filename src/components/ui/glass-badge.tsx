@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { BlurTokens, Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassBadgeProps {
   label: string;
@@ -18,6 +19,7 @@ export function GlassBadge({
   variant = 'primary',
   className = '',
 }: GlassBadgeProps) {
+  const { colors, isDark } = useTheme();
   const isPrimary = variant === 'primary';
   const isSuccess = variant === 'success';
   const isWarning = variant === 'warning';
@@ -28,7 +30,7 @@ export function GlassBadge({
     ? Palette.accentEmerald
     : isWarning
     ? Palette.accentOrange
-    : Palette.secondaryText;
+    : colors.secondaryText;
 
   const bgStyle = isPrimary
     ? 'bg-primary/10 border-primary/20'
@@ -36,18 +38,19 @@ export function GlassBadge({
     ? 'bg-emerald-500/10 border-emerald-500/20'
     : isWarning
     ? 'bg-amber-500/10 border-amber-500/20'
-    : 'bg-black/5 border-black/10';
+    : 'border';
 
   return (
     <View
+      style={!isPrimary && !isSuccess && !isWarning ? { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border } : undefined}
       className={`flex-row items-center gap-1.5 px-3 py-1 rounded-full border overflow-hidden relative ${bgStyle} ${className}`}>
       <BlurView
         intensity={BlurTokens.subtle}
-        tint="light"
+        tint={isDark ? 'dark' : 'light'}
         style={StyleSheet.absoluteFill}
         pointerEvents="none"
       />
-      <View style={styles.topSpecular} pointerEvents="none" />
+      <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
       {icon && <Ionicons name={icon} size={12} color={badgeColor} />}
 
@@ -65,6 +68,5 @@ const styles = StyleSheet.create({
     left: 4,
     right: 4,
     height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
 });

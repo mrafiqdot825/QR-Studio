@@ -1,6 +1,9 @@
+import { useTheme } from '@/hooks/use-theme';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
-import { View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -14,6 +17,7 @@ interface GlassContainerProps extends ViewProps {
 }
 
 export function GlassContainer({ children, className = '', style, ...props }: GlassContainerProps) {
+  const { colors, isDark } = useTheme();
   const blob1Offset = useSharedValue(0);
   const blob2Offset = useSharedValue(0);
 
@@ -34,6 +38,11 @@ export function GlassContainer({ children, className = '', style, ...props }: Gl
       -1,
       true
     );
+
+    return () => {
+      cancelAnimation(blob1Offset);
+      cancelAnimation(blob2Offset);
+    };
   }, [blob1Offset, blob2Offset]);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
@@ -44,25 +53,76 @@ export function GlassContainer({ children, className = '', style, ...props }: Gl
     transform: [{ translateY: blob2Offset.value }, { translateX: blob2Offset.value * -0.5 }],
   }));
 
+  // Soft ambient blobs use a radial-style LinearGradient (transparent-to-tint) instead of a
+  // CSS `blur-*` className — `filter: blur()` has no native equivalent, so on iOS/Android
+  // that class previously rendered as a hard-edged circle instead of a soft glow.
+  const glowOpacity = isDark ? 0.5 : 1;
+
   return (
     <View className={`flex-1 bg-background relative ${className}`} style={style} {...props}>
-      {/* SOFT AMBIENT FLOATING RADIAL LIGHT BLOBS */}
-      <Animated.View
-        style={[animatedBlob1]}
-        className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-400/10 -z-10 blur-3xl"
-        pointerEvents="none"
-      />
-      <Animated.View
-        style={[animatedBlob2]}
-        className="absolute top-96 -right-24 w-96 h-96 rounded-full bg-violet-400/10 -z-10 blur-3xl"
-        pointerEvents="none"
-      />
-      <View
-        className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-emerald-400/10 -z-10 blur-3xl"
-        pointerEvents="none"
-      />
+      <Animated.View style={[styles.blob1, animatedBlob1]} pointerEvents="none">
+        <LinearGradient
+          colors={[colors.glowPrimary, 'transparent']}
+          style={[styles.blobFill, { opacity: glowOpacity }]}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 1, y: 1 }}
+        />
+      </Animated.View>
+      <Animated.View style={[styles.blob2, animatedBlob2]} pointerEvents="none">
+        <LinearGradient
+          colors={[colors.glowTertiary, 'transparent']}
+          style={[styles.blobFill, { opacity: glowOpacity }]}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 1, y: 1 }}
+        />
+      </Animated.View>
+      <View style={styles.blob3} pointerEvents="none">
+        <LinearGradient
+          colors={[colors.glowSecondary, 'transparent']}
+          style={[styles.blobFill, { opacity: glowOpacity }]}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 1, y: 1 }}
+        />
+      </View>
 
       {children}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  blob1: {
+    position: 'absolute',
+    top: -96,
+    left: -96,
+    width: 384,
+    height: 384,
+    borderRadius: 192,
+    zIndex: -10,
+    overflow: 'hidden',
+  },
+  blob2: {
+    position: 'absolute',
+    top: 384,
+    right: -96,
+    width: 384,
+    height: 384,
+    borderRadius: 192,
+    zIndex: -10,
+    overflow: 'hidden',
+  },
+  blob3: {
+    position: 'absolute',
+    bottom: 80,
+    left: 40,
+    width: 320,
+    height: 320,
+    borderRadius: 160,
+    zIndex: -10,
+    overflow: 'hidden',
+  },
+  blobFill: {
+    width: '100%',
+    height: '100%',
+  },
+});

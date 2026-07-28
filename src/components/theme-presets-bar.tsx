@@ -1,9 +1,10 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { CinematicPresets, PresetId } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 interface ThemePresetsBarProps {
   selectedPresetId: PresetId;
@@ -30,8 +31,9 @@ export function ThemePresetsBar({
   selectedColor,
   onSelectColor,
 }: ThemePresetsBarProps) {
+  const { colors } = useTheme();
   return (
-    <GlassCard className="p-5 my-3 w-full gap-4 border border-white/40">
+    <GlassCard className="p-5 my-3 w-full gap-4">
       <View className="flex-row items-center justify-between">
         <View>
           <Text className="text-on-surface text-base font-extrabold">Theme & Color Palette</Text>
@@ -55,10 +57,14 @@ export function ThemePresetsBar({
               accessibilityLabel={`Select ${preset.name} theme preset`}
               accessibilityRole="button"
               onPress={() => onSelectPreset(preset.id)}
-              className={`w-28 p-2.5 rounded-2xl border items-center gap-2 transition-all ${
+              style={[
+                isSelected ? styles.presetCardShadow : undefined,
                 isSelected
-                  ? 'border-primary bg-white/90 ring-2 ring-primary/20 shadow-md'
-                  : 'border-white/40 bg-white/60'
+                  ? { backgroundColor: colors.glassSurfaceHigh }
+                  : { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline },
+              ]}
+              className={`w-28 p-2.5 rounded-2xl border items-center gap-2 transition-all ${
+                isSelected ? 'border-primary ring-2 ring-primary/20' : ''
               }`}>
               <LinearGradient
                 colors={preset.gradient}
@@ -66,8 +72,8 @@ export function ThemePresetsBar({
                 end={{ x: 1, y: 1 }}
                 className="w-full h-14 rounded-xl items-center justify-center border border-black/[0.04] relative">
                 <View
-                  className="w-6 h-6 rounded-lg items-center justify-center shadow-xs"
-                  style={{ backgroundColor: preset.qrColor }}>
+                  className="w-6 h-6 rounded-lg items-center justify-center"
+                  style={[styles.badgeShadow, { backgroundColor: preset.qrColor }]}>
                   <Ionicons name="qr-code" size={14} color="#FFFFFF" />
                 </View>
                 {isSelected && (
@@ -86,7 +92,7 @@ export function ThemePresetsBar({
 
       {/* Custom Color Selector Swatches */}
       {onSelectColor && (
-        <View className="gap-2 pt-2 border-t border-black/[0.04]">
+        <View style={{ borderColor: colors.border }} className="gap-2 pt-2 border-t">
           <Text className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
             Custom Foreground Tint
           </Text>
@@ -100,9 +106,12 @@ export function ThemePresetsBar({
                   accessibilityRole="button"
                   onPress={() => onSelectColor(color)}
                   className={`w-8 h-8 rounded-full items-center justify-center border transition-all ${
-                    isSelected ? 'border-primary scale-110 shadow-sm' : 'border-white/40'
+                    isSelected ? 'border-primary scale-110' : ''
                   }`}
-                  style={{ backgroundColor: color }}>
+                  style={[
+                    { backgroundColor: color, borderColor: isSelected ? undefined : colors.hairline },
+                    isSelected && styles.swatchShadow,
+                  ]}>
                   {isSelected && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
                 </Pressable>
               );
@@ -113,3 +122,15 @@ export function ThemePresetsBar({
     </GlassCard>
   );
 }
+
+const styles = StyleSheet.create({
+  presetCardShadow: {
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.08)',
+  },
+  badgeShadow: {
+    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.05)',
+  },
+  swatchShadow: {
+    boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.08)',
+  },
+});

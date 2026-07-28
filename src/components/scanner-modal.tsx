@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { Alert, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -34,7 +35,10 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
         -1,
         true
       );
+    } else {
+      cancelAnimation(scanLineY);
     }
+    return () => cancelAnimation(scanLineY);
   }, [visible, scanLineY]);
 
   const animatedScanLine = useAnimatedStyle(() => ({
@@ -135,7 +139,8 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
             accessibilityLabel="Test scan payload"
             accessibilityRole="button"
             onPress={handleSimulateScan}
-            className="flex-row items-center gap-2 bg-primary px-8 py-4 rounded-full shadow-lg shadow-primary/40 active:scale-95">
+            style={styles.scanButtonShadow}
+            className="flex-row items-center gap-2 bg-primary px-8 py-4 rounded-full active:scale-95">
             <Ionicons name="scan" size={20} color="#FFFFFF" />
             <Text className="text-white font-extrabold text-sm tracking-wider">TEST SCAN PAYLOAD</Text>
           </Pressable>
@@ -144,3 +149,9 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  scanButtonShadow: {
+    boxShadow: '0px 10px 15px rgba(37, 99, 235, 0.4)',
+  },
+});

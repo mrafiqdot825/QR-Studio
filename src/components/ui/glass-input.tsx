@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassInputProps extends Omit<TextInputProps, 'style'> {
   label?: string;
@@ -34,12 +35,13 @@ export function GlassInput({
   style,
   ...props
 }: GlassInputProps) {
+  const { colors, shadows, isDark } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
   const focusProgress = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      borderColor: focusProgress.value === 1 ? Palette.accentBlue : 'rgba(0, 0, 0, 0.06)',
+      borderColor: focusProgress.value === 1 ? Palette.accentBlue : colors.border,
       borderWidth: focusProgress.value === 1 ? 1.5 : 1,
     };
   });
@@ -66,28 +68,28 @@ export function GlassInput({
       ) : null}
 
       <Animated.View
-        style={[Shadows.subtle, animatedStyle, style]}
-        className="flex-row items-center px-4 py-3 rounded-2xl bg-white/75 overflow-hidden relative gap-2.5">
+        style={[shadows.subtle, { backgroundColor: colors.glassSurface }, animatedStyle, style]}
+        className="flex-row items-center px-4 py-3 rounded-2xl overflow-hidden relative gap-2.5">
         <BlurView
           intensity={BlurTokens.card}
-          tint="light"
+          tint={isDark ? 'dark' : 'light'}
           style={StyleSheet.absoluteFill}
           pointerEvents="none"
         />
-        <View style={styles.topSpecular} pointerEvents="none" />
+        <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         {icon && (
           <Ionicons
             name={icon}
             size={18}
-            color={isFocused ? Palette.accentBlue : Palette.secondaryText}
+            color={isFocused ? Palette.accentBlue : colors.secondaryText}
           />
         )}
 
         <TextInput
           className="flex-1 text-on-surface font-medium text-sm p-0 m-0"
           placeholder={placeholder}
-          placeholderTextColor={Palette.secondaryText}
+          placeholderTextColor={colors.secondaryText}
           value={value}
           onChangeText={onChangeText}
           onFocus={handleFocus}
@@ -104,7 +106,7 @@ export function GlassInput({
               onClear();
             }}
             className="p-1 rounded-full active:bg-black/5">
-            <Ionicons name="close-circle" size={18} color={Palette.secondaryText} />
+            <Ionicons name="close-circle" size={18} color={colors.secondaryText} />
           </Pressable>
         )}
       </Animated.View>
@@ -119,6 +121,5 @@ const styles = StyleSheet.create({
     left: 12,
     right: 12,
     height: 1,
-    backgroundColor: Palette.glassSpecularTop,
   },
 });

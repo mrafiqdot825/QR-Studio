@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { GlassBadge } from '@/components/ui/glass-badge';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { QRHistoryItem } from '@/types/history';
 import React, { memo } from 'react';
 import { Dimensions, Pressable, Text, View } from 'react-native';
@@ -22,16 +23,16 @@ export const HistoryCard: React.FC<HistoryCardProps> = memo(({
   onDelete,
   onTogglePin,
 }) => {
+  const { colors } = useTheme();
   const isPinned = !!item.isPinned;
 
   return (
     <GlassCard
       hasGlow={isPinned}
-      className={`w-[47%] p-4 gap-3 border transition-all ${
-        isPinned ? 'border-primary ring-2 ring-primary/20' : 'border-white/40'
-      }`}>
+      style={isPinned ? { borderColor: Palette.accentBlue, borderWidth: 2 } : undefined}
+      className="w-[47%] p-4 gap-3">
       {/* QR Code Container */}
-      <View className="bg-white p-3.5 rounded-3xl items-center justify-center border border-black/[0.04] shadow-xs">
+      <View style={{ borderColor: colors.border }} className="bg-white p-3.5 rounded-3xl items-center justify-center border shadow-xs">
         <QRCode
           value={item.value || 'https://qrify.me'}
           size={Math.min(width * 0.34, 130)}
@@ -54,7 +55,7 @@ export const HistoryCard: React.FC<HistoryCardProps> = memo(({
             <Ionicons
               name={isPinned ? 'bookmark' : 'bookmark-outline'}
               size={16}
-              color={isPinned ? Palette.accentBlue : Palette.secondaryText}
+              color={isPinned ? Palette.accentBlue : colors.secondaryText}
             />
           </Pressable>
         </View>

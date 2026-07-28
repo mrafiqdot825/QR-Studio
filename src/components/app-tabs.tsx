@@ -1,12 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
-import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, SpringConfigs } from '@/constants/theme';
+import { AppScheme } from '@/constants/theme/colors';
+import { ShadowSets } from '@/constants/theme/shadows';
+import { useTheme } from '@/hooks/use-theme';
 
 interface LiquidGlassTabBarProps {
   state: any;
@@ -17,14 +19,18 @@ interface LiquidGlassTabBarProps {
 function TabItem({
   route,
   isFocused,
-  options,
-  navigation,
+  colors,
+  shadows,
+  onPress,
 }: {
   route: any;
   index: number;
   isFocused: boolean;
   options: any;
   navigation: any;
+  colors: AppScheme;
+  shadows: (typeof ShadowSets)['light'];
+  onPress: () => void;
 }) {
   const scale = useSharedValue(1);
 
@@ -32,30 +38,8 @@ function TabItem({
     transform: [{ scale: scale.value }],
   }));
 
-  const label =
-    options.tabBarLabel !== undefined
-      ? options.tabBarLabel
-      : options.title !== undefined
-      ? options.title
-      : route.name;
-
-  const onPress = () => {
-    if (Platform.OS !== 'web') {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-    }
-    const event = navigation.emit({
-      type: 'tabPress',
-      target: route.key,
-      canPreventDefault: true,
-    });
-
-    if (!isFocused && !event.defaultPrevented) {
-      navigation.navigate(route.name);
-    }
-  };
-
   const handlePressIn = () => {
-    scale.value = withSpring(0.90, SpringConfigs.gentle);
+    scale.value = withSpring(0.9, SpringConfigs.gentle);
   };
 
   const handlePressOut = () => {
@@ -83,15 +67,15 @@ function TabItem({
         onPressOut={handlePressOut}
         style={styles.tabButton}
         accessibilityRole="button"
-        accessibilityLabel={label as string}
+        accessibilityLabel={route.name}
         accessibilityState={isFocused ? { selected: true } : {}}>
         {isFocused ? (
-          <View style={[styles.activeLiquidPill, Shadows.glowBlue]}>
-            <Ionicons name={iconName} size={22} color={Palette.accentBlue} />
+          <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: 'rgba(37, 99, 235, 0.25)' }]}>
+            <Ionicons name={iconName} size={22} color="#2563EB" />
           </View>
         ) : (
           <View style={styles.inactiveTabContent}>
-            <Ionicons name={iconName} size={22} color={Palette.secondaryText} />
+            <Ionicons name={iconName} size={22} color={colors.secondaryText} />
           </View>
         )}
       </Pressable>
@@ -100,21 +84,38 @@ function TabItem({
 }
 
 export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlassTabBarProps) {
+  const { colors, shadows, isDark } = useTheme();
+
   return (
     <View style={styles.tabBarWrapper} pointerEvents="box-none">
-      <View style={[styles.glassContainerOuter, Shadows.dock]}>
+      <View style={[styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}>
         <BlurView
           intensity={BlurTokens.dock}
-          tint="light"
+          tint={isDark ? 'dark' : 'light'}
           style={styles.blurViewContainer}
           pointerEvents="none"
         />
-        <View style={styles.topGlassSpecularLine} pointerEvents="none" />
+        <View style={[styles.topGlassSpecularLine, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         <View style={styles.tabItemsRow}>
           {state.routes.map((route: any, index: number) => {
             const { options } = descriptors[route.key];
             const isFocused = state.index === index;
+
+            const onPress = () => {
+              if (Platform.OS !== 'web') {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+              }
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
+
+              if (!isFocused && !event.defaultPrevented) {
+                navigation.navigate(route.name);
+              }
+            };
 
             return (
               <TabItem
@@ -124,53 +125,15 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
                 isFocused={isFocused}
                 options={options}
                 navigation={navigation}
+                colors={colors}
+                shadows={shadows}
+                onPress={onPress}
               />
             );
           })}
         </View>
       </View>
     </View>
-  );
-}
-
-export default function AppTabs() {
-  return (
-    <Tabs
-      tabBar={(props) => <LiquidGlassTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-        }}
-      />
-      <Tabs.Screen
-        name="studio"
-        options={{
-          title: 'Studio',
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-        }}
-      />
-    </Tabs>
   );
 }
 
@@ -191,13 +154,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     overflow: 'hidden',
     borderWidth: 1.5,
-    borderColor: 'rgba(0, 0, 0, 0.08)',
-    backgroundColor: 'rgba(241, 245, 249, 0.95)',
-    shadowColor: '#0F172A',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.16,
-    shadowRadius: 24,
-    elevation: 16,
     position: 'relative',
   },
   blurViewContainer: {
@@ -213,7 +169,6 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     height: 1.5,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   tabItemsRow: {
     flexDirection: 'row',
@@ -233,14 +188,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: 'rgba(37, 99, 235, 0.25)',
-    shadowColor: '#2563EB',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
   inactiveTabContent: {
     alignItems: 'center',

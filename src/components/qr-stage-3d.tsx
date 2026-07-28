@@ -1,21 +1,35 @@
-import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import * as Haptics from 'expo-haptics';
-import React, { useState } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import * as Haptics from "expo-haptics";
+import React, { useState } from "react";
+import {
+  Dimensions,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import QRCode from "react-native-qrcode-svg";
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 
-import { GlassBadge } from '@/components/ui/glass-badge';
-import { GlassButton } from '@/components/ui/glass-button';
-import { BlurTokens, CinematicPresets, Palette, PresetId, Shadows, SpringConfigs } from '@/constants/theme';
+import { GlassBadge } from "@/components/ui/glass-badge";
+import { GlassButton } from "@/components/ui/glass-button";
+import {
+  BlurTokens,
+  CinematicPresets,
+  Palette,
+  PresetId,
+  SpringConfigs,
+} from "@/constants/theme";
+import { useTheme } from "@/hooks/use-theme";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const STAGE_SIZE = Math.min(width * 0.85, 340);
 
 interface QRStage3DProps {
@@ -32,11 +46,12 @@ export function QRStage3D({
   value,
   presetId,
   qrRef,
-  title = 'QRify Code',
-  typeLabel = 'URL Link',
+  title = "QRify Code",
+  typeLabel = "URL Link",
   onExport,
   fgColor,
 }: QRStage3DProps) {
+  const { colors, shadows, isDark } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
   const flipAnim = useSharedValue(0);
 
@@ -46,7 +61,7 @@ export function QRStage3D({
   const effectiveQrColor = fgColor || currentPreset.qrColor;
 
   const handleFlip = () => {
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== "web") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     }
     const nextState = !isFlipped;
@@ -58,7 +73,7 @@ export function QRStage3D({
     const rotateY = interpolate(flipAnim.value, [0, 1], [0, 180]);
     return {
       transform: [{ perspective: 1000 }, { rotateY: `${rotateY}deg` }],
-      backfaceVisibility: 'hidden',
+      backfaceVisibility: "hidden",
     };
   });
 
@@ -66,11 +81,11 @@ export function QRStage3D({
     const rotateY = interpolate(flipAnim.value, [0, 1], [180, 360]);
     return {
       transform: [{ perspective: 1000 }, { rotateY: `${rotateY}deg` }],
-      backfaceVisibility: 'hidden',
+      backfaceVisibility: "hidden",
     };
   });
 
-  const validValue = value.trim() || 'https://qrify.me/business-pro';
+  const validValue = value.trim() || "https://qrify.me/business-pro";
 
   return (
     <View className="items-center justify-center my-4 relative">
@@ -83,34 +98,66 @@ export function QRStage3D({
       <View style={{ width: STAGE_SIZE, height: STAGE_SIZE + 90 }}>
         {/* FRONT SIDE */}
         <Animated.View
-          style={[frontAnimatedStyle, Shadows.heroStage]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden bg-white/80 border border-white/40 p-6 justify-between relative">
+          pointerEvents={isFlipped ? "none" : "auto"}
+          style={[
+            frontAnimatedStyle,
+            shadows.heroStage,
+            {
+              backgroundColor: colors.glassSurfaceHigh,
+              borderColor: colors.hairline,
+            },
+          ]}
+          className="absolute w-full h-full rounded-5xl overflow-hidden border p-6 justify-between relative"
+        >
           <BlurView
             intensity={BlurTokens.card}
-            tint="light"
+            tint={isDark ? "dark" : "light"}
             style={StyleSheet.absoluteFill}
             pointerEvents="none"
           />
-          <View style={styles.topSpecular} pointerEvents="none" />
+          <View
+            style={[
+              styles.topSpecular,
+              { backgroundColor: colors.specularTop },
+            ]}
+            pointerEvents="none"
+          />
 
           {/* Top Bar */}
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center gap-2">
-              <Ionicons name="qr-code-outline" size={18} color={Palette.accentBlue} />
-              <Text className="text-on-surface text-base font-bold">{title}</Text>
+              <Ionicons
+                name="qr-code-outline"
+                size={18}
+                color={Palette.accentBlue}
+              />
+              <Text className="text-on-surface text-base font-bold">
+                {title}
+              </Text>
             </View>
             <Pressable
               accessibilityLabel="Flip card to view code metadata"
               accessibilityRole="button"
               onPress={handleFlip}
-              className="flex-row items-center gap-1 bg-black/5 border border-white/40 px-3 py-1.5 rounded-full active:bg-black/10">
-              <Ionicons name="sync-outline" size={14} color={Palette.secondaryText} />
-              <Text className="text-on-surface-variant text-xs font-semibold">Info</Text>
+              style={{
+                backgroundColor: colors.glassSurfaceSubtle,
+                borderColor: colors.hairline,
+              }}
+              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full active:opacity-70"
+            >
+              <Ionicons
+                name="sync-outline"
+                size={14}
+                color={colors.secondaryText}
+              />
             </Pressable>
           </View>
 
           {/* QR Code Glass Container */}
-          <View className="self-center bg-white p-5 rounded-4xl border border-black/[0.04] shadow-md shadow-black/5 relative">
+          <View
+            style={styles.qrGlassShadow}
+            className="self-center bg-white p-5 rounded-4xl border border-black/[0.04] relative"
+          >
             <QRCode
               value={validValue}
               size={STAGE_SIZE * 0.55}
@@ -128,7 +175,10 @@ export function QRStage3D({
           {/* Details & Payload */}
           <View className="items-center gap-1 mb-4">
             <GlassBadge label={typeLabel.toUpperCase()} variant="primary" />
-            <Text className="text-on-surface-variant text-xs font-medium max-w-[260px]" numberOfLines={1}>
+            <Text
+              className="text-on-surface-variant text-xs font-medium max-w-[260px]"
+              numberOfLines={1}
+            >
               {validValue}
             </Text>
           </View>
@@ -148,47 +198,106 @@ export function QRStage3D({
 
         {/* BACK SIDE (METADATA) */}
         <Animated.View
-          style={[backAnimatedStyle, Shadows.heroStage]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden bg-white/90 border border-white/40 p-6 justify-between relative">
+          pointerEvents={isFlipped ? "auto" : "none"}
+          style={[
+            backAnimatedStyle,
+            shadows.heroStage,
+            {
+              backgroundColor: colors.glassSurfaceHigh,
+              borderColor: colors.hairline,
+            },
+          ]}
+          className="absolute w-full h-full rounded-5xl overflow-hidden border p-6 justify-between relative"
+        >
           <BlurView
             intensity={BlurTokens.card}
-            tint="light"
+            tint={isDark ? "dark" : "light"}
             style={StyleSheet.absoluteFill}
             pointerEvents="none"
           />
-          <View style={styles.topSpecular} pointerEvents="none" />
+          <View
+            style={[
+              styles.topSpecular,
+              { backgroundColor: colors.specularTop },
+            ]}
+            pointerEvents="none"
+          />
 
           <View className="flex-row items-center justify-between">
-            <Text className="text-on-surface text-base font-bold">Code Intelligence</Text>
+            <Text className="text-on-surface text-base font-bold">
+              Code Intelligence
+            </Text>
             <Pressable
               accessibilityLabel="Flip card to view QR code"
               accessibilityRole="button"
               onPress={handleFlip}
-              className="flex-row items-center gap-1 bg-black/5 border border-white/40 px-3 py-1.5 rounded-full active:bg-black/10">
-              <Ionicons name="sync-outline" size={14} color={Palette.secondaryText} />
-              <Text className="text-on-surface-variant text-xs font-semibold">QR Stage</Text>
+              style={{
+                backgroundColor: colors.glassSurfaceSubtle,
+                borderColor: colors.hairline,
+              }}
+              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full active:opacity-70"
+            >
+              <Ionicons
+                name="sync-outline"
+                size={14}
+                color={colors.secondaryText}
+              />
+              <Text className="text-on-surface-variant text-xs font-semibold">
+                QR Stage
+              </Text>
             </Pressable>
           </View>
 
           <View className="flex-1 justify-center gap-3 my-2">
-            <View className="flex-row justify-between items-center border-b border-black/[0.04] pb-2">
-              <Text className="text-on-surface-variant text-xs">Active Theme</Text>
-              <Text className="text-xs font-bold" style={{ color: currentPreset.accentColor }}>
+            <View
+              style={{ borderColor: colors.border }}
+              className="flex-row justify-between items-center border-b pb-2"
+            >
+              <Text className="text-on-surface-variant text-xs">
+                Active Theme
+              </Text>
+              <Text
+                className="text-xs font-bold"
+                style={{ color: currentPreset.accentColor }}
+              >
                 {currentPreset.name}
               </Text>
             </View>
-            <View className="flex-row justify-between items-center border-b border-black/[0.04] pb-2">
-              <Text className="text-on-surface-variant text-xs">Payload Type</Text>
-              <Text className="text-on-surface text-xs font-bold">{typeLabel}</Text>
+            <View
+              style={{ borderColor: colors.border }}
+              className="flex-row justify-between items-center border-b pb-2"
+            >
+              <Text className="text-on-surface-variant text-xs">
+                Payload Type
+              </Text>
+              <Text className="text-on-surface text-xs font-bold">
+                {typeLabel}
+              </Text>
             </View>
-            <View className="flex-row justify-between items-center border-b border-black/[0.04] pb-2">
+            <View
+              style={{ borderColor: colors.border }}
+              className="flex-row justify-between items-center border-b pb-2"
+            >
               <Text className="text-on-surface-variant text-xs">Length</Text>
-              <Text className="text-on-surface text-xs font-bold">{validValue.length} characters</Text>
+              <Text className="text-on-surface text-xs font-bold">
+                {validValue.length} characters
+              </Text>
             </View>
 
-            <View className="bg-gray-50/80 p-3 rounded-2xl border border-black/[0.04] mt-1">
-              <Text className="text-gray-400 text-[10px] font-bold tracking-widest mb-1">DATA PAYLOAD</Text>
-              <Text className="text-primary text-xs font-mono" numberOfLines={3}>
+            <View
+              style={{
+                backgroundColor: colors.glassSurfaceSubtle,
+                borderColor: colors.border,
+              }}
+              className="p-3 rounded-2xl border mt-1"
+            >
+              <Text className="text-on-surface-variant text-[10px] font-bold tracking-widest mb-1">
+                DATA PAYLOAD
+              </Text>
+              <Text
+                className="text-primary text-xs font-mono"
+                numberOfLines={3}
+              >
                 {validValue}
               </Text>
             </View>
@@ -201,11 +310,13 @@ export function QRStage3D({
 
 const styles = StyleSheet.create({
   topSpecular: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 16,
     right: 16,
     height: 1,
-    backgroundColor: Palette.glassSpecularTop,
+  },
+  qrGlassShadow: {
+    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.05)",
   },
 });

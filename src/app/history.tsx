@@ -1,9 +1,7 @@
-import { CinematicHeader } from '@/components/cinematic-header';
 import { GlassContainer } from '@/components/ui/glass-container';
 import { GlassInput } from '@/components/ui/glass-input';
 import { HistoryList } from '@/features/history/components/history-list';
 import { useHistory } from '@/hooks/use-history';
-import { useModals } from '@/hooks/use-modals';
 import { QRHistoryItem } from '@/types/history';
 import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
@@ -13,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function HistoryScreen() {
   const router = useRouter();
   const { history, deleteHistory, togglePin } = useHistory();
-  const { openScanner, openSettings } = useModals();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -49,11 +46,6 @@ export default function HistoryScreen() {
   return (
     <GlassContainer>
       <SafeAreaView className="flex-1">
-        <CinematicHeader
-          title="History"
-          onOpenScanner={openScanner}
-          onOpenSettings={openSettings}
-        />
 
         <ScrollView
           className="flex-1"

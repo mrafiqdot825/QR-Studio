@@ -7,7 +7,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GlassModal } from '@/components/ui/glass-modal';
 import { GlassToast } from '@/components/ui/glass-toast';
 import { APP_CONFIG } from '@/config/app.config';
-import { Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { clearHistory } from '@/utils/storage';
 
 interface SettingsModalProps {
@@ -16,6 +16,7 @@ interface SettingsModalProps {
 }
 
 export function SettingsModal({ visible, onClose }: SettingsModalProps) {
+  const { colors } = useTheme();
   const [hapticsEnabled, setHapticsEnabled] = useState(true);
   const [autoSave, setAutoSave] = useState(true);
   const [highQualityExports, setHighQualityExports] = useState(true);
@@ -52,7 +53,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
 
       <View className="gap-4">
         {/* APP PREFERENCES GROUP */}
-        <GlassCard className="p-4 border border-white/40 bg-white/80 gap-3">
+        <GlassCard className="p-4 gap-3">
           <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
             HAPTICS & PREFERENCES
           </Text>
@@ -75,7 +76,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
             />
           </View>
 
-          <View className="flex-row items-center justify-between py-1 border-t border-black/[0.04]">
+          <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
             <View className="flex-row items-center gap-3">
               <View className="w-8 h-8 rounded-xl bg-emerald-500/10 items-center justify-center">
                 <Ionicons name="bookmark-outline" size={16} color="#10B981" />
@@ -93,7 +94,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
             />
           </View>
 
-          <View className="flex-row items-center justify-between py-1 border-t border-black/[0.04]">
+          <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
             <View className="flex-row items-center gap-3">
               <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
                 <Ionicons name="sparkles-outline" size={16} color="#7C3AED" />
@@ -113,7 +114,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
         </GlassCard>
 
         {/* STORAGE & DATA GROUP */}
-        <GlassCard className="p-4 border border-white/40 bg-white/80 gap-3">
+        <GlassCard className="p-4 gap-3">
           <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
             DATA & STORAGE
           </Text>
@@ -132,7 +133,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
                 <Text className="text-on-surface-variant text-[11px]">Delete all saved QR items</Text>
               </View>
             </View>
-            <Ionicons name="chevron-forward" size={16} color={Palette.secondaryText} />
+            <Ionicons name="chevron-forward" size={16} color={colors.secondaryText} />
           </Pressable>
         </GlassCard>
 

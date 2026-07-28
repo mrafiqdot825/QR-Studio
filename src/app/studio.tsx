@@ -1,5 +1,4 @@
 import { ActionButtons3D } from '@/components/action-buttons-3d';
-import { CinematicHeader } from '@/components/cinematic-header';
 import { CinematicInput } from '@/components/cinematic-input';
 import { CustomizationStudioControls } from '@/components/customization-studio-controls';
 import { ExportModal } from '@/components/export-modal';
@@ -7,7 +6,6 @@ import { QRStage3D } from '@/components/qr-stage-3d';
 import { QRTypeSelector } from '@/components/qr-type-selector';
 import { ThemePresetsBar } from '@/components/theme-presets-bar';
 import { GlassContainer } from '@/components/ui/glass-container';
-import { useModals } from '@/hooks/use-modals';
 import { useQRGenerator } from '@/hooks/use-qr-generator';
 import { QRType } from '@/types/qr';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -33,19 +31,11 @@ export default function StudioScreen() {
     formFields,
   } = useQRGenerator({ initialType });
 
-  const { openScanner, openSettings } = useModals();
   const [exportOpen, setExportOpen] = useState(false);
 
   return (
     <GlassContainer>
       <SafeAreaView className="flex-1">
-        <CinematicHeader
-          showBack
-          onBack={() => router.navigate('/')}
-          title="QR Studio"
-          onOpenScanner={openScanner}
-          onOpenSettings={openSettings}
-        />
 
         <ScrollView
           className="flex-1"

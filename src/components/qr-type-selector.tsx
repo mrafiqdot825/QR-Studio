@@ -1,5 +1,6 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassChip } from '@/components/ui/glass-chip';
+import { Palette } from '@/constants/theme';
 import { QRType } from '@/types/qr';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
@@ -29,7 +30,7 @@ interface QRTypeSelectorProps {
   variant?: 'grid' | 'pills';
 }
 
-export function QRTypeSelector({
+export const QRTypeSelector = React.memo(function QRTypeSelector({
   selectedType,
   onSelectType,
   variant = 'pills',
@@ -67,10 +68,9 @@ export function QRTypeSelector({
             onPress={() => onSelectType(typeObj.id)}
             interactive
             hasGlow={isSelected}
-            className={`w-[48%] p-4 border transition-all ${
-              isSelected
-                ? 'border-primary bg-white/90 ring-2 ring-primary/20'
-                : 'border-white/40 bg-white/75'
+            style={isSelected ? { borderColor: Palette.accentBlue } : undefined}
+            className={`w-[48%] p-4 transition-all ${
+              isSelected ? 'border-primary ring-2 ring-primary/20' : ''
             }`}>
             <View className="gap-2">
               <View className="flex-row items-center justify-between">
@@ -100,4 +100,4 @@ export function QRTypeSelector({
       })}
     </View>
   );
-}
+});

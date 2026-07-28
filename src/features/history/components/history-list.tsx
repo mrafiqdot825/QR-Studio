@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { GlassButton } from '@/components/ui/glass-button';
-import { Palette } from '@/constants/theme';
 import { HistoryCard } from '@/features/history/components/history-card';
+import { useTheme } from '@/hooks/use-theme';
 import { QRHistoryItem } from '@/types/history';
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
@@ -21,11 +21,12 @@ export const HistoryList: React.FC<HistoryListProps> = memo(({
   onTogglePinItem,
   onCreateNew,
 }) => {
+  const { colors } = useTheme();
   if (items.length === 0) {
     return (
       <View className="items-center justify-center py-16 gap-3">
-        <View className="w-20 h-20 rounded-full bg-white/80 border border-white/40 items-center justify-center mb-2 shadow-sm">
-          <Ionicons name="qr-code-outline" size={44} color={Palette.secondaryText} />
+        <View style={{ backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline }} className="w-20 h-20 rounded-full border items-center justify-center mb-2 shadow-sm">
+          <Ionicons name="qr-code-outline" size={44} color={colors.secondaryText} />
         </View>
         <Text className="text-on-surface text-xl font-bold">No saved codes yet</Text>
         <Text className="text-on-surface-variant text-sm text-center max-w-[320px] leading-5">

@@ -1,16 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassModal } from '@/components/ui/glass-modal';
-import { Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import React, { memo, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
 export const PoliciesCard: React.FC = memo(() => {
+  const { colors } = useTheme();
   const [activePolicy, setActivePolicy] = useState<'privacy' | 'terms' | 'licenses' | null>(null);
 
   return (
     <>
-      <GlassCard className="p-5 my-3 w-full border border-white/40 gap-3">
+      <GlassCard className="p-5 my-3 w-full gap-3">
         <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
           POLICIES & LEGAL GOVERNANCE
         </Text>
@@ -20,7 +21,8 @@ export const PoliciesCard: React.FC = memo(() => {
           accessibilityLabel="Open Privacy Policy"
           accessibilityRole="button"
           onPress={() => setActivePolicy('privacy')}
-          className="flex-row items-center justify-between py-2 border-b border-black/[0.04] active:opacity-70">
+          style={{ borderColor: colors.border }}
+          className="flex-row items-center justify-between py-2 border-b active:opacity-70">
           <View className="flex-row items-center gap-3">
             <View className="w-8 h-8 rounded-xl bg-blue-500/10 items-center justify-center">
               <Ionicons name="shield-checkmark-outline" size={16} color="#2563EB" />
@@ -30,7 +32,7 @@ export const PoliciesCard: React.FC = memo(() => {
               <Text className="text-on-surface-variant text-[11px]">Local storage, offline safety & camera privacy</Text>
             </View>
           </View>
-          <Ionicons name="chevron-forward" size={16} color={Palette.secondaryText} />
+          <Ionicons name="chevron-forward" size={16} color={colors.secondaryText} />
         </Pressable>
 
         {/* TERMS OF SERVICE ROW */}
@@ -38,7 +40,8 @@ export const PoliciesCard: React.FC = memo(() => {
           accessibilityLabel="Open Terms of Service"
           accessibilityRole="button"
           onPress={() => setActivePolicy('terms')}
-          className="flex-row items-center justify-between py-2 border-b border-black/[0.04] active:opacity-70">
+          style={{ borderColor: colors.border }}
+          className="flex-row items-center justify-between py-2 border-b active:opacity-70">
           <View className="flex-row items-center gap-3">
             <View className="w-8 h-8 rounded-xl bg-emerald-500/10 items-center justify-center">
               <Ionicons name="document-text-outline" size={16} color="#10B981" />
@@ -48,7 +51,7 @@ export const PoliciesCard: React.FC = memo(() => {
               <Text className="text-on-surface-variant text-[11px]">Usage rights, vector export & commercial rules</Text>
             </View>
           </View>
-          <Ionicons name="chevron-forward" size={16} color={Palette.secondaryText} />
+          <Ionicons name="chevron-forward" size={16} color={colors.secondaryText} />
         </Pressable>
 
         {/* OPEN SOURCE LICENSES ROW */}
@@ -66,7 +69,7 @@ export const PoliciesCard: React.FC = memo(() => {
               <Text className="text-on-surface-variant text-[11px]">Third-party libraries & MIT license attributions</Text>
             </View>
           </View>
-          <Ionicons name="chevron-forward" size={16} color={Palette.secondaryText} />
+          <Ionicons name="chevron-forward" size={16} color={colors.secondaryText} />
         </Pressable>
       </GlassCard>
 
@@ -122,7 +125,7 @@ export const PoliciesCard: React.FC = memo(() => {
               <Text className="text-on-surface-variant text-xs leading-5">
                 QRify is built using open-source libraries:
               </Text>
-              <View className="bg-gray-50 p-3 rounded-2xl gap-1 border border-black/[0.04]">
+              <View style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }} className="p-3 rounded-2xl gap-1 border">
                 <Text className="text-xs font-bold text-on-surface">• Expo SDK 57 (MIT License)</Text>
                 <Text className="text-xs font-bold text-on-surface">• React Native 0.86 (MIT License)</Text>
                 <Text className="text-xs font-bold text-on-surface">• React Native Reanimated 4 (MIT License)</Text>

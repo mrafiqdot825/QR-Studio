@@ -5,7 +5,8 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View, ViewProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassButtonProps extends ViewProps {
   children?: React.ReactNode;
@@ -30,6 +31,7 @@ export function GlassButton({
   style,
   ...props
 }: GlassButtonProps) {
+  const { colors, shadows, isDark } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -67,32 +69,37 @@ export function GlassButton({
 
   const iconColor = isPrimary ? '#FFFFFF' : Palette.accentBlue;
 
+  const surfaceStyle = isSecondary
+    ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }
+    : isGlass
+    ? { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline }
+    : undefined;
+
   return (
-    <Animated.View style={[animatedStyle, isPrimary ? Shadows.glowBlue : Shadows.subtle, style]}>
+    <Animated.View style={[animatedStyle, isPrimary ? shadows.glowBlue : shadows.subtle, style]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={disabled}
+        style={surfaceStyle}
         className={`px-6 py-3.5 rounded-full flex-row items-center justify-center gap-2 relative overflow-hidden ${
           isPrimary
             ? 'bg-primary'
-            : isSecondary
-            ? 'bg-white/80 border border-black/[0.06]'
-            : isGlass
-            ? 'bg-white/60 border border-white/40'
+            : isSecondary || isGlass
+            ? 'border'
             : 'bg-transparent'
         } ${className}`}
         {...props}>
         {(isSecondary || isGlass) && (
           <BlurView
             intensity={BlurTokens.subtle}
-            tint="light"
+            tint={isDark ? 'dark' : 'light'}
             style={StyleSheet.absoluteFill}
             pointerEvents="none"
           />
         )}
-        <View style={styles.topHighlight} pointerEvents="none" />
+        <View style={[styles.topHighlight, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         {icon && iconPosition === 'left' && (
           <Ionicons name={icon} size={18} color={iconColor} />
@@ -124,6 +131,5 @@ const styles = StyleSheet.create({
     left: 12,
     right: 12,
     height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
 });

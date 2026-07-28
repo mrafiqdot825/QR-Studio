@@ -66,7 +66,7 @@ export function CinematicInput({
   onClear,
 }: CinematicInputProps) {
   return (
-    <GlassCard className="p-5 my-3 w-full border border-white/40">
+    <GlassCard className="p-5 my-3 w-full">
       <View className="gap-4">
         {type === 'url' && (
           <GlassInput

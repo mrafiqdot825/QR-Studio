@@ -5,7 +5,8 @@ import React, { useEffect } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassToastProps {
   visible: boolean;
@@ -15,6 +16,7 @@ interface GlassToastProps {
 }
 
 export function GlassToast({ visible, message, type = 'success', onHide }: GlassToastProps) {
+  const { colors, shadows, isDark } = useTheme();
   const translateY = useSharedValue(-100);
   const opacity = useSharedValue(0);
 
@@ -49,16 +51,18 @@ export function GlassToast({ visible, message, type = 'success', onHide }: Glass
 
   return (
     <Animated.View
-      style={[Shadows.dock, animatedStyle, styles.toastPosition]}
+      style={[shadows.dock, animatedStyle, styles.toastPosition]}
       className="z-50 self-center max-w-[90%]">
-      <View className="flex-row items-center gap-2.5 px-5 py-3 rounded-full bg-white/90 border border-white/40 overflow-hidden relative">
+      <View
+        style={{ backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline }}
+        className="flex-row items-center gap-2.5 px-5 py-3 rounded-full border overflow-hidden relative">
         <BlurView
           intensity={BlurTokens.card}
-          tint="light"
+          tint={isDark ? 'dark' : 'light'}
           style={StyleSheet.absoluteFill}
           pointerEvents="none"
         />
-        <View style={styles.topSpecular} pointerEvents="none" />
+        <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         <Ionicons name={iconName} size={18} color={iconColor} />
         <Text className="text-on-surface text-xs font-bold">{message}</Text>
@@ -79,6 +83,5 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     height: 1,
-    backgroundColor: Palette.glassSpecularTop,
   },
 });

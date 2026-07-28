@@ -4,7 +4,8 @@ import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { BlurTokens, Palette, Shadows } from '@/constants/theme';
+import { BlurTokens, Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface GlassHeaderProps {
   title?: string;
@@ -23,6 +24,8 @@ export function GlassHeader({
   onOpenSettings,
   className = '',
 }: GlassHeaderProps) {
+  const { colors, shadows, isDark } = useTheme();
+
   const triggerHaptic = () => {
     if (Platform.OS !== 'web') {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
@@ -30,14 +33,16 @@ export function GlassHeader({
   };
 
   return (
-    <View style={Shadows.subtle} className={`w-full z-50 bg-white/75 border-b border-black/[0.06] relative overflow-hidden ${className}`}>
+    <View
+      style={[shadows.subtle, { backgroundColor: colors.glassSurface, borderColor: colors.border }]}
+      className={`w-full z-50 border-b relative overflow-hidden ${className}`}>
       <BlurView
         intensity={BlurTokens.header}
-        tint="light"
+        tint={isDark ? 'dark' : 'light'}
         style={StyleSheet.absoluteFill}
         pointerEvents="none"
       />
-      <View style={styles.topSpecular} pointerEvents="none" />
+      <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
       <View className="flex-row items-center justify-between px-5 py-3.5 w-full">
         <View className="flex-row items-center gap-3">
@@ -47,7 +52,8 @@ export function GlassHeader({
                 triggerHaptic();
                 if (onBack) onBack();
               }}
-              className="w-9 h-9 rounded-full items-center justify-center bg-black/5 border border-white/40 active:scale-95">
+              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline }}
+              className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
               <Ionicons name="arrow-back" size={20} color={Palette.accentBlue} />
             </Pressable>
           ) : null}
@@ -72,8 +78,9 @@ export function GlassHeader({
                 triggerHaptic();
                 onOpenSettings();
               }}
-              className="w-9 h-9 rounded-full items-center justify-center bg-black/5 border border-white/40 active:scale-95">
-              <Ionicons name="settings-outline" size={18} color={Palette.secondaryText} />
+              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline }}
+              className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
+              <Ionicons name="settings-outline" size={18} color={colors.secondaryText} />
             </Pressable>
           )}
         </View>
@@ -89,6 +96,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: Palette.glassSpecularTop,
   },
 });

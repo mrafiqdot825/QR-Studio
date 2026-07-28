@@ -4,7 +4,9 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet, View, ViewProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, Shadows, SpringConfigs } from '@/constants/theme';
+import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
+import { withAlpha } from '@/utils/color';
 
 interface GlassCardProps extends ViewProps {
   children: React.ReactNode;
@@ -29,6 +31,7 @@ export function GlassCard({
   style,
   ...props
 }: GlassCardProps) {
+  const { colors, shadows, isDark } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -58,15 +61,17 @@ export function GlassCard({
     }
   };
 
-  const containerStyle = [
-    Shadows.card,
+  const containerStyle = React.useMemo(() => [
+    shadows.card,
+    { backgroundColor: colors.glassSurface, borderColor: colors.border },
     hasGlow && {
-      shadowColor: glowColor,
-      shadowOpacity: 0.18,
-      shadowRadius: 24,
+      boxShadow: `0px 0px 24px ${withAlpha(glowColor, 0.18)}`,
     },
     style,
-  ];
+  ], [shadows.card, colors.glassSurface, colors.border, hasGlow, glowColor, style]);
+
+  const specularStyle = React.useMemo(() => ({ backgroundColor: colors.specularTop }), [colors.specularTop]);
+  const hairlineStyle = React.useMemo(() => ({ borderColor: colors.hairline }), [colors.hairline]);
 
   if (onPress || interactive) {
     return (
@@ -76,16 +81,16 @@ export function GlassCard({
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           style={containerStyle}
-          className={`rounded-4xl bg-white/75 border border-white/40 overflow-hidden relative ${className}`}
+          className={`rounded-4xl border overflow-hidden relative ${className}`}
           {...props}>
           <BlurView
             intensity={blurIntensity}
-            tint={glassTint}
+            tint={isDark ? 'dark' : glassTint}
             style={StyleSheet.absoluteFill}
             pointerEvents="none"
           />
-          <View style={styles.specularTop} pointerEvents="none" />
-          <View style={styles.hairlineBorder} pointerEvents="none" />
+          <View style={[styles.specularTop, specularStyle]} pointerEvents="none" />
+          <View style={[styles.hairlineBorder, hairlineStyle]} pointerEvents="none" />
           {children}
         </Pressable>
       </Animated.View>
@@ -93,20 +98,20 @@ export function GlassCard({
   }
 
   return (
-    <Animated.View
+    <View
       style={containerStyle}
-      className={`rounded-4xl bg-white/75 border border-white/40 overflow-hidden relative ${className}`}
+      className={`rounded-4xl border overflow-hidden relative ${className}`}
       {...props}>
       <BlurView
         intensity={blurIntensity}
-        tint={glassTint}
+        tint={isDark ? 'dark' : glassTint}
         style={StyleSheet.absoluteFill}
         pointerEvents="none"
       />
-      <View style={styles.specularTop} pointerEvents="none" />
-      <View style={styles.hairlineBorder} pointerEvents="none" />
+      <View style={[styles.specularTop, specularStyle]} pointerEvents="none" />
+      <View style={[styles.hairlineBorder, hairlineStyle]} pointerEvents="none" />
       {children}
-    </Animated.View>
+    </View>
   );
 }
 
@@ -117,7 +122,6 @@ const styles = StyleSheet.create({
     left: 12,
     right: 12,
     height: 1,
-    backgroundColor: Palette.glassSpecularTop,
     zIndex: 1,
   },
   hairlineBorder: {
@@ -128,7 +132,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: 32,
     borderWidth: 1,
-    borderColor: Palette.glassHairlineLight,
     pointerEvents: 'none',
   },
 });

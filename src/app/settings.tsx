@@ -1,12 +1,10 @@
-import { CinematicHeader } from '@/components/cinematic-header';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassContainer } from '@/components/ui/glass-container';
 import { GlassToast } from '@/components/ui/glass-toast';
-import { Palette } from '@/constants/theme';
 import { DeveloperInfoCard } from '@/features/settings/components/developer-info-card';
 import { PoliciesCard } from '@/features/settings/components/policies-card';
 import { useHistory } from '@/hooks/use-history';
-import { useModals } from '@/hooks/use-modals';
+import { useTheme } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
@@ -14,7 +12,7 @@ import { Alert, Platform, Pressable, ScrollView, Switch, Text, View } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
-  const { openScanner, openSettings } = useModals();
+  const { colors, preference, setPreference } = useTheme();
   const { clearAll } = useHistory();
 
   const [hapticsEnabled, setHapticsEnabled] = useState(true);
@@ -50,12 +48,6 @@ export default function SettingsScreen() {
   return (
     <GlassContainer>
       <SafeAreaView className="flex-1">
-        <CinematicHeader
-          title="Settings"
-          onOpenScanner={openScanner}
-          onOpenSettings={openSettings}
-        />
-
         <GlassToast visible={!!toastMsg} message={toastMsg || ''} onHide={() => setToastMsg(null)} />
 
         <ScrollView
@@ -76,11 +68,53 @@ export default function SettingsScreen() {
               </Text>
             </View>
 
+            {/* APPEARANCE GROUP */}
+            <GlassCard className="p-4 gap-3 my-2">
+              <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
+                APPEARANCE
+              </Text>
+
+              <View style={{ backgroundColor: colors.glassSurfaceSubtle }} className="flex-row rounded-2xl p-1 gap-1">
+                {(
+                  [
+                    { id: 'system' as const, label: 'System', icon: 'phone-portrait-outline' as const },
+                    { id: 'light' as const, label: 'Light', icon: 'sunny-outline' as const },
+                    { id: 'dark' as const, label: 'Dark', icon: 'moon-outline' as const },
+                  ]
+                ).map((option) => {
+                  const isSelected = preference === option.id;
+                  return (
+                    <Pressable
+                      key={option.id}
+                      accessibilityLabel={`Use ${option.label} appearance`}
+                      accessibilityRole="button"
+                      onPress={() => setPreference(option.id)}
+                      style={isSelected ? { backgroundColor: colors.surface } : undefined}
+                      className={`flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-xl ${
+                        isSelected ? 'shadow-sm' : ''
+                      }`}>
+                      <Ionicons
+                        name={option.icon}
+                        size={14}
+                        color={isSelected ? '#2563EB' : colors.secondaryText}
+                      />
+                      <Text
+                        className={`text-xs font-bold ${
+                          isSelected ? 'text-primary' : 'text-on-surface-variant'
+                        }`}>
+                        {option.label}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </GlassCard>
+
             {/* DEVELOPER SPOTLIGHT CARD */}
             <DeveloperInfoCard />
 
             {/* PREFERENCES GROUP */}
-            <GlassCard className="p-4 border border-white/40 bg-white/80 gap-3 my-2">
+            <GlassCard className="p-4 gap-3 my-2">
               <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
                 HAPTICS & PREFERENCES
               </Text>
@@ -103,7 +137,7 @@ export default function SettingsScreen() {
                 />
               </View>
 
-              <View className="flex-row items-center justify-between py-1 border-t border-black/[0.04]">
+              <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
                 <View className="flex-row items-center gap-3">
                   <View className="w-8 h-8 rounded-xl bg-emerald-500/10 items-center justify-center">
                     <Ionicons name="bookmark-outline" size={16} color="#10B981" />
@@ -121,7 +155,7 @@ export default function SettingsScreen() {
                 />
               </View>
 
-              <View className="flex-row items-center justify-between py-1 border-t border-black/[0.04]">
+              <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
                 <View className="flex-row items-center gap-3">
                   <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
                     <Ionicons name="sparkles-outline" size={16} color="#7C3AED" />
@@ -144,7 +178,7 @@ export default function SettingsScreen() {
             <PoliciesCard />
 
             {/* DATA & STORAGE GROUP */}
-            <GlassCard className="p-4 border border-white/40 bg-white/80 gap-3 my-2">
+            <GlassCard className="p-4 gap-3 my-2">
               <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
                 DATA & STORAGE
               </Text>
@@ -163,7 +197,7 @@ export default function SettingsScreen() {
                     <Text className="text-on-surface-variant text-[11px]">Delete all saved QR items</Text>
                   </View>
                 </View>
-                <Ionicons name="chevron-forward" size={16} color={Palette.secondaryText} />
+                <Ionicons name="chevron-forward" size={16} color={colors.secondaryText} />
               </Pressable>
             </GlassCard>
           </View>

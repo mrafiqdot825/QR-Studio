@@ -1,7 +1,7 @@
-import { BlurTokens, Palette, Shadows } from '@/constants/theme';
+import { BlurTokens } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 interface LiquidGlassTabBarProps {
@@ -11,16 +11,18 @@ interface LiquidGlassTabBarProps {
 }
 
 export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlassTabBarProps) {
+  const { colors, shadows, isDark } = useTheme();
+
   return (
     <View style={styles.tabBarWrapper} pointerEvents="box-none">
-      <View style={[styles.glassContainerOuter, Shadows.dock]}>
+      <View style={[styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}>
         <BlurView
           intensity={BlurTokens.dock}
-          tint="light"
+          tint={isDark ? 'dark' : 'light'}
           style={styles.blurViewContainer}
           pointerEvents="none"
         />
-        <View style={styles.topGlassSpecularLine} pointerEvents="none" />
+        <View style={[styles.topGlassSpecularLine, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         <View style={styles.tabItemsRow}>
           {state.routes.map((route: any, index: number) => {
@@ -68,12 +70,12 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
                 accessibilityLabel={label as string}
                 accessibilityState={isFocused ? { selected: true } : {}}>
                 {isFocused ? (
-                  <View style={[styles.activeLiquidPill, Shadows.glowBlue]}>
-                    <Ionicons name={iconName} size={22} color={Palette.accentBlue} />
+                  <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: 'rgba(37, 99, 235, 0.25)' }]}>
+                    <Ionicons name={iconName} size={22} color="#2563EB" />
                   </View>
                 ) : (
                   <View style={styles.inactiveTabContent}>
-                    <Ionicons name={iconName} size={22} color={Palette.secondaryText} />
+                    <Ionicons name={iconName} size={22} color={colors.secondaryText} />
                   </View>
                 )}
               </Pressable>
@@ -82,47 +84,6 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
         </View>
       </View>
     </View>
-  );
-}
-
-export default function AppTabs() {
-  return (
-    <Tabs
-      tabBar={(props) => <LiquidGlassTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-        }}
-      />
-      <Tabs.Screen
-        name="studio"
-        options={{
-          title: 'Studio',
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-        }}
-      />
-    </Tabs>
   );
 }
 
@@ -143,13 +104,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     overflow: 'hidden',
     borderWidth: 1.5,
-    borderColor: 'rgba(0, 0, 0, 0.08)',
-    backgroundColor: 'rgba(241, 245, 249, 0.95)',
-    shadowColor: '#0F172A',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.16,
-    shadowRadius: 24,
-    elevation: 16,
     position: 'relative',
   },
   blurViewContainer: {
@@ -165,7 +119,6 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     height: 1.5,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   tabItemsRow: {
     flexDirection: 'row',
@@ -186,14 +139,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: 'rgba(37, 99, 235, 0.25)',
-    shadowColor: '#2563EB',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
   inactiveTabContent: {
     alignItems: 'center',

@@ -2,6 +2,7 @@ import { GlassBadge } from '@/components/ui/glass-badge';
 import { GlassCard } from '@/components/ui/glass-card';
 import { APP_CONFIG } from '@/config/app.config';
 import { Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { Logger } from '@/services/logger/logger.service';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +10,7 @@ import React, { memo } from 'react';
 import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
 export const DeveloperInfoCard: React.FC = memo(() => {
+  const { colors } = useTheme();
   const handleOpenEmail = async (email: string) => {
     const subject = encodeURIComponent('QRify App Support & Inquiry');
     const mailtoUrl = `mailto:${email}?subject=${subject}`;
@@ -55,7 +57,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
   };
 
   return (
-    <GlassCard className="p-6 my-3 w-full border border-white/40 gap-4">
+    <GlassCard className="p-6 my-3 w-full gap-4">
       {/* HEADER WITH LOGO & APP VERSION */}
       <View className="flex-row items-center gap-4">
         <LinearGradient
@@ -82,7 +84,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
       </Text>
 
       {/* DEVELOPER PROFILE INFO */}
-      <View className="bg-white/80 p-4 rounded-3xl border border-black/[0.04] gap-3">
+      <View style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }} className="p-4 rounded-3xl border gap-3">
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-2.5">
             <View className="w-8 h-8 rounded-full bg-primary/10 items-center justify-center">
@@ -97,7 +99,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
         </View>
 
         {/* SOCIAL & CONTACT BUTTONS */}
-        <View className="flex-row gap-2 pt-1 border-t border-black/[0.04]">
+        <View style={{ borderColor: colors.border }} className="flex-row gap-2 pt-1 border-t">
           <Pressable
             accessibilityLabel="Contact Support Email"
             accessibilityRole="button"
@@ -111,8 +113,9 @@ export const DeveloperInfoCard: React.FC = memo(() => {
             accessibilityLabel="Developer Website"
             accessibilityRole="button"
             onPress={() => handleOpenLink('https://mrafiq.vercel.app/', 'Developer Site')}
-            className="flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-black/5 border border-black/10 active:scale-95">
-            <Ionicons name="globe-outline" size={14} color={Palette.secondaryText} />
+            style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
+            className="flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-2xl border active:scale-95">
+            <Ionicons name="globe-outline" size={14} color={colors.secondaryText} />
             <Text className="text-on-surface text-xs font-bold">Developer Site</Text>
           </Pressable>
         </View>

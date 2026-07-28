@@ -66,7 +66,7 @@ export function ExportModal({
           <GlassCard
             onPress={() => handleExportFormat('png')}
             interactive
-            className="w-[48%] p-4 border border-white/40 bg-white/80 gap-2">
+            className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-blue-500/10 items-center justify-center">
               <Ionicons name="image-outline" size={18} color="#2563EB" />
             </View>
@@ -77,7 +77,7 @@ export function ExportModal({
           <GlassCard
             onPress={() => handleExportFormat('svg')}
             interactive
-            className="w-[48%] p-4 border border-white/40 bg-white/80 gap-2">
+            className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-emerald-500/10 items-center justify-center">
               <Ionicons name="code-slash-outline" size={18} color="#10B981" />
             </View>
@@ -88,7 +88,7 @@ export function ExportModal({
           <GlassCard
             onPress={() => handleExportFormat('pdf')}
             interactive
-            className="w-[48%] p-4 border border-white/40 bg-white/80 gap-2">
+            className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-amber-500/10 items-center justify-center">
               <Ionicons name="document-text-outline" size={18} color="#F59E0B" />
             </View>
@@ -99,7 +99,7 @@ export function ExportModal({
           <GlassCard
             onPress={() => handleExportFormat('share')}
             interactive
-            className="w-[48%] p-4 border border-white/40 bg-white/80 gap-2">
+            className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-violet-500/10 items-center justify-center">
               <Ionicons name="share-social-outline" size={18} color="#7C3AED" />
             </View>
@@ -110,7 +110,7 @@ export function ExportModal({
           <GlassCard
             onPress={() => handleExportFormat('print')}
             interactive
-            className="w-[48%] p-4 border border-white/40 bg-white/80 gap-2">
+            className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-rose-500/10 items-center justify-center">
               <Ionicons name="print-outline" size={18} color="#F43F5E" />
             </View>
