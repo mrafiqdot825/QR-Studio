@@ -6,7 +6,6 @@ import { FeaturedTemplatesStrip } from "@/features/home/components/featured-temp
 import { HomeHeroCard } from "@/features/home/components/home-hero-card";
 import { HomeProBanner } from "@/features/home/components/home-pro-banner";
 import { QuickActionsBar } from "@/features/home/components/quick-actions-bar";
-import { RecentQRsStrip } from "@/features/home/components/recent-qrs-strip";
 import { QRType } from "@/types/qr";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -76,8 +75,6 @@ export default function HomeScreen() {
             </Animated.View>
             {/* QUICK LAUNCH HUB */}
             <QuickActionsBar />
-            {/* RECENT ACTIVITY STRIP */}
-            <RecentQRsStrip />
             {/* CURATED TEMPLATES SHOWCASE */}
             <FeaturedTemplatesStrip />
             {/* QR CATEGORIES GRID SECTION */}

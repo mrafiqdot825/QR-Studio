@@ -59,12 +59,6 @@ function AppNavigation() {
           }}
         />
         <Tabs.Screen
-          name="history"
-          options={{
-            title: 'History',
-          }}
-        />
-        <Tabs.Screen
           name="explore"
           options={{
             title: 'Explore',

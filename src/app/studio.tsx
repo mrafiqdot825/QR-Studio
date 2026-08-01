@@ -7,9 +7,9 @@ import { QRTypeSelector } from "@/components/qr-type-selector";
 import { ThemePresetsBar } from "@/components/theme-presets-bar";
 import { GlassContainer } from "@/components/ui/glass-container";
 import { useQRGenerator } from "@/hooks/use-qr-generator";
-import { QRType } from "@/types/qr";
+import { PresetId, QRType } from "@/types/qr";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -32,6 +32,21 @@ export default function StudioScreen() {
   } = useQRGenerator({ initialType });
 
   const [exportOpen, setExportOpen] = useState(false);
+  const openExport = useCallback(() => setExportOpen(true), []);
+  const closeExport = useCallback(() => setExportOpen(false), []);
+
+  const handleSelectPreset = useCallback(
+    (id: PresetId) => {
+      setPresetId(id);
+      setCustomOpts((prev) => ({ ...prev, fgColor: undefined }));
+    },
+    [setPresetId, setCustomOpts]
+  );
+
+  const handleSelectColor = useCallback(
+    (color: string) => setCustomOpts((prev) => ({ ...prev, fgColor: color })),
+    [setCustomOpts]
+  );
 
   return (
     <GlassContainer>
@@ -100,16 +115,10 @@ export default function StudioScreen() {
               typeLabel={selectedType}
               title="Live QR Preview"
               fgColor={customOpts.fgColor}
-              onExport={() => setExportOpen(true)}
+              onExport={openExport}
             />
             {/* Action Buttons */}
-            <ActionButtons3D
-              qrRef={qrRef}
-              payloadValue={payloadValue}
-              typeLabel={selectedType}
-              presetId={presetId}
-              onOpenExport={() => setExportOpen(true)}
-            />
+            <ActionButtons3D onOpenExport={openExport} />
             {/* Workspace Customization Studio */}
             <CustomizationStudioControls
               options={customOpts}
@@ -118,18 +127,16 @@ export default function StudioScreen() {
             {/* Theme Gallery & Color Picker */}
             <ThemePresetsBar
               selectedPresetId={presetId}
-              onSelectPreset={(id) => setPresetId(id)}
+              onSelectPreset={handleSelectPreset}
               selectedColor={customOpts.fgColor}
-              onSelectColor={(color) =>
-                setCustomOpts((prev) => ({ ...prev, fgColor: color }))
-              }
+              onSelectColor={handleSelectColor}
             />
           </View>
         </ScrollView>
         {/* EXPORT MODAL */}
         <ExportModal
           visible={exportOpen}
-          onClose={() => setExportOpen(false)}
+          onClose={closeExport}
           payloadValue={payloadValue}
           qrRef={qrRef}
           presetId={presetId}

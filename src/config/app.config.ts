@@ -4,7 +4,6 @@ export const APP_CONFIG = {
   build: '1',
   scheme: 'qrify',
   supportEmail: 'mrafiqdot825@gmail.com',
-  maxHistoryItems: 200,
   defaultQrSize: 200,
   exportMinSize: 512,
   exportMaxSize: 4096,

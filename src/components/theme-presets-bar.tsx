@@ -25,7 +25,7 @@ const ACCENT_PALETTE = [
   '#C9A227',
 ];
 
-export function ThemePresetsBar({
+export const ThemePresetsBar = React.memo(function ThemePresetsBar({
   selectedPresetId,
   onSelectPreset,
   selectedColor,
@@ -61,16 +61,16 @@ export function ThemePresetsBar({
                 isSelected ? styles.presetCardShadow : undefined,
                 isSelected
                   ? { backgroundColor: colors.glassSurfaceHigh }
-                  : { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline },
+                  : { backgroundColor: colors.glassSurfaceSubtle },
               ]}
-              className={`w-28 p-2.5 rounded-2xl border items-center gap-2 transition-all ${
-                isSelected ? 'border-primary ring-2 ring-primary/20' : ''
+              className={`w-28 p-2.5 rounded-2xl items-center gap-2 transition-all ${
+                isSelected ? 'ring-2 ring-primary/20' : ''
               }`}>
               <LinearGradient
                 colors={preset.gradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                className="w-full h-14 rounded-xl items-center justify-center border border-black/[0.04] relative">
+                className="w-full h-14 rounded-xl items-center justify-center relative">
                 <View
                   className="w-6 h-6 rounded-lg items-center justify-center"
                   style={[styles.badgeShadow, { backgroundColor: preset.qrColor }]}>
@@ -92,7 +92,7 @@ export function ThemePresetsBar({
 
       {/* Custom Color Selector Swatches */}
       {onSelectColor && (
-        <View style={{ borderColor: colors.border }} className="gap-2 pt-2 border-t">
+        <View className="gap-2 pt-2">
           <Text className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
             Custom Foreground Tint
           </Text>
@@ -105,11 +105,11 @@ export function ThemePresetsBar({
                   accessibilityLabel={`Select color tint ${color}`}
                   accessibilityRole="button"
                   onPress={() => onSelectColor(color)}
-                  className={`w-8 h-8 rounded-full items-center justify-center border transition-all ${
-                    isSelected ? 'border-primary scale-110' : ''
+                  className={`w-8 h-8 rounded-full items-center justify-center transition-all ${
+                    isSelected ? 'scale-110' : ''
                   }`}
                   style={[
-                    { backgroundColor: color, borderColor: isSelected ? undefined : colors.hairline },
+                    { backgroundColor: color },
                     isSelected && styles.swatchShadow,
                   ]}>
                   {isSelected && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
@@ -121,7 +121,7 @@ export function ThemePresetsBar({
       )}
     </GlassCard>
   );
-}
+});
 
 const styles = StyleSheet.create({
   presetCardShadow: {

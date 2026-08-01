@@ -14,7 +14,7 @@ interface CustomizationStudioControlsProps {
   onChangeOptions: React.Dispatch<React.SetStateAction<CustomizationOptions>>;
 }
 
-export function CustomizationStudioControls({
+function CustomizationStudioControlsImpl({
   options,
   onChangeOptions,
 }: CustomizationStudioControlsProps) {
@@ -90,3 +90,16 @@ export function CustomizationStudioControls({
     </GlassCard>
   );
 }
+
+// This panel only reads moduleShape/eyeStyle/logo, but its parent hands it the whole
+// CustomizationOptions object — a fresh reference every time fgColor/bgColor/padding
+// change too. A plain memo would still re-render on those unrelated updates, so compare
+// only the fields this component actually renders.
+export const CustomizationStudioControls = React.memo(
+  CustomizationStudioControlsImpl,
+  (prev, next) =>
+    prev.options.moduleShape === next.options.moduleShape &&
+    prev.options.eyeStyle === next.options.eyeStyle &&
+    prev.options.logo === next.options.logo &&
+    prev.onChangeOptions === next.onChangeOptions
+);

@@ -37,7 +37,11 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
 }: QRTypeSelectorProps) {
   if (variant === 'pills') {
     return (
-      <View className="flex-row flex-wrap gap-2 my-2">
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: 8, paddingVertical: 4 }}
+        className="my-2">
         {QR_TYPES.map((typeObj) => {
           const isSelected = selectedType === typeObj.id;
           return (
@@ -47,11 +51,10 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
               icon={typeObj.icon}
               selected={isSelected}
               onPress={() => onSelectType(typeObj.id)}
-              style={{ flexBasis: '48%', flexGrow: 1 }}
             />
           );
         })}
-      </View>
+      </ScrollView>
     );
   }
 

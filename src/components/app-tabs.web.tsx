@@ -53,8 +53,6 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
               iconName = isFocused ? 'home' : 'home-outline';
             } else if (route.name === 'studio') {
               iconName = isFocused ? 'qr-code' : 'qr-code-outline';
-            } else if (route.name === 'history') {
-              iconName = isFocused ? 'time' : 'time-outline';
             } else if (route.name === 'explore') {
               iconName = isFocused ? 'grid' : 'grid-outline';
             } else if (route.name === 'settings') {

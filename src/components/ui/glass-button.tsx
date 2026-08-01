@@ -19,7 +19,7 @@ interface GlassButtonProps extends ViewProps {
   disabled?: boolean;
 }
 
-export function GlassButton({
+export const GlassButton = React.memo(function GlassButton({
   children,
   title,
   variant = 'primary',
@@ -100,7 +100,6 @@ export function GlassButton({
             style={StyleSheet.absoluteFill}
           />
         )}
-        <View style={[styles.topHighlight, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         {icon && iconPosition === 'left' && (
           <Ionicons name={icon} size={18} color={iconColor} />
@@ -123,14 +122,4 @@ export function GlassButton({
       </Pressable>
     </Animated.View>
   );
-}
-
-const styles = StyleSheet.create({
-  topHighlight: {
-    position: 'absolute',
-    top: 0,
-    left: 12,
-    right: 12,
-    height: 1,
-  },
 });

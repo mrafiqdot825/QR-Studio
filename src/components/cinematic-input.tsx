@@ -41,7 +41,7 @@ interface CinematicInputProps {
   onClear?: () => void;
 }
 
-export function CinematicInput({
+export const CinematicInput = React.memo(function CinematicInput({
   type,
   value,
   onChangeValue,
@@ -185,4 +185,4 @@ export function CinematicInput({
       </View>
     </GlassCard>
   );
-}
+});

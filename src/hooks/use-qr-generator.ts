@@ -1,5 +1,5 @@
 import { PresetId, CustomizationOptions, QRType } from '@/types/qr';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 export interface UseQRGeneratorProps {
   initialType?: QRType;
@@ -10,7 +10,6 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
   const [presetId, setPresetId] = useState<PresetId>('minimal-white');
 
   const [customOpts, setCustomOpts] = useState<CustomizationOptions>({
-    fgColor: '#111827',
     bgColor: '#FFFFFF',
     moduleShape: 'rounded',
     eyeStyle: 'rounded',
@@ -74,7 +73,7 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     phoneNum,
   ]);
 
-  const handleClearInputs = () => {
+  const handleClearInputs = useCallback(() => {
     setUrl('');
     setText('');
     setPhoneNum('');
@@ -86,7 +85,7 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     setVOrg('');
     setEmailTo('');
     setEmailSubject('');
-  };
+  }, []);
 
   return {
     selectedType,

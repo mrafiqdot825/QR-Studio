@@ -1,12 +1,22 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import React from 'react';
-import { Platform, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
-import { Palette, SpringConfigs } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
+import { Palette, SpringConfigs } from "@/constants/theme";
+import { useTheme } from "@/hooks/use-theme";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import React from "react";
+import {
+  Platform,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  ViewStyle,
+} from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 interface GlassChipProps {
   label: string;
@@ -17,12 +27,12 @@ interface GlassChipProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export function GlassChip({
+export const GlassChip = React.memo(function GlassChip({
   label,
   icon,
   selected = false,
   onPress,
-  className = '',
+  className = "",
   style,
 }: GlassChipProps) {
   const { colors } = useTheme();
@@ -44,7 +54,7 @@ export function GlassChip({
 
   const handlePress = () => {
     if (onPress) {
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== "web") {
         Haptics.selectionAsync().catch(() => {});
       }
       onPress();
@@ -57,10 +67,13 @@ export function GlassChip({
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={!selected ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline } : undefined}
-        className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 border overflow-hidden relative ${
-          selected ? 'bg-primary border-primary' : ''
-        } ${className}`}>
+        style={
+          !selected ? { backgroundColor: colors.glassSurfaceHigh } : undefined
+        }
+        className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 overflow-hidden relative ${
+          selected ? "bg-primary" : ""
+        } ${className}`}
+      >
         {!selected && (
           <LiquidGlassView
             blurLevel="subtle"
@@ -70,33 +83,23 @@ export function GlassChip({
             style={StyleSheet.absoluteFill}
           />
         )}
-        <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
         {icon && (
           <Ionicons
             name={icon}
             size={16}
-            color={selected ? '#FFFFFF' : Palette.cyan}
+            color={selected ? "#FFFFFF" : Palette.cyan}
           />
         )}
 
         <Text
           className={`text-xs font-bold ${
-            selected ? 'text-white' : 'text-on-surface'
-          }`}>
+            selected ? "text-white" : "text-on-surface"
+          }`}
+        >
           {label}
         </Text>
       </Pressable>
     </Animated.View>
   );
-}
-
-const styles = StyleSheet.create({
-  topSpecular: {
-    position: 'absolute',
-    top: 0,
-    left: 8,
-    right: 8,
-    height: 1,
-  },
 });

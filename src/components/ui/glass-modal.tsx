@@ -5,6 +5,7 @@ import {
   Modal,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -85,15 +86,15 @@ export function GlassModal({
         <Animated.View
           style={[
             shadows.modal,
-            { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline },
+            { backgroundColor: colors.glassSurfaceHigh },
             animatedStyle,
             isSheet ? styles.sheetRadius : styles.modalRadius,
           ]}
-          className="w-full max-w-[540px] border overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
+          className="w-full max-w-[540px] overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
           <LiquidGlassView
             blurLevel="card"
             tintColor={colors.glassSurfaceHigh}
-            specularInset={16}
+            specular={false}
             style={StyleSheet.absoluteFill}
           />
 
@@ -123,7 +124,13 @@ export function GlassModal({
           </View>
 
           {/* Content */}
-          <View className="p-6">{children}</View>
+          <ScrollView
+            className="flex-shrink"
+            contentContainerStyle={styles.contentContainer}
+            showsVerticalScrollIndicator={false}
+            bounces={false}>
+            {children}
+          </ScrollView>
         </Animated.View>
       </View>
     </Modal>
@@ -139,5 +146,8 @@ const styles = StyleSheet.create({
   },
   modalRadius: {
     borderRadius: 36,
+  },
+  contentContainer: {
+    padding: 24,
   },
 });

@@ -1,5 +1,4 @@
 import { ErrorBoundary } from '@/components/ui/error-boundary';
-import { HistoryProvider } from '@/contexts/history-context';
 import { ModalProvider } from '@/contexts/modal-context';
 import { AppThemeProvider } from '@/providers/theme-provider';
 import React from 'react';
@@ -12,9 +11,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <AppThemeProvider>
       <ErrorBoundary>
-        <ModalProvider>
-          <HistoryProvider>{children}</HistoryProvider>
-        </ModalProvider>
+        <ModalProvider>{children}</ModalProvider>
       </ErrorBoundary>
     </AppThemeProvider>
   );

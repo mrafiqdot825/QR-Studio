@@ -35,7 +35,7 @@ export type EyeStyle = 'square' | 'rounded' | 'circle';
 export type LogoPreset = 'none' | 'qrify' | 'star' | 'heart' | 'shield';
 
 export interface CustomizationOptions {
-  fgColor: string;
+  fgColor?: string;
   bgColor: string;
   moduleShape: ModuleShape;
   eyeStyle: EyeStyle;

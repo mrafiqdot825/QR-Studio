@@ -14,7 +14,6 @@ import Animated, {
 import { GlassBadge } from '@/components/ui/glass-badge';
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, Shadows } from '@/constants/theme';
-import { saveHistoryItem } from '@/utils/storage';
 
 interface ScannerModalProps {
   visible: boolean;
@@ -50,16 +49,10 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     }
     const scannedCode = 'https://qrify.me/demo-scanned-access';
-    saveHistoryItem({
-      title: 'Scanned URL Link',
-      value: scannedCode,
-      type: 'url',
-      presetId: 'cyber-cyan',
-    });
 
     Alert.alert(
       'QR Code Scanned!',
-      `Payload: ${scannedCode}\n\nCode automatically saved to your History Library.`,
+      `Payload: ${scannedCode}`,
       [{ text: 'Done', onPress: onClose }]
     );
   };

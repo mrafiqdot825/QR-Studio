@@ -100,17 +100,14 @@ export function QRStage3D({
           pointerEvents={isFlipped ? "none" : "auto"}
           style={[
             frontAnimatedStyle,
-            {
-              backgroundColor: colors.glassSurfaceHigh,
-              borderColor: colors.hairline,
-            },
+            { backgroundColor: colors.glassSurfaceHigh },
           ]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden border p-6 justify-between relative"
+          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between relative"
         >
           <LiquidGlassView
             blurLevel="card"
             tintColor={colors.glassSurfaceHigh}
-            specularInset={16}
+            specular={false}
             style={StyleSheet.absoluteFill}
           />
           <GlassShimmer />
@@ -127,11 +124,8 @@ export function QRStage3D({
               accessibilityLabel="Flip card to view code metadata"
               accessibilityRole="button"
               onPress={handleFlip}
-              style={{
-                backgroundColor: colors.glassSurfaceSubtle,
-                borderColor: colors.hairline,
-              }}
-              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
+              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              className="flex-row items-center gap-1 px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
             >
               <LiquidGlassView
                 blurLevel="subtle"
@@ -149,7 +143,7 @@ export function QRStage3D({
           </View>
 
           {/* QR Code Glass Container */}
-          <View className="self-center bg-white p-5 rounded-4xl border border-black/[0.04] relative">
+          <View className="self-center bg-white p-5 rounded-4xl relative">
             <QRCode
               value={validValue}
               size={STAGE_SIZE * 0.55}
@@ -181,17 +175,14 @@ export function QRStage3D({
           pointerEvents={isFlipped ? "auto" : "none"}
           style={[
             backAnimatedStyle,
-            {
-              backgroundColor: colors.glassSurfaceHigh,
-              borderColor: colors.hairline,
-            },
+            { backgroundColor: colors.glassSurfaceHigh },
           ]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden border p-6 justify-between relative"
+          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between relative"
         >
           <LiquidGlassView
             blurLevel="card"
             tintColor={colors.glassSurfaceHigh}
-            specularInset={16}
+            specular={false}
             style={StyleSheet.absoluteFill}
           />
 
@@ -203,11 +194,8 @@ export function QRStage3D({
               accessibilityLabel="Flip card to view QR code"
               accessibilityRole="button"
               onPress={handleFlip}
-              style={{
-                backgroundColor: colors.glassSurfaceSubtle,
-                borderColor: colors.hairline,
-              }}
-              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
+              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              className="flex-row items-center gap-1 px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
             >
               <LiquidGlassView
                 blurLevel="subtle"
@@ -228,10 +216,7 @@ export function QRStage3D({
           </View>
 
           <View className="flex-1 justify-center gap-3 my-2">
-            <View
-              style={{ borderColor: colors.border }}
-              className="flex-row justify-between items-center border-b pb-2"
-            >
+            <View className="flex-row justify-between items-center pb-2">
               <Text className="text-on-surface-variant text-xs">
                 Active Theme
               </Text>
@@ -242,10 +227,7 @@ export function QRStage3D({
                 {currentPreset.name}
               </Text>
             </View>
-            <View
-              style={{ borderColor: colors.border }}
-              className="flex-row justify-between items-center border-b pb-2"
-            >
+            <View className="flex-row justify-between items-center pb-2">
               <Text className="text-on-surface-variant text-xs">
                 Payload Type
               </Text>
@@ -253,10 +235,7 @@ export function QRStage3D({
                 {typeLabel}
               </Text>
             </View>
-            <View
-              style={{ borderColor: colors.border }}
-              className="flex-row justify-between items-center border-b pb-2"
-            >
+            <View className="flex-row justify-between items-center pb-2">
               <Text className="text-on-surface-variant text-xs">Length</Text>
               <Text className="text-on-surface text-xs font-bold">
                 {validValue.length} characters
@@ -264,11 +243,8 @@ export function QRStage3D({
             </View>
 
             <View
-              style={{
-                backgroundColor: colors.glassSurfaceSubtle,
-                borderColor: colors.border,
-              }}
-              className="p-3 rounded-2xl border mt-1"
+              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              className="p-3 rounded-2xl mt-1"
             >
               <Text className="text-on-surface-variant text-[10px] font-bold tracking-widest mb-1">
                 DATA PAYLOAD

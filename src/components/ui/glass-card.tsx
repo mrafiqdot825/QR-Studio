@@ -6,7 +6,6 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { withAlpha } from '@/utils/color';
 
 interface GlassCardProps extends ViewProps {
   children: React.ReactNode;
@@ -19,7 +18,7 @@ interface GlassCardProps extends ViewProps {
   isInteractive?: boolean;
 }
 
-export function GlassCard({
+export const GlassCard = React.memo(function GlassCard({
   children,
   className = '',
   onPress,
@@ -62,13 +61,9 @@ export function GlassCard({
   };
 
   const containerStyle = React.useMemo(() => [
-    { backgroundColor: colors.glassSurface, borderColor: colors.border },
-    hasGlow && {
-      borderColor: withAlpha(glowColor, 0.4),
-      borderWidth: 1.5,
-    },
+    { backgroundColor: colors.glassSurface },
     style,
-  ], [colors.glassSurface, colors.border, hasGlow, glowColor, style]);
+  ], [colors.glassSurface, style]);
 
   // Only the flex-sizing properties (not borders/shadows/backgrounds, which
   // belong on the rounded Pressable below) need to reach this outer wrapper —
@@ -80,7 +75,6 @@ export function GlassCard({
     return { flexBasis, flexGrow, flexShrink, width, minWidth, maxWidth };
   }, [style]);
 
-  const hairlineStyle = React.useMemo(() => ({ borderColor: colors.hairline }), [colors.hairline]);
   const resolvedInteractive = isInteractive ?? (interactive || !!onPress);
 
   if (onPress || interactive) {
@@ -91,17 +85,16 @@ export function GlassCard({
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           style={containerStyle}
-          className={`rounded-4xl border overflow-hidden relative ${className}`}
+          className={`rounded-4xl overflow-hidden relative ${className}`}
           {...props}>
           <LiquidGlassView
             blurLevel="card"
             glassTint={glassTint}
             tintColor={colors.glassSurface}
             isInteractive={resolvedInteractive}
-            specularInset={12}
+            specular={false}
             style={StyleSheet.absoluteFill}
           />
-          <View style={[styles.hairlineBorder, hairlineStyle]} pointerEvents="none" />
           {children}
         </Pressable>
       </Animated.View>
@@ -111,30 +104,16 @@ export function GlassCard({
   return (
     <View
       style={containerStyle}
-      className={`rounded-4xl border overflow-hidden relative ${className}`}
+      className={`rounded-4xl overflow-hidden relative ${className}`}
       {...props}>
       <LiquidGlassView
         blurLevel="card"
         glassTint={glassTint}
         tintColor={colors.glassSurface}
-        specularInset={12}
+        specular={false}
         style={StyleSheet.absoluteFill}
       />
-      <View style={[styles.hairlineBorder, hairlineStyle]} pointerEvents="none" />
       {children}
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  hairlineBorder: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 32,
-    borderWidth: 1,
-    pointerEvents: 'none',
-  },
 });
