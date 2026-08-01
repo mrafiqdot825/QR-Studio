@@ -108,7 +108,7 @@ export default function HomeScreen() {
               <QRTypeSelector
                 selectedType="url"
                 onSelectType={handleSelectType}
-                variant="grid"
+                variant="carousel"
               />
             </View>
             {/* PRO BANNER SECTION */}

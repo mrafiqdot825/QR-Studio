@@ -27,7 +27,7 @@ export const QR_TYPES: QRTypeConfig[] = [
 interface QRTypeSelectorProps {
   selectedType: QRType;
   onSelectType: (type: QRType) => void;
-  variant?: 'grid' | 'pills';
+  variant?: 'grid' | 'pills' | 'carousel';
 }
 
 export const QRTypeSelector = React.memo(function QRTypeSelector({
@@ -37,11 +37,7 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
 }: QRTypeSelectorProps) {
   if (variant === 'pills') {
     return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 8, paddingVertical: 8 }}
-        className="my-2">
+      <View className="flex-row flex-wrap gap-2 my-2">
         {QR_TYPES.map((typeObj) => {
           const isSelected = selectedType === typeObj.id;
           return (
@@ -51,53 +47,68 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
               icon={typeObj.icon}
               selected={isSelected}
               onPress={() => onSelectType(typeObj.id)}
+              style={{ flexBasis: '48%', flexGrow: 1 }}
             />
           );
         })}
+      </View>
+    );
+  }
+
+  const renderCard = (typeObj: QRTypeConfig, extraStyle: object) => {
+    const isSelected = selectedType === typeObj.id;
+    return (
+      <GlassCard
+        key={typeObj.id}
+        onPress={() => onSelectType(typeObj.id)}
+        interactive
+        hasGlow={isSelected}
+        style={[extraStyle, isSelected ? { borderColor: Palette.cyan } : undefined]}
+        className={`p-4 transition-all ${
+          isSelected ? 'border-primary ring-2 ring-primary/20' : ''
+        }`}>
+        <View className="gap-2">
+          <View className="flex-row items-center justify-between">
+            <View
+              className={`w-10 h-10 rounded-2xl items-center justify-center ${
+                isSelected ? 'bg-primary' : 'bg-primary/10'
+              }`}>
+              <Ionicons
+                name={typeObj.icon}
+                size={20}
+                color={isSelected ? '#FFFFFF' : '#55D6FF'}
+              />
+            </View>
+
+            {isSelected && (
+              <View className="w-2.5 h-2.5 rounded-full bg-primary" />
+            )}
+          </View>
+
+          <Text className="text-on-surface font-extrabold text-sm mt-1">{typeObj.label}</Text>
+          <Text className="text-on-surface-variant text-xs leading-4" numberOfLines={2}>
+            {typeObj.desc}
+          </Text>
+        </View>
+      </GlassCard>
+    );
+  };
+
+  if (variant === 'carousel') {
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: 12, paddingVertical: 4 }}
+        className="my-2">
+        {QR_TYPES.map((typeObj) => renderCard(typeObj, { width: 168 }))}
       </ScrollView>
     );
   }
 
   return (
     <View className="flex-row flex-wrap gap-3 my-2 w-full">
-      {QR_TYPES.map((typeObj) => {
-        const isSelected = selectedType === typeObj.id;
-        return (
-          <GlassCard
-            key={typeObj.id}
-            onPress={() => onSelectType(typeObj.id)}
-            interactive
-            hasGlow={isSelected}
-            style={isSelected ? { borderColor: Palette.cyan } : undefined}
-            className={`w-[48%] p-4 transition-all ${
-              isSelected ? 'border-primary ring-2 ring-primary/20' : ''
-            }`}>
-            <View className="gap-2">
-              <View className="flex-row items-center justify-between">
-                <View
-                  className={`w-10 h-10 rounded-2xl items-center justify-center ${
-                    isSelected ? 'bg-primary' : 'bg-primary/10'
-                  }`}>
-                  <Ionicons
-                    name={typeObj.icon}
-                    size={20}
-                    color={isSelected ? '#FFFFFF' : '#55D6FF'}
-                  />
-                </View>
-
-                {isSelected && (
-                  <View className="w-2.5 h-2.5 rounded-full bg-primary" />
-                )}
-              </View>
-
-              <Text className="text-on-surface font-extrabold text-sm mt-1">{typeObj.label}</Text>
-              <Text className="text-on-surface-variant text-xs leading-4" numberOfLines={2}>
-                {typeObj.desc}
-              </Text>
-            </View>
-          </GlassCard>
-        );
-      })}
+      {QR_TYPES.map((typeObj) => renderCard(typeObj, { flexBasis: '48%', flexGrow: 1 }))}
     </View>
   );
 });

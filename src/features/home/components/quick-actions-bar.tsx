@@ -4,8 +4,8 @@ import { useModals } from "@/hooks/use-modals";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Animated, { FadeInUp } from "react-native-reanimated";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import Animated, { FadeInRight } from "react-native-reanimated";
 
 interface QuickAction {
   id: string;
@@ -75,18 +75,21 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         </Text>
       </View>
 
-      <View className="flex-row flex-wrap gap-3">
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: 12, paddingVertical: 4 }}
+      >
         {ACTIONS.map((action, index) => (
           <Animated.View
             key={action.id}
-            entering={FadeInUp.duration(400).delay(index * 80)}
-            className="w-[48%]"
+            entering={FadeInRight.duration(400).delay(index * 80)}
           >
             <GlassCard
               onPress={action.onPress}
               interactive
               hasGlow
-              className="p-4 rounded-3xl"
+              className="w-44 p-4 rounded-3xl"
               style={styles.actionCard}
             >
               <View className="flex-row items-center justify-between mb-2">
@@ -115,7 +118,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
             </GlassCard>
           </Animated.View>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 });

@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { Platform, Pressable, StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, Pressable, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
@@ -70,12 +70,22 @@ export function GlassCard({
     style,
   ], [colors.glassSurface, colors.border, hasGlow, glowColor, style]);
 
+  // Only the flex-sizing properties (not borders/shadows/backgrounds, which
+  // belong on the rounded Pressable below) need to reach this outer wrapper —
+  // it's the element that actually participates in a parent's flex-wrap grid,
+  // so a caller's flexBasis/flexGrow must land here to size the item correctly.
+  const outerLayoutStyle = React.useMemo((): ViewStyle => {
+    const flat = (StyleSheet.flatten(style) ?? {}) as ViewStyle;
+    const { flexBasis, flexGrow, flexShrink, width, minWidth, maxWidth } = flat;
+    return { flexBasis, flexGrow, flexShrink, width, minWidth, maxWidth };
+  }, [style]);
+
   const hairlineStyle = React.useMemo(() => ({ borderColor: colors.hairline }), [colors.hairline]);
   const resolvedInteractive = isInteractive ?? (interactive || !!onPress);
 
   if (onPress || interactive) {
     return (
-      <Animated.View style={animatedStyle}>
+      <Animated.View style={[animatedStyle, outerLayoutStyle]}>
         <Pressable
           onPress={handlePress}
           onPressIn={handlePressIn}

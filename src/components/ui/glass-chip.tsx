@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
@@ -14,6 +14,7 @@ interface GlassChipProps {
   selected?: boolean;
   onPress?: () => void;
   className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function GlassChip({
@@ -22,6 +23,7 @@ export function GlassChip({
   selected = false,
   onPress,
   className = '',
+  style,
 }: GlassChipProps) {
   const { colors } = useTheme();
   const scale = useSharedValue(1);
@@ -50,13 +52,13 @@ export function GlassChip({
   };
 
   return (
-    <Animated.View className="rounded-full" style={[animatedStyle]}>
+    <Animated.View className="rounded-full" style={[animatedStyle, style]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         style={!selected ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline } : undefined}
-        className={`px-4 py-2.5 rounded-full flex-row items-center gap-2 border overflow-hidden relative ${
+        className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 border overflow-hidden relative ${
           selected ? 'bg-primary border-primary' : ''
         } ${className}`}>
         {!selected && (

@@ -101,10 +101,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
                   specular={false}
                   style={StyleSheet.absoluteFill}
                 />
-                <Text
-                  style={{ color: template.color }}
-                  className="text-xs font-extrabold"
-                >
+                <Text className="text-on-surface text-xs font-extrabold">
                   Use Template
                 </Text>
                 <Ionicons
