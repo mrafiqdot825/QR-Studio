@@ -67,8 +67,8 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
         interactive
         hasGlow={isSelected}
         style={[extraStyle, isSelected ? { borderColor: Palette.cyan } : undefined]}
-        className={`p-4 transition-all ${
-          isSelected ? 'border-primary ring-2 ring-primary/20' : ''
+        className={`p-4 ${
+          isSelected ? 'border-primary border-2' : ''
         }`}>
         <View className="gap-2">
           <View className="flex-row items-center justify-between">

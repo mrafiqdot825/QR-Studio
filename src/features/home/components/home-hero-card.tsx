@@ -80,6 +80,18 @@ export const HomeHeroCard: React.FC = React.memo(() => {
     transform: [{ scale: 0.95 + glowPulse.value * 0.08 }],
   }));
 
+  const qrCodeElement = useMemo(
+    () => (
+      <QRCode
+        value="https://qrify.me/pro-studio"
+        size={Math.min(width * 0.48, 190)}
+        color={activePreset.qrColor}
+        backgroundColor="transparent"
+      />
+    ),
+    [activePreset.qrColor]
+  );
+
   return (
     <View className="w-full my-2 gap-6">
       {/* Top Headline & Badge Section */}
@@ -167,12 +179,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
               style={{ backgroundColor: activePreset.qrBg }}
               className="p-5 rounded-4xl mb-4 border border-black/[0.06] items-center justify-center"
             >
-              <QRCode
-                value="https://qrify.me/pro-studio"
-                size={Math.min(width * 0.48, 190)}
-                color={activePreset.qrColor}
-                backgroundColor="transparent"
-              />
+              {qrCodeElement}
             </View>
 
             <Text className="text-on-surface text-base font-extrabold text-center">
@@ -204,8 +211,8 @@ export const HomeHeroCard: React.FC = React.memo(() => {
                           ? colors.primaryText
                           : "transparent",
                       }}
-                      className={`w-7 h-7 rounded-full border-2 items-center justify-center transition-all ${
-                        isSelected ? "scale-110" : "opacity-80"
+                      className={`w-7 h-7 rounded-full border-2 items-center justify-center ${
+                        isSelected ? "opacity-100" : "opacity-70"
                       }`}
                     >
                       {isSelected && (

@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Dimensions,
   Platform,
@@ -41,13 +41,13 @@ interface QRStage3DProps {
   fgColor?: string;
 }
 
-export function QRStage3D({
+export const QRStage3D = React.memo(function QRStage3D({
   value,
   presetId,
   qrRef,
   title = "QRify Code",
   typeLabel = "URL Link",
-  onExport,
+  onExport: _onExport,
   fgColor,
 }: QRStage3DProps) {
   const { colors } = useTheme();
@@ -59,14 +59,26 @@ export function QRStage3D({
 
   const effectiveQrColor = fgColor || currentPreset.qrColor;
 
-  const handleFlip = () => {
+  const handleFlip = useCallback(() => {
     if (Platform.OS !== "web") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     }
-    const nextState = !isFlipped;
-    setIsFlipped(nextState);
-    flipAnim.value = withSpring(nextState ? 1 : 0, SpringConfigs.flip);
-  };
+    setIsFlipped((prev) => {
+      const nextState = !prev;
+      flipAnim.value = withSpring(nextState ? 1 : 0, SpringConfigs.flip);
+      return nextState;
+    });
+  }, [flipAnim]);
+
+  const handleSetQrRef = useCallback(
+    (ref: unknown) => {
+      if (qrRef) {
+        const targetRef = qrRef as React.MutableRefObject<unknown>;
+        targetRef.current = ref;
+      }
+    },
+    [qrRef]
+  );
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(flipAnim.value, [0, 1], [0, 180]);
@@ -90,7 +102,7 @@ export function QRStage3D({
     <View className="items-center justify-center my-4 relative">
       {/* Soft Ambient Background Glow */}
       <View
-        className="absolute w-80 h-80 rounded-full -z-10 opacity-30 animate-pulse-glow"
+        className="absolute w-80 h-80 rounded-full -z-10 opacity-30"
         style={{ backgroundColor: currentPreset.accentColor }}
       />
 
@@ -102,7 +114,7 @@ export function QRStage3D({
             frontAnimatedStyle,
             { backgroundColor: colors.glassSurfaceHigh },
           ]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between relative"
+          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between"
         >
           <LiquidGlassView
             blurLevel="card"
@@ -149,12 +161,7 @@ export function QRStage3D({
               size={STAGE_SIZE * 0.55}
               color={effectiveQrColor}
               backgroundColor="transparent"
-              getRef={(ref) => {
-                if (qrRef) {
-                  const targetRef = qrRef as React.MutableRefObject<unknown>;
-                  targetRef.current = ref;
-                }
-              }}
+              getRef={handleSetQrRef}
             />
           </View>
 
@@ -177,7 +184,7 @@ export function QRStage3D({
             backAnimatedStyle,
             { backgroundColor: colors.glassSurfaceHigh },
           ]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between relative"
+          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between"
         >
           <LiquidGlassView
             blurLevel="card"
@@ -261,4 +268,5 @@ export function QRStage3D({
       </View>
     </View>
   );
-}
+});
+

@@ -3,7 +3,7 @@ import { Palette } from "@/constants/theme";
 import { useModals } from "@/hooks/use-modals";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useMemo } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
 
@@ -21,48 +21,51 @@ export const QuickActionsBar: React.FC = React.memo(() => {
   const router = useRouter();
   const { openScanner } = useModals();
 
-  const ACTIONS: QuickAction[] = [
-    {
-      id: "studio",
-      title: "QR Studio",
-      subtitle: "Custom colors & eyes",
-      icon: "create-outline",
-      color: Palette.cyan,
-      bgAlpha: "rgba(85, 214, 255, 0.1)",
-      onPress: () => router.navigate("/studio"),
-    },
-    {
-      id: "scan",
-      title: "Camera Scanner",
-      subtitle: "Instant auto scan",
-      icon: "scan-outline",
-      color: Palette.emerald,
-      bgAlpha: "rgba(57, 217, 138, 0.1)",
-      onPress: openScanner,
-    },
-    {
-      id: "templates",
-      title: "Template Gallery",
-      subtitle: "Pre-designed cards",
-      icon: "color-palette-outline",
-      color: Palette.softBlue,
-      bgAlpha: "rgba(115, 184, 255, 0.1)",
-      onPress: () => router.navigate("/explore"),
-    },
-    {
-      id: "wifi",
-      title: "Guest Wi-Fi",
-      subtitle: "1-Tap Wi-Fi share",
-      icon: "wifi-outline",
-      color: Palette.amber,
-      bgAlpha: "rgba(246, 196, 83, 0.1)",
-      onPress: () =>
-        router.navigate({
-          pathname: "/studio",
-          params: { initialType: "wifi" },
-        }),
-    },
-  ];
+  const ACTIONS: QuickAction[] = useMemo(
+    () => [
+      {
+        id: "studio",
+        title: "QR Studio",
+        subtitle: "Custom colors & eyes",
+        icon: "create-outline",
+        color: Palette.cyan,
+        bgAlpha: "rgba(85, 214, 255, 0.1)",
+        onPress: () => router.navigate("/studio"),
+      },
+      {
+        id: "scan",
+        title: "Camera Scanner",
+        subtitle: "Instant auto scan",
+        icon: "scan-outline",
+        color: Palette.emerald,
+        bgAlpha: "rgba(57, 217, 138, 0.1)",
+        onPress: openScanner,
+      },
+      {
+        id: "templates",
+        title: "Template Gallery",
+        subtitle: "Pre-designed cards",
+        icon: "color-palette-outline",
+        color: Palette.softBlue,
+        bgAlpha: "rgba(115, 184, 255, 0.1)",
+        onPress: () => router.navigate("/explore"),
+      },
+      {
+        id: "wifi",
+        title: "Guest Wi-Fi",
+        subtitle: "1-Tap Wi-Fi share",
+        icon: "wifi-outline",
+        color: Palette.amber,
+        bgAlpha: "rgba(246, 196, 83, 0.1)",
+        onPress: () =>
+          router.navigate({
+            pathname: "/studio",
+            params: { initialType: "wifi" },
+          }),
+      },
+    ],
+    [router, openScanner]
+  );
 
   return (
     <View className="w-full my-4">

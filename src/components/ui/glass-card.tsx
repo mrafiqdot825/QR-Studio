@@ -69,9 +69,20 @@ export const GlassCard = React.memo(function GlassCard({
   // belong on the rounded Pressable below) need to reach this outer wrapper —
   // it's the element that actually participates in a parent's flex-wrap grid,
   // so a caller's flexBasis/flexGrow must land here to size the item correctly.
-  const outerLayoutStyle = React.useMemo((): ViewStyle => {
+  const outerLayoutStyle = React.useMemo((): ViewStyle | undefined => {
+    if (!style) return undefined;
     const flat = (StyleSheet.flatten(style) ?? {}) as ViewStyle;
     const { flexBasis, flexGrow, flexShrink, width, minWidth, maxWidth } = flat;
+    if (
+      flexBasis === undefined &&
+      flexGrow === undefined &&
+      flexShrink === undefined &&
+      width === undefined &&
+      minWidth === undefined &&
+      maxWidth === undefined
+    ) {
+      return undefined;
+    }
     return { flexBasis, flexGrow, flexShrink, width, minWidth, maxWidth };
   }, [style]);
 

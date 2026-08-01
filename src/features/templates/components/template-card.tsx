@@ -4,7 +4,7 @@ import { GlassButton } from "@/components/ui/glass-button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { QRTemplate } from "@/features/templates/constants/templates";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { Text, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
@@ -15,6 +15,10 @@ interface TemplateCardProps {
 
 export const TemplateCard: React.FC<TemplateCardProps> = memo(
   ({ template, onUseTemplate }) => {
+    const handlePress = useCallback(() => {
+      onUseTemplate(template);
+    }, [onUseTemplate, template]);
+
     return (
       <GlassCard className="w-full p-5 gap-4">
         <View className="flex-row items-center justify-between">
@@ -62,7 +66,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(
           icon="arrow-forward"
           iconPosition="right"
           variant="glass"
-          onPress={() => onUseTemplate(template)}
+          onPress={handlePress}
           className="rounded-2xl py-3"
         />
       </GlassCard>

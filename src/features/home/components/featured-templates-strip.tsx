@@ -1,18 +1,28 @@
 import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassCard } from "@/components/ui/glass-card";
-import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
 import { Palette } from "@/constants/theme";
 import { TEMPLATES_LIST } from "@/features/templates/constants/templates";
 import { withAlpha } from "@/utils/color";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
 
+const FEATURED_TEMPLATES = TEMPLATES_LIST.slice(0, 5);
+
 export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
   const router = useRouter();
-  const featuredTemplates = TEMPLATES_LIST.slice(0, 5);
+
+  const handleSelectTemplate = useCallback(
+    (type: string) => {
+      router.navigate({
+        pathname: "/studio",
+        params: { initialType: type },
+      });
+    },
+    [router]
+  );
 
   return (
     <View className="w-full my-4">
@@ -42,18 +52,13 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ gap: 14, paddingVertical: 4 }}
       >
-        {featuredTemplates.map((template, index) => (
+        {FEATURED_TEMPLATES.map((template, index) => (
           <Animated.View
             key={template.id}
             entering={FadeInRight.duration(450).delay(index * 75)}
           >
             <GlassCard
-              onPress={() =>
-                router.navigate({
-                  pathname: "/studio",
-                  params: { initialType: template.type },
-                })
-              }
+              onPress={() => handleSelectTemplate(template.type)}
               interactive
               hasGlow
               className="w-60 p-4 rounded-3xl"
@@ -95,12 +100,6 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
                 }}
                 className="flex-row items-center justify-center gap-1.5 mt-4 py-2.5 rounded-full border overflow-hidden relative"
               >
-                <LiquidGlassView
-                  blurLevel="subtle"
-                  tintColor={withAlpha(template.color, 0.14)}
-                  specular={false}
-                  style={StyleSheet.absoluteFill}
-                />
                 <Text className="text-on-surface text-xs font-extrabold">
                   Use Template
                 </Text>

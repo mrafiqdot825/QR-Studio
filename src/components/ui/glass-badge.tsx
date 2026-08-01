@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { withAlpha } from '@/utils/color';
@@ -34,15 +33,13 @@ export const GlassBadge = React.memo(function GlassBadge({
     : colors.secondaryText;
 
   const isTinted = isPrimary || isSuccess || isWarning;
-  const glassTintColor = isTinted ? badgeColor : colors.glassSurfaceSubtle;
-  const overlayColor = isTinted ? withAlpha(badgeColor, 0.18) : colors.glassSurfaceSubtle;
+  const overlayColor = isTinted ? withAlpha(badgeColor, 0.16) : colors.glassSurfaceSubtle;
+  const borderColor = isTinted ? withAlpha(badgeColor, 0.3) : colors.hairline;
 
   return (
-    <View className={`self-start flex-row items-center gap-1.5 px-3 py-1 rounded-full overflow-hidden relative ${className}`}>
-      <LiquidGlassView blurLevel="subtle" tintColor={glassTintColor} specular={false} style={StyleSheet.absoluteFill} />
-      {/* Tint sits above the blur, not beneath it, so the accent color reads through instead of being masked by the glass material. */}
-      <View style={[StyleSheet.absoluteFill, { backgroundColor: overlayColor }]} pointerEvents="none" />
-
+    <View
+      style={{ backgroundColor: overlayColor, borderColor }}
+      className={`self-start flex-row items-center gap-1.5 px-3 py-1 rounded-full border overflow-hidden relative ${className}`}>
       {icon && <Ionicons name={icon} size={12} color={badgeColor} />}
 
       <Text className="font-extrabold text-[11px] tracking-wider uppercase" style={{ color: badgeColor }}>

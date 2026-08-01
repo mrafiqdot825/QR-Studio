@@ -6,7 +6,7 @@ import {
   TEMPLATES_LIST,
 } from "@/features/templates/constants/templates";
 import { useRouter } from "expo-router";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -19,12 +19,15 @@ export default function ExploreScreen() {
     return TEMPLATES_LIST.filter((t) => t.category === selectedCat);
   }, [selectedCat]);
 
-  const handleUseTemplate = (template: QRTemplate) => {
-    router.navigate({
-      pathname: "/studio",
-      params: { initialType: template.type },
-    });
-  };
+  const handleUseTemplate = useCallback(
+    (template: QRTemplate) => {
+      router.navigate({
+        pathname: "/studio",
+        params: { initialType: template.type },
+      });
+    },
+    [router]
+  );
 
   return (
     <GlassContainer>

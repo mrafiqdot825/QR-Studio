@@ -1,4 +1,3 @@
-import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
 import { Palette, SpringConfigs } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +7,6 @@ import {
   Platform,
   Pressable,
   StyleProp,
-  StyleSheet,
   Text,
   ViewStyle,
 } from "react-native";
@@ -68,22 +66,14 @@ export const GlassChip = React.memo(function GlassChip({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         style={
-          !selected ? { backgroundColor: colors.glassSurfaceHigh } : undefined
+          !selected
+            ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }
+            : undefined
         }
         className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 overflow-hidden relative ${
-          selected ? "bg-primary" : ""
+          selected ? "bg-primary" : "border"
         } ${className}`}
       >
-        {!selected && (
-          <LiquidGlassView
-            blurLevel="subtle"
-            tintColor={colors.glassSurfaceHigh}
-            isInteractive
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-        )}
-
         {icon && (
           <Ionicons
             name={icon}

@@ -88,7 +88,7 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
               }
             }}
-            className={`w-11 h-11 rounded-full items-center justify-center border transition-all ${
+            className={`w-11 h-11 rounded-full items-center justify-center border ${
               torch ? 'bg-amber-400 border-amber-300' : 'bg-white/20 border-white/30'
             }`}>
             <Ionicons name={torch ? 'flash' : 'flash-outline'} size={20} color={torch ? '#000000' : '#FFFFFF'} />

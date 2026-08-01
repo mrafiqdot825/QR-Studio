@@ -63,8 +63,8 @@ export const ThemePresetsBar = React.memo(function ThemePresetsBar({
                   ? { backgroundColor: colors.glassSurfaceHigh }
                   : { backgroundColor: colors.glassSurfaceSubtle },
               ]}
-              className={`w-28 p-2.5 rounded-2xl items-center gap-2 transition-all ${
-                isSelected ? 'ring-2 ring-primary/20' : ''
+              className={`w-28 p-2.5 rounded-2xl items-center gap-2 ${
+                isSelected ? 'border-2 border-primary' : ''
               }`}>
               <LinearGradient
                 colors={preset.gradient}
@@ -105,8 +105,8 @@ export const ThemePresetsBar = React.memo(function ThemePresetsBar({
                   accessibilityLabel={`Select color tint ${color}`}
                   accessibilityRole="button"
                   onPress={() => onSelectColor(color)}
-                  className={`w-8 h-8 rounded-full items-center justify-center transition-all ${
-                    isSelected ? 'scale-110' : ''
+                  className={`w-8 h-8 rounded-full items-center justify-center ${
+                    isSelected ? 'opacity-100' : 'opacity-80'
                   }`}
                   style={[
                     { backgroundColor: color },

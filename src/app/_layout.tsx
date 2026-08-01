@@ -37,12 +37,17 @@ function AppNavigation() {
     [colors.background, colors.surface, colors.primaryText, colors.border]
   );
 
+  const renderTabBar = React.useCallback(
+    (props: any) => <LiquidGlassTabBar {...props} />,
+    []
+  );
+
   return (
     <ThemeProvider value={navTheme}>
       <StatusBar style="light" />
       <AnimatedSplashOverlay />
       <Tabs
-        tabBar={(props) => <LiquidGlassTabBar {...props} />}
+        tabBar={renderTabBar}
         screenOptions={{
           headerShown: false,
         }}>

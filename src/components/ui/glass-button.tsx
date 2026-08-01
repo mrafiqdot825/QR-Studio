@@ -4,7 +4,6 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View, ViewProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -91,15 +90,7 @@ export const GlassButton = React.memo(function GlassButton({
             : 'bg-transparent'
         } ${className}`}
         {...props}>
-        {(isSecondary || isGlass) && (
-          <LiquidGlassView
-            blurLevel="subtle"
-            tintColor={isSecondary ? colors.glassSurfaceHigh : colors.glassSurfaceSubtle}
-            isInteractive
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-        )}
+
 
         {icon && iconPosition === 'left' && (
           <Ionicons name={icon} size={18} color={iconColor} />
