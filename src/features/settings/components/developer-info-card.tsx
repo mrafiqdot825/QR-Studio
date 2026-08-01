@@ -106,7 +106,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
             onPress={() => handleOpenEmail(APP_CONFIG.supportEmail)}
             className="flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 active:scale-95">
             <Ionicons name="mail-outline" size={14} color={Palette.cyan} />
-            <Text className="text-primary text-xs font-bold">Support Email</Text>
+            <Text className="text-accent text-xs font-bold">Support Email</Text>
           </Pressable>
 
           <Pressable

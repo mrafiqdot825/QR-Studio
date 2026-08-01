@@ -74,7 +74,7 @@ export const HistoryCard: React.FC<HistoryCardProps> = memo(({
           onPress={() => onEdit(item)}
           className="flex-1 flex-row items-center justify-center gap-1 py-2 rounded-xl bg-primary/10 active:scale-95">
           <Ionicons name="create-outline" size={14} color={Palette.cyan} />
-          <Text className="text-primary text-xs font-bold">Edit</Text>
+          <Text className="text-accent text-xs font-bold">Edit</Text>
         </Pressable>
 
         <Pressable

@@ -8,7 +8,6 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, SpringConfigs } from '@/constants/theme';
 import { AppScheme } from '@/constants/theme/colors';
-import { MidnightShadows } from '@/constants/theme/shadows';
 import { useLiquidGlassAvailable } from '@/hooks/use-liquid-glass-available';
 import { useTheme } from '@/hooks/use-theme';
 import { withAlpha } from '@/utils/color';
@@ -23,27 +22,21 @@ function TabItem({
   route,
   isFocused,
   colors,
-  shadows,
   onPress,
 }: {
   route: any;
-  index: number;
   isFocused: boolean;
-  options: any;
-  navigation: any;
   colors: AppScheme;
-  shadows: typeof MidnightShadows;
   onPress: () => void;
 }) {
   const scale = useSharedValue(1);
-  const isNativeGlassAvailable = useLiquidGlassAvailable();
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
   const handlePressIn = () => {
-    scale.value = withSpring(0.9, SpringConfigs.gentle);
+    scale.value = withSpring(0.94, SpringConfigs.gentle);
   };
 
   const handlePressOut = () => {
@@ -69,39 +62,22 @@ function TabItem({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={styles.tabButton}
         accessibilityRole="button"
         accessibilityLabel={route.name}
         accessibilityState={isFocused ? { selected: true } : {}}>
-        {isFocused ? (
-          <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: withAlpha(Palette.cyan, 0.25) }]}>
-            {isNativeGlassAvailable && (
-              <LiquidGlassView
-                blurLevel="dock"
-                glassStyle="regular"
-                tintColor={withAlpha(Palette.cyan, 0.12)}
-                isInteractive
-                specular={false}
-                style={StyleSheet.absoluteFill}
-              />
-            )}
-            <Ionicons name={iconName} size={22} color={Palette.cyan} />
-          </View>
-        ) : (
-          <View style={styles.inactiveTabContent}>
-            <Ionicons name={iconName} size={22} color={colors.secondaryText} />
-          </View>
-        )}
+        <View style={[styles.pill, isFocused && { backgroundColor: withAlpha(Palette.cyan, 0.16) }]}>
+          <Ionicons name={iconName} size={isFocused ? 22 : 20} color={colors.secondaryText} />
+        </View>
       </Pressable>
     </Animated.View>
   );
 }
 
 export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlassTabBarProps) {
-  const { colors, shadows } = useTheme();
+  const { colors } = useTheme();
   const isNativeGlassAvailable = useLiquidGlassAvailable();
 
-  const dockStyle = [styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }];
+  const dockStyle = [styles.glassContainerOuter, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }];
 
   const dockContent = (
     <>
@@ -109,7 +85,6 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
 
       <View style={styles.tabItemsRow}>
         {state.routes.map((route: any, index: number) => {
-          const { options } = descriptors[route.key];
           const isFocused = state.index === index;
 
           const onPress = () => {
@@ -131,12 +106,8 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
             <TabItem
               key={route.key}
               route={route}
-              index={index}
               isFocused={isFocused}
-              options={options}
-              navigation={navigation}
               colors={colors}
-              shadows={shadows}
               onPress={onPress}
             />
           );
@@ -194,26 +165,13 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
-  tabButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 2,
-  },
-  activeLiquidPill: {
+  pill: {
     alignItems: 'center',
     justifyContent: 'center',
     width: 52,
     height: 44,
     borderRadius: 22,
-    borderWidth: 1,
     overflow: 'hidden',
     position: 'relative',
-  },
-  inactiveTabContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 52,
-    height: 44,
-    borderRadius: 22,
   },
 });

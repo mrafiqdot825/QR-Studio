@@ -18,7 +18,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { GlassBadge } from "@/components/ui/glass-badge";
-import { GlassButton } from "@/components/ui/glass-button";
 import { GlassShimmer } from "@/components/ui/glass-shimmer";
 import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
 import {
@@ -119,11 +118,7 @@ export function QRStage3D({
           {/* Top Bar */}
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center gap-2">
-              <Ionicons
-                name="qr-code-outline"
-                size={18}
-                color={Palette.cyan}
-              />
+              <Ionicons name="qr-code-outline" size={18} color={Palette.cyan} />
               <Text className="text-on-surface text-base font-bold">
                 {title}
               </Text>
@@ -154,9 +149,7 @@ export function QRStage3D({
           </View>
 
           {/* QR Code Glass Container */}
-          <View
-            className="self-center bg-white p-5 rounded-4xl border border-black/[0.04] relative"
-          >
+          <View className="self-center bg-white p-5 rounded-4xl border border-black/[0.04] relative">
             <QRCode
               value={validValue}
               size={STAGE_SIZE * 0.55}
@@ -181,18 +174,6 @@ export function QRStage3D({
               {validValue}
             </Text>
           </View>
-
-          {/* Export Action */}
-          {onExport && (
-            <View className="absolute -bottom-1 left-0 right-0 items-center">
-              <GlassButton
-                title="EXPORT STUDIO"
-                icon="download"
-                onPress={onExport}
-                variant="primary"
-              />
-            </View>
-          )}
         </Animated.View>
 
         {/* BACK SIDE (METADATA) */}
@@ -293,7 +274,7 @@ export function QRStage3D({
                 DATA PAYLOAD
               </Text>
               <Text
-                className="text-primary text-xs font-mono"
+                className="text-accent text-xs font-mono"
                 numberOfLines={3}
               >
                 {validValue}
@@ -305,4 +286,3 @@ export function QRStage3D({
     </View>
   );
 }
-

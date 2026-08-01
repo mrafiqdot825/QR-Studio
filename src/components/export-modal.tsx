@@ -64,7 +64,7 @@ export function ExportModal({
         {isExporting && (
           <View className="flex-row items-center justify-center gap-3 py-4 bg-primary/10 rounded-2xl border border-primary/20">
             <ActivityIndicator size="small" color="#55D6FF" />
-            <Text className="text-primary font-bold text-sm">Rendering Liquid Vector Assets...</Text>
+            <Text className="text-accent font-bold text-sm">Rendering Liquid Vector Assets...</Text>
           </View>
         )}
 

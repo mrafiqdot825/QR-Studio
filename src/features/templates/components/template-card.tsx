@@ -52,7 +52,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(({
         accessibilityRole="button"
         onPress={() => onUseTemplate(template)}
         className="w-full py-3 rounded-2xl bg-primary/10 border border-primary/20 flex-row items-center justify-center gap-2 active:scale-98">
-        <Text className="text-primary font-extrabold text-xs">USE TEMPLATE</Text>
+        <Text className="text-accent font-extrabold text-xs">USE TEMPLATE</Text>
         <Ionicons name="arrow-forward" size={14} color={Palette.cyan} />
       </Pressable>
     </GlassCard>

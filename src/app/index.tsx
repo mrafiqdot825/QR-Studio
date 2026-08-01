@@ -97,7 +97,7 @@ export default function HomeScreen() {
                   onPress={() => router.navigate("/studio")}
                   className="flex-row items-center gap-1"
                 >
-                  <Text className="text-primary text-xs font-bold">Studio</Text>
+                  <Text className="text-accent text-xs font-bold">Studio</Text>
                   <Ionicons
                     name="chevron-forward"
                     size={14}

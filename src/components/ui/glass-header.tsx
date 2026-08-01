@@ -51,7 +51,7 @@ export function GlassHeader({
               <Ionicons name="arrow-back" size={20} color={Palette.cyan} />
             </Pressable>
           ) : null}
-          <Text className="text-primary text-2xl font-extrabold tracking-tighter">{title}</Text>
+          <Text className="text-accent text-2xl font-extrabold tracking-tighter">{title}</Text>
         </View>
 
         <View className="flex-row items-center gap-2.5">

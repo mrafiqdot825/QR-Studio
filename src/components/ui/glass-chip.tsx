@@ -23,7 +23,7 @@ export function GlassChip({
   onPress,
   className = '',
 }: GlassChipProps) {
-  const { colors, shadows } = useTheme();
+  const { colors } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -50,7 +50,7 @@ export function GlassChip({
   };
 
   return (
-    <Animated.View style={[selected ? shadows.glowBlue : shadows.subtle, animatedStyle]}>
+    <Animated.View className="rounded-full" style={[animatedStyle]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}

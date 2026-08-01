@@ -1,7 +1,9 @@
 import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassCard } from "@/components/ui/glass-card";
+import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
 import { Palette } from "@/constants/theme";
 import { TEMPLATES_LIST } from "@/features/templates/constants/templates";
+import { withAlpha } from "@/utils/color";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -30,7 +32,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
           accessibilityRole="button"
           className="flex-row items-center gap-1"
         >
-          <Text className="text-primary text-xs font-bold">Gallery</Text>
+          <Text className="text-accent text-xs font-bold">Gallery</Text>
           <Ionicons name="chevron-forward" size={14} color={Palette.cyan} />
         </Pressable>
       </View>
@@ -86,7 +88,19 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
                 {template.desc}
               </Text>
 
-              <View className="flex-row items-center justify-between mt-4 pt-3 border-t border-black/5">
+              <View
+                style={{
+                  backgroundColor: withAlpha(template.color, 0.14),
+                  borderColor: withAlpha(template.color, 0.3),
+                }}
+                className="flex-row items-center justify-center gap-1.5 mt-4 py-2.5 rounded-full border overflow-hidden relative"
+              >
+                <LiquidGlassView
+                  blurLevel="subtle"
+                  tintColor={withAlpha(template.color, 0.14)}
+                  specular={false}
+                  style={StyleSheet.absoluteFill}
+                />
                 <Text
                   style={{ color: template.color }}
                   className="text-xs font-extrabold"
@@ -95,7 +109,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
                 </Text>
                 <Ionicons
                   name="arrow-forward-circle"
-                  size={18}
+                  size={16}
                   color={template.color}
                 />
               </View>

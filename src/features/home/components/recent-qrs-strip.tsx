@@ -36,7 +36,7 @@ export const RecentQRsStrip: React.FC = React.memo(() => {
           accessibilityRole="button"
           className="flex-row items-center gap-1"
         >
-          <Text className="text-primary text-xs font-bold">View All</Text>
+          <Text className="text-accent text-xs font-bold">View All</Text>
           <Ionicons name="chevron-forward" size={14} color={Palette.cyan} />
         </Pressable>
       </View>

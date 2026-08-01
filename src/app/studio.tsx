@@ -1,22 +1,22 @@
-import { ActionButtons3D } from '@/components/action-buttons-3d';
-import { CinematicInput } from '@/components/cinematic-input';
-import { CustomizationStudioControls } from '@/components/customization-studio-controls';
-import { ExportModal } from '@/components/export-modal';
-import { QRStage3D } from '@/components/qr-stage-3d';
-import { QRTypeSelector } from '@/components/qr-type-selector';
-import { ThemePresetsBar } from '@/components/theme-presets-bar';
-import { GlassContainer } from '@/components/ui/glass-container';
-import { useQRGenerator } from '@/hooks/use-qr-generator';
-import { QRType } from '@/types/qr';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ActionButtons3D } from "@/components/action-buttons-3d";
+import { CinematicInput } from "@/components/cinematic-input";
+import { CustomizationStudioControls } from "@/components/customization-studio-controls";
+import { ExportModal } from "@/components/export-modal";
+import { QRStage3D } from "@/components/qr-stage-3d";
+import { QRTypeSelector } from "@/components/qr-type-selector";
+import { ThemePresetsBar } from "@/components/theme-presets-bar";
+import { GlassContainer } from "@/components/ui/glass-container";
+import { useQRGenerator } from "@/hooks/use-qr-generator";
+import { QRType } from "@/types/qr";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function StudioScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ initialType?: string }>();
-  const initialType = (params.initialType as QRType) || 'url';
+  const initialType = (params.initialType as QRType) || "url";
 
   const {
     selectedType,
@@ -36,38 +36,40 @@ export default function StudioScreen() {
   return (
     <GlassContainer>
       <SafeAreaView className="flex-1">
-
         <ScrollView
           className="flex-1"
           contentContainerStyle={{
-            alignItems: 'center',
+            alignItems: "center",
             paddingHorizontal: 20,
             paddingTop: 12,
             paddingBottom: 120,
           }}
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled">
+          keyboardShouldPersistTaps="handled"
+        >
           <View className="w-full max-w-[640px]">
             {/* Header Section */}
             <View className="my-3">
-              <Text className="text-on-surface text-3xl font-extrabold tracking-tight">Generator & Studio</Text>
+              <Text className="text-on-surface text-3xl font-extrabold tracking-tight">
+                Generator & Studio
+              </Text>
               <Text className="text-on-surface-variant text-sm mt-1">
                 Configure data payloads and customize live 3D visual styles.
               </Text>
             </View>
-
             {/* Type selector pills */}
             <QRTypeSelector
               selectedType={selectedType}
               onSelectType={setSelectedType}
               variant="pills"
             />
-
             {/* Form Input Card */}
             <CinematicInput
               type={selectedType}
-              value={selectedType === 'text' ? formFields.text : formFields.url}
-              onChangeValue={selectedType === 'text' ? formFields.setText : formFields.setUrl}
+              value={selectedType === "text" ? formFields.text : formFields.url}
+              onChangeValue={
+                selectedType === "text" ? formFields.setText : formFields.setUrl
+              }
               wifiSSID={formFields.wifiSSID}
               setWifiSSID={formFields.setWifiSSID}
               wifiPass={formFields.wifiPass}
@@ -90,7 +92,6 @@ export default function StudioScreen() {
               setPhoneNum={formFields.setPhoneNum}
               onClear={handleClearInputs}
             />
-
             {/* Live 3D Stage Hero */}
             <QRStage3D
               value={payloadValue}
@@ -101,7 +102,6 @@ export default function StudioScreen() {
               fgColor={customOpts.fgColor}
               onExport={() => setExportOpen(true)}
             />
-
             {/* Action Buttons */}
             <ActionButtons3D
               qrRef={qrRef}
@@ -110,23 +110,22 @@ export default function StudioScreen() {
               presetId={presetId}
               onOpenExport={() => setExportOpen(true)}
             />
-
             {/* Workspace Customization Studio */}
             <CustomizationStudioControls
               options={customOpts}
               onChangeOptions={setCustomOpts}
             />
-
             {/* Theme Gallery & Color Picker */}
             <ThemePresetsBar
               selectedPresetId={presetId}
               onSelectPreset={(id) => setPresetId(id)}
               selectedColor={customOpts.fgColor}
-              onSelectColor={(color) => setCustomOpts((prev) => ({ ...prev, fgColor: color }))}
+              onSelectColor={(color) =>
+                setCustomOpts((prev) => ({ ...prev, fgColor: color }))
+              }
             />
           </View>
         </ScrollView>
-
         {/* EXPORT MODAL */}
         <ExportModal
           visible={exportOpen}

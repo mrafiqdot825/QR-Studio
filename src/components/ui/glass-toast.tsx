@@ -52,7 +52,7 @@ export function GlassToast({ visible, message, type = 'success', onHide }: Glass
   return (
     <Animated.View
       style={[shadows.dock, animatedStyle, styles.toastPosition]}
-      className="z-50 self-center max-w-[90%]">
+      className="z-50 self-center max-w-[90%] rounded-full">
       <View
         style={{ backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline }}
         className="flex-row items-center gap-2.5 px-5 py-3 rounded-full border overflow-hidden relative">

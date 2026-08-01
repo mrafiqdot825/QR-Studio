@@ -31,7 +31,7 @@ export function GlassButton({
   style,
   ...props
 }: GlassButtonProps) {
-  const { colors, shadows } = useTheme();
+  const { colors } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -76,7 +76,7 @@ export function GlassButton({
     : undefined;
 
   return (
-    <Animated.View style={[animatedStyle, isPrimary ? shadows.glowBlue : shadows.subtle, style]}>
+    <Animated.View className="rounded-full" style={[animatedStyle, style]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
