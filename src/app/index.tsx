@@ -10,7 +10,7 @@ import { RecentQRsStrip } from "@/features/home/components/recent-qrs-strip";
 import { QRType } from "@/types/qr";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -36,13 +36,12 @@ export default function HomeScreen() {
         params: { initialType: type },
       });
     },
-    [router]
+    [router],
   );
 
   return (
     <GlassContainer>
       <SafeAreaView className="flex-1">
-
         <ScrollView
           className="flex-1"
           contentContainerStyle={{
@@ -56,7 +55,6 @@ export default function HomeScreen() {
           <View className="w-full max-w-[640px]">
             {/* HERO LANDING SECTION */}
             <HomeHeroCard />
-
             {/* FEATURE HIGHLIGHTS CHIP STRIP */}
             <Animated.View
               entering={FadeInUp.duration(500).delay(250)}
@@ -76,16 +74,12 @@ export default function HomeScreen() {
                 ))}
               </ScrollView>
             </Animated.View>
-
             {/* QUICK LAUNCH HUB */}
             <QuickActionsBar />
-
             {/* RECENT ACTIVITY STRIP */}
             <RecentQRsStrip />
-
             {/* CURATED TEMPLATES SHOWCASE */}
             <FeaturedTemplatesStrip />
-
             {/* QR CATEGORIES GRID SECTION */}
             <View className="w-full mt-6 mb-2">
               <View className="flex-row items-end justify-between mb-2">
@@ -97,16 +91,13 @@ export default function HomeScreen() {
                     Choose a format to begin customizing in Studio.
                   </Text>
                 </View>
-
                 <Pressable
                   accessibilityLabel="Open studio"
                   accessibilityRole="button"
                   onPress={() => router.navigate("/studio")}
                   className="flex-row items-center gap-1"
                 >
-                  <Text className="text-primary text-xs font-bold">
-                    Studio
-                  </Text>
+                  <Text className="text-primary text-xs font-bold">Studio</Text>
                   <Ionicons
                     name="chevron-forward"
                     size={14}
@@ -114,14 +105,12 @@ export default function HomeScreen() {
                   />
                 </Pressable>
               </View>
-
               <QRTypeSelector
                 selectedType="url"
                 onSelectType={handleSelectType}
                 variant="grid"
               />
             </View>
-
             {/* PRO BANNER SECTION */}
             <HomeProBanner />
           </View>

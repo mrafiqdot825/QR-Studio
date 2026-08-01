@@ -1,4 +1,5 @@
 import { useTheme } from '@/hooks/use-theme';
+import { useIsFocused } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
@@ -18,10 +19,23 @@ interface GlassContainerProps extends ViewProps {
 
 export function GlassContainer({ children, className = '', style, ...props }: GlassContainerProps) {
   const { colors } = useTheme();
+  const isFocused = useIsFocused();
   const blob1Offset = useSharedValue(0);
   const blob2Offset = useSharedValue(0);
 
+  // GlassContainer wraps every tab screen, and Expo Router's Tabs keep every
+  // visited screen mounted (never unmounted) for fast tab switching. Without
+  // gating on focus, these infinite withRepeat loops keep committing UI-thread
+  // style/layout updates forever for tabs the user isn't even looking at —
+  // across all 5 tabs this was the primary source of runaway Reanimated/Yoga
+  // commits that exhausted the Hermes heap over a session.
   useEffect(() => {
+    if (!isFocused) {
+      cancelAnimation(blob1Offset);
+      cancelAnimation(blob2Offset);
+      return;
+    }
+
     blob1Offset.value = withRepeat(
       withSequence(
         withTiming(15, { duration: 6000 }),
@@ -43,7 +57,7 @@ export function GlassContainer({ children, className = '', style, ...props }: Gl
       cancelAnimation(blob1Offset);
       cancelAnimation(blob2Offset);
     };
-  }, [blob1Offset, blob2Offset]);
+  }, [isFocused, blob1Offset, blob2Offset]);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
     transform: [{ translateY: blob1Offset.value }, { translateX: blob1Offset.value * 0.5 }],

@@ -1,642 +1,484 @@
-# QRify Design System
+# Fix Hermes Out-of-Memory Crash in Expo SDK 57 (React Native)
 
-## Apple Liquid Glass + Midnight Blue Theme
+## Objective
 
-> **Primary Brand Color:** `#062045`
->
-> This document defines the complete visual language for QRify. The goal is to create a premium, elegant, modern experience inspired by Apple's Liquid Glass while maintaining excellent accessibility and readability.
->
-> **IMPORTANT**
->
-> - Preserve the existing layout and component structure.
-> - Do not redesign screens.
-> - Only update colors, materials, shadows, borders, and typography according to this specification.
-> - Maintain smooth animations and premium interactions.
+Act as a Senior React Native, Expo SDK 57, Hermes, and Performance Engineer.
+
+Your task is to locate and permanently fix the application crash that occurs in the iOS Simulator.
+
+The crash report indicates that Hermes runs out of memory while React Native is performing UI updates and layout calculations.
+
+Do not apply temporary workarounds.
+
+Instead, identify the actual root cause and refactor the code where necessary.
 
 ---
 
-# Design Philosophy
+# Crash Summary
 
-The application should feel like:
+The application crashes with:
 
-- Premium
-- Minimal
-- Sophisticated
-- Calm
-- High-end
-- Modern Apple ecosystem
-- Soft depth instead of hard contrast
+- EXC_BAD_ACCESS (SIGSEGV)
+- Hermes Fatal Error
+- Hermes GC Out Of Memory (OOM)
+- HadesGC::allocSlow()
+- GCBase::oom()
+- hermesFatalErrorHandler()
+
+The crash stack also contains:
+
+- JSON.stringify()
+- Object.keys()
+- ReanimatedModuleProxy::commitUpdates()
+- YogaLayoutableShadowNode
+- roundLayoutResultsToPixelGrid()
+
+This indicates memory exhaustion caused by JavaScript objects, rendering, animations, or layout recursion.
+
+---
+
+# Your Responsibilities
+
+Perform a complete project audit.
+
+Do NOT stop after fixing one issue.
+
+Continue until every possible root cause has been verified.
+
+---
+
+## Phase 1 — Memory Audit
+
+Search the entire project for:
+
+- JSON.stringify()
+- Object.keys()
+- Object.values()
+- Object.entries()
+- console.log()
+- console.table()
+- console.dir()
+
+Look for code that serializes:
+
+- API responses
+- Images
+- PDFs
+- SVGs
+- Base64 strings
+- File objects
+- React state
+- AsyncStorage values
+- Supabase responses
+- Large arrays
+- Nested objects
+
+If found:
+
+Determine whether the operation is necessary.
+
+Replace it with safer alternatives.
+
+Never stringify huge objects.
+
+---
+
+## Phase 2 — Infinite Render Detection
+
+Inspect every component.
+
+Find:
+
+- setState() inside render
+- state updates during rendering
+- recursive rendering
+- useEffect dependency mistakes
+- useMemo misuse
+- useCallback misuse
+- missing dependency arrays
+
+Detect loops such as:
+
+useEffect(() => {
+setState(...)
+}, [state])
+
+Fix every render loop.
+
+---
+
+## Phase 3 — React Reanimated Audit
+
+Inspect every file using:
+
+- react-native-reanimated
+- sharedValue
+- useAnimatedStyle
+- useAnimatedReaction
+- useDerivedValue
+- withTiming
+- withSpring
+- withRepeat
+- withSequence
+
+Check for:
+
+- animation updates every frame
+- recursive shared value updates
+- shared values modified inside animated styles
+- layout animation loops
+
+Refactor animations to avoid unnecessary UI commits.
+
+---
+
+## Phase 4 — Layout Audit
+
+Inspect every screen for:
+
+- flex recursion
+- nested ScrollViews
+- nested FlatLists
+- nested FlashLists
+- dynamic height calculations
+- percentage layouts
+- layout animation recursion
+
+Look for components that continuously change size.
+
+Fix layout recalculation loops.
+
+---
+
+## Phase 5 — Large Data Audit
+
+Search for:
+
+- FlatList
+- FlashList
+- map()
+- filter()
+- reduce()
+
+Check if extremely large arrays are rendered.
+
+Implement:
+
+- pagination
+- virtualization
+- memoization
+
+Avoid rendering thousands of components.
+
+---
+
+## Phase 6 — State Management Audit
+
+Inspect:
+
+- Context API
+- Zustand
+- Redux
+- Jotai
+- React Query
+- TanStack Query
+
+Check for:
+
+- gigantic state objects
+- duplicated data
+- unnecessary re-renders
+- deep object cloning
+- repeated object creation
+
+Split large states into smaller slices.
+
+---
+
+## Phase 7 — AsyncStorage Audit
+
+Search for:
+
+- AsyncStorage.setItem()
+- AsyncStorage.getItem()
+
+Check whether entire application state is being serialized.
+
+Avoid storing:
+
+- images
+- PDFs
+- Base64
+- huge objects
+
+Store IDs instead of complete objects whenever possible.
+
+---
+
+## Phase 8 — Supabase Audit
+
+Inspect every query.
+
+Look for:
+
+select("\*")
+
+Replace with explicit column selection.
+
+Limit records.
+
+Avoid downloading unnecessary nested relationships.
+
+Paginate large queries.
+
+---
+
+## Phase 9 — Expo Modules
+
+Inspect usage of:
+
+- expo-file-system
+- expo-sharing
+- expo-image
+- expo-image-picker
+- expo-document-picker
+- expo-print
+- expo-camera
+
+Check for:
+
+- loading entire files into memory
+- reading Base64 unnecessarily
+- duplicate file loading
+- memory leaks
+
+Use streaming APIs whenever possible.
+
+---
+
+## Phase 10 — Image Optimization
+
+Locate every image.
+
+Check:
+
+- PNG size
+- JPG size
+- SVG complexity
+- Image dimensions
+
+Replace oversized assets.
+
+Enable lazy loading.
+
+Avoid rendering full-resolution images.
+
+---
+
+## Phase 11 — PDF Handling
+
+If PDFs exist:
 
 Avoid:
 
-- Neon colors
-- Saturated gradients
-- Pure black backgrounds
-- Heavy shadows
-- Material Design appearance
-- Glassmorphism with excessive blur
+JSON.stringify(pdf)
 
-Instead use:
+Avoid Base64 conversion unless absolutely required.
 
-- Soft translucent glass
-- Layered depth
-- Elegant spacing
-- Rounded geometry
-- Refined lighting
+Generate PDFs incrementally.
+
+Dispose of temporary files after sharing.
 
 ---
 
-# Brand Colors
+## Phase 12 — Logging Audit
 
-## Primary
+Remove development logs such as:
 
-```css
-Primary 900 : #04172F
-Primary 800 : #062045
-Primary 700 : #083060
-Primary 600 : #0A417B
-Primary 500 : #145CA8
-```
+console.log(hugeObject)
 
-Primary actions should always use:
+Replace with:
 
-```
-#062045
-```
+console.log(object.id)
+
+or
+
+console.log(object.length)
+
+Never log massive API responses.
 
 ---
 
-# Accent Colors
+## Phase 13 — Memory Leak Detection
 
-These colors work naturally with Midnight Blue.
+Inspect for:
 
-## Cyan
+- event listeners
+- intervals
+- timeouts
+- subscriptions
+- animation listeners
+- navigation listeners
 
-```css
-#55D6FF
-```
-
-Usage
-
-- Selected state
-- Active icons
-- Focus rings
-- QR scanner highlight
+Ensure every listener is removed.
 
 ---
 
-## Soft Blue
+## Phase 14 — Component Optimization
 
-```css
-#73B8FF
-```
+Wrap expensive components using:
 
-Usage
+- React.memo
+- useMemo
+- useCallback
 
-- Secondary buttons
-- Links
-- Information cards
+Memoize expensive calculations.
 
----
-
-## Ice Blue
-
-```css
-#CFEAFF
-```
-
-Usage
-
-- Small highlights
-- Glass reflections
-- Light gradients
+Prevent unnecessary rerenders.
 
 ---
 
-## Emerald
+## Phase 15 — Navigation Audit
 
-```css
-#39D98A
-```
+Inspect React Navigation.
 
-Usage
+Look for:
 
-- Success
-- Completed scans
-- Positive balance
+- screens recreated repeatedly
+- unnecessary params
+- huge objects passed through navigation
 
----
-
-## Amber
-
-```css
-#F6C453
-```
-
-Usage
-
-- Warnings
-- Premium badges
+Pass IDs instead of objects.
 
 ---
 
-## Coral
+## Phase 16 — Hermes Optimization
 
-```css
-#FF7A7A
-```
+Enable Hermes best practices.
 
-Usage
+Avoid creating unnecessary objects inside render.
 
-- Delete
-- Errors
+Avoid repeated object spreads.
 
----
+Avoid deep cloning.
 
-# Background System
-
-Never use pure black.
-
-Instead:
-
-```css
-Background Primary
-#031528
-```
-
-```css
-Background Secondary
-#062045
-```
-
-```css
-Surface
-rgba(255,255,255,0.05)
-```
-
-```css
-Elevated Surface
-rgba(255,255,255,0.08)
-```
-
-```css
-Glass Layer
-rgba(255,255,255,0.12)
-```
+Avoid repeated JSON serialization.
 
 ---
 
-# Glass Material
+## Phase 17 — Performance Profiling
 
-Cards should use:
+Identify:
 
-```css
-background: rgba(255, 255, 255, 0.08);
+- slow renders
+- memory spikes
+- excessive commits
+- unnecessary layout passes
+- repeated React reconciliation
 
-backdrop-filter: blur(24px);
-
-border: 1px solid rgba(255, 255, 255, 0.14);
-
-border-radius: 28px;
-```
-
-Hover:
-
-```css
-background: rgba(255, 255, 255, 0.12);
-```
-
-Pressed:
-
-```css
-background: rgba(255, 255, 255, 0.16);
-```
+Provide recommendations.
 
 ---
 
-# Border Colors
+# Refactoring Rules
 
-Primary Border
+Do NOT change:
 
-```css
-rgba(255,255,255,0.10)
-```
+- UI design
+- Theme
+- Colors
+- Typography
+- Navigation flow
+- Business logic
+- Features
+- User experience
 
-Secondary Border
+Only improve:
 
-```css
-rgba(255,255,255,0.06)
-```
-
-Focus
-
-```css
-#55D6FF
-```
-
----
-
-# Typography Colors
-
-## Primary Text
-
-```css
-#FFFFFF
-```
-
-Opacity
-
-```
-100%
-```
+- performance
+- stability
+- memory usage
+- rendering efficiency
 
 ---
 
-## Secondary Text
+# Deliverables
 
-```css
-#D4E3F5
-```
+Produce a complete report containing:
 
----
+## 1. Root Cause
 
-## Tertiary Text
-
-```css
-#9CB2C9
-```
+Explain the exact reason for the Hermes Out-of-Memory crash.
 
 ---
 
-## Disabled Text
+## 2. Every Problem Found
 
-```css
-#64748B
-```
+For each issue include:
 
----
-
-## Inverse Text
-
-```css
-#062045
-```
-
-Used on:
-
-- White buttons
-- Light chips
+- File path
+- Line number
+- Why it causes memory problems
+- Severity (Critical / High / Medium / Low)
 
 ---
 
-# Icon Colors
+## 3. Fix Applied
 
-Primary
+Show:
 
-```css
-#FFFFFF
+Before
+
+```tsx
+// original code
 ```
 
-Secondary
+After
 
-```css
-#BFD2E8
+```tsx
+// optimized code
 ```
 
-Inactive
-
-```css
-#7C93AD
-```
-
-Selected
-
-```css
-#55D6FF
-```
+Explain why the fix works.
 
 ---
 
-# Button Styles
+## 4. Performance Improvements
 
-## Primary Button
+Estimate improvements for:
 
-Background
-
-```
-#062045
-```
-
-Text
-
-```
-#FFFFFF
-```
-
-Hover
-
-```
-#083060
-```
-
-Pressed
-
-```
-#04172F
-```
-
-Shadow
-
-```css
-0 10px 30px rgba(6,32,69,.35)
-```
+- Memory usage
+- Render count
+- JS thread performance
+- UI thread performance
+- Startup time
+- Bundle size (if affected)
 
 ---
 
-## Secondary Button
+## 5. Validation Checklist
 
-Background
+Confirm:
 
-```css
-rgba(255,255,255,.08)
-```
-
-Border
-
-```css
-rgba(255,255,255,.10)
-```
-
-Text
-
-```
-#FFFFFF
-```
+- No render loops
+- No layout recursion
+- No animation loops
+- No oversized serialization
+- No memory leaks
+- No unnecessary re-renders
+- No Hermes OOM risk
+- No Yoga layout recursion
+- Expo SDK 57 compatibility
+- React Native New Architecture compatibility
 
 ---
 
-## Glass Button
-
-Background
-
-```css
-rgba(255,255,255,.10)
-```
-
-Blur
-
-```
-20px
-```
-
-Border
-
-```css
-rgba(255,255,255,.16)
-```
-
----
-
-# QR Scanner Colors
-
-Scanner Border
-
-```
-#55D6FF
-```
-
-Scanner Glow
-
-```css
-rgba(85,214,255,.35)
-```
-
-Success
-
-```
-#39D98A
-```
-
-Error
-
-```
-#FF7A7A
-```
-
----
-
-# Status Colors
-
-Success
-
-```
-#39D98A
-```
-
-Info
-
-```
-#55D6FF
-```
-
-Warning
-
-```
-#F6C453
-```
-
-Danger
-
-```
-#FF7A7A
-```
-
----
-
-# Navigation Bar
-
-Background
-
-```css
-rgba(255,255,255,.08)
-```
-
-Blur
-
-```
-30px
-```
-
-Selected Icon
-
-```
-#55D6FF
-```
-
-Unselected Icon
-
-```
-#AABFD7
-```
-
-Indicator
-
-```
-#55D6FF
-```
-
----
-
-# Shadows
-
-Small
-
-```css
-0 8px 18px rgba(0,0,0,.18)
-```
-
-Medium
-
-```css
-0 12px 30px rgba(0,0,0,.22)
-```
-
-Large
-
-```css
-0 20px 45px rgba(0,0,0,.30)
-```
-
----
-
-# Gradients
-
-## Primary
-
-```css
-linear-gradient(
-135deg,
-#04172F 0%,
-#062045 45%,
-#0A417B 100%
-)
-```
-
----
-
-## Glass Highlight
-
-```css
-linear-gradient(
-180deg,
-rgba(255,255,255,.18),
-rgba(255,255,255,.02)
-)
-```
-
----
-
-## Accent
-
-```css
-linear-gradient(
-135deg,
-#55D6FF,
-#73B8FF
-)
-```
-
----
-
-# Corner Radius
-
-Small
-
-```
-16px
-```
-
-Medium
-
-```
-22px
-```
-
-Large
-
-```
-28px
-```
-
-Extra Large
-
-```
-36px
-```
-
-Floating Button
-
-```
-999px
-```
-
----
-
-# Animation
-
-Use only:
-
-- Spring animations
-- Smooth fade
-- Scale 0.98 when pressed
-- Soft elevation changes
-- Glass reflection movement
-- Duration between 180ms and 300ms
-
-Avoid:
-
-- Bounce
-- Elastic effects
-- Flashing
-- Oversized transitions
-
----
-
-# Accessibility
-
-Minimum contrast ratio:
-
-```
-4.5:1
-```
-
-Never place:
-
-- Gray text on blue glass
-- Cyan text on white glass
-- Low-opacity text below 60%
-
-Interactive elements must always have:
-
-- Visible focus ring
-- Clear pressed state
-- Distinct disabled state
-
----
-
-# AI Agent Rules
-
-The AI agent must follow these rules throughout the application:
-
-1. Never change the existing screen layouts.
-2. Preserve all navigation flows.
-3. Preserve all business logic.
-4. Use `#062045` as the primary brand color everywhere.
-5. Apply Apple-inspired Liquid Glass materials consistently.
-6. Use soft translucent surfaces instead of solid cards.
-7. Keep spacing clean and minimalist.
-8. Maintain consistent corner radii and shadows.
-9. Ensure all text meets accessibility contrast requirements.
-10. Use accent colors only for meaningful interactions (focus, success, warnings, errors).
-11. Do not introduce new colors outside this design system unless explicitly requested.
-12. Prioritize readability, simplicity, and a premium user experience over decorative effects.
+# Success Criteria
+
+The application should:
+
+- Run without Hermes Out-of-Memory crashes.
+- Maintain stable memory usage.
+- Eliminate unnecessary renders and layout recalculations.
+- Preserve all existing functionality and UI.
+- Be production-ready, performant, and compatible with Expo SDK 57 and the latest React Native architecture.

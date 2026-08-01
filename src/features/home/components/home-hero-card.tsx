@@ -1,16 +1,16 @@
 import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassButton } from "@/components/ui/glass-button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { GlassChip } from "@/components/ui/glass-chip";
 import { GlassShimmer } from "@/components/ui/glass-shimmer";
-import { CinematicPresets, Palette, PresetId } from "@/constants/theme";
+import { CinematicPresets, PresetId } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { withAlpha } from "@/utils/color";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { useIsFocused, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -22,7 +22,6 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import QRCode from "react-native-qrcode-svg";
 
 const { width } = Dimensions.get("window");
 
@@ -43,7 +42,8 @@ const PRESET_QUICK_CHOICES: PresetId[] = [
 export const HomeHeroCard: React.FC = React.memo(() => {
   const router = useRouter();
   const { colors } = useTheme();
-  const [selectedPresetId, setSelectedPresetId] = useState<PresetId>("ocean-blue");
+  const [selectedPresetId, setSelectedPresetId] =
+    useState<PresetId>("ocean-blue");
 
   const activePreset = useMemo(() => {
     return (
@@ -53,40 +53,31 @@ export const HomeHeroCard: React.FC = React.memo(() => {
   }, [selectedPresetId]);
 
   const glowPulse = useSharedValue(0.6);
-  const livePulse = useSharedValue(1);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
+    if (!isFocused) {
+      cancelAnimation(glowPulse);
+      return;
+    }
+
     glowPulse.value = withRepeat(
       withSequence(
         withTiming(1, { duration: 2400, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0.6, { duration: 2400, easing: Easing.inOut(Easing.sin) })
+        withTiming(0.6, { duration: 2400, easing: Easing.inOut(Easing.sin) }),
       ),
       -1,
-      true
-    );
-    livePulse.value = withRepeat(
-      withSequence(
-        withTiming(0.35, { duration: 900 }),
-        withTiming(1, { duration: 900 })
-      ),
-      -1,
-      true
+      true,
     );
 
     return () => {
       cancelAnimation(glowPulse);
-      cancelAnimation(livePulse);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFocused, glowPulse]);
 
   const glowStyle = useAnimatedStyle(() => ({
     opacity: glowPulse.value,
     transform: [{ scale: 0.95 + glowPulse.value * 0.08 }],
-  }));
-
-  const liveDotStyle = useAnimatedStyle(() => ({
-    opacity: livePulse.value,
   }));
 
   return (
@@ -97,7 +88,6 @@ export const HomeHeroCard: React.FC = React.memo(() => {
         className="gap-4"
       >
         <GlassBadge
-          icon="sparkles-outline"
           label="Next-Gen QR Studio"
           variant="primary"
           className="self-start"
@@ -105,12 +95,12 @@ export const HomeHeroCard: React.FC = React.memo(() => {
 
         <Text className="text-on-surface text-[38px] font-extrabold leading-[44px] tracking-tight">
           Scan-Stopping{"\n"}
-          <Text className="text-primary">QR Codes</Text> Design.
+          QR Codes Design.
         </Text>
 
         <Text className="text-on-surface-variant text-base leading-6 max-w-[440px]">
-          Craft high-converting, on-brand QR codes with live interactive preview,
-          custom shapes, embedded logos, and instant vector export.
+          Craft high-converting, on-brand QR codes with live interactive
+          preview, custom shapes, embedded logos, and instant vector export.
         </Text>
 
         <View className="flex-row flex-wrap gap-3 mt-1">
@@ -129,7 +119,6 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             onPress={() => router.navigate("/explore")}
           />
         </View>
-
         {/* Stats Strip */}
         <View className="flex-row items-center mt-2 pt-2 border-t border-black/5">
           {HERO_STATS.map((stat, index) => (
@@ -152,7 +141,6 @@ export const HomeHeroCard: React.FC = React.memo(() => {
           ))}
         </View>
       </Animated.View>
-
       {/* Floating Interactive Live QR Card */}
       <Animated.View
         entering={FadeInUp.duration(600).delay(150).springify()}
@@ -165,44 +153,15 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             pointerEvents="none"
           >
             <LinearGradient
-              colors={[
-                withAlpha(activePreset.accentColor, 0.4),
-                "transparent",
-              ]}
+              colors={[withAlpha(activePreset.accentColor, 0.4), "transparent"]}
               style={styles.heroGlowFill}
               start={{ x: 0.5, y: 0.5 }}
               end={{ x: 1, y: 1 }}
             />
           </Animated.View>
 
-          <GlassCard
-            className="w-full max-w-[380px] p-6 items-center"
-            hasGlow
-          >
+          <GlassCard className="w-full max-w-[380px] p-6 items-center" hasGlow>
             <GlassShimmer />
-
-            {/* Live Indicator Badge */}
-            <View className="absolute top-4 right-4 z-10">
-              <View
-                style={{
-                  backgroundColor: colors.glassSurfaceHigh,
-                  borderColor: colors.hairline,
-                }}
-                className="flex-row items-center gap-1.5 px-2.5 py-1 rounded-full border"
-              >
-                <Animated.View
-                  style={[
-                    styles.liveDot,
-                    { backgroundColor: Palette.success },
-                    liveDotStyle,
-                  ]}
-                />
-                <Text className="text-[10px] font-extrabold tracking-wider uppercase text-on-surface-variant">
-                  Interactive Live
-                </Text>
-              </View>
-            </View>
-
             {/* QR Code Container with Active Preset Colors */}
             <View
               style={{ backgroundColor: activePreset.qrBg }}
@@ -278,10 +237,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 170,
-  },
-  liveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
   },
 });

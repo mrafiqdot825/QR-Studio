@@ -1,3 +1,4 @@
+import { useIsFocused } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
@@ -23,8 +24,18 @@ const SWEEP_WIDTH = 90;
  */
 export function GlassShimmer() {
   const sweep = useSharedValue(SWEEP_START);
+  const isFocused = useIsFocused();
 
+  // The host card (e.g. HomeHeroCard, QRStage3D) stays mounted on its tab even
+  // when the tab is off-screen, since Expo Router's Tabs never unmount visited
+  // screens. Without pausing here, this loop keeps issuing UI-thread commits
+  // indefinitely in the background across every visited tab.
   useEffect(() => {
+    if (!isFocused) {
+      cancelAnimation(sweep);
+      return;
+    }
+
     sweep.value = withRepeat(
       withSequence(
         withTiming(SWEEP_START, { duration: 0 }),
@@ -34,7 +45,7 @@ export function GlassShimmer() {
       false
     );
     return () => cancelAnimation(sweep);
-  }, [sweep]);
+  }, [isFocused, sweep]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: sweep.value }, { rotate: '20deg' }],

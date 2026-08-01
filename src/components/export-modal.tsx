@@ -4,7 +4,7 @@ import { GlassToast } from '@/components/ui/glass-toast';
 import { PresetId } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, Text, View } from 'react-native';
 
 interface ExportModalProps {
@@ -28,6 +28,13 @@ export function ExportModal({
 }: ExportModalProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const exportTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (exportTimerRef.current) clearTimeout(exportTimerRef.current);
+    };
+  }, []);
 
   const handleExportFormat = (format: 'png' | 'svg' | 'pdf' | 'share' | 'print') => {
     setIsExporting(true);
@@ -35,7 +42,7 @@ export function ExportModal({
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => { });
     }
 
-    setTimeout(() => {
+    exportTimerRef.current = setTimeout(() => {
       setIsExporting(false);
       setToastMsg(`Exported ${format.toUpperCase()} successfully`);
 
