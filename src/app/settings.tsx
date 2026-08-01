@@ -12,7 +12,7 @@ import { Alert, Platform, Pressable, ScrollView, Switch, Text, View } from 'reac
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
-  const { colors, preference, setPreference } = useTheme();
+  const { colors } = useTheme();
   const { clearAll } = useHistory();
 
   const [hapticsEnabled, setHapticsEnabled] = useState(true);
@@ -68,48 +68,6 @@ export default function SettingsScreen() {
               </Text>
             </View>
 
-            {/* APPEARANCE GROUP */}
-            <GlassCard className="p-4 gap-3 my-2">
-              <Text className="text-on-surface-variant text-[11px] font-extrabold tracking-wider uppercase">
-                APPEARANCE
-              </Text>
-
-              <View style={{ backgroundColor: colors.glassSurfaceSubtle }} className="flex-row rounded-2xl p-1 gap-1">
-                {(
-                  [
-                    { id: 'system' as const, label: 'System', icon: 'phone-portrait-outline' as const },
-                    { id: 'light' as const, label: 'Light', icon: 'sunny-outline' as const },
-                    { id: 'dark' as const, label: 'Dark', icon: 'moon-outline' as const },
-                  ]
-                ).map((option) => {
-                  const isSelected = preference === option.id;
-                  return (
-                    <Pressable
-                      key={option.id}
-                      accessibilityLabel={`Use ${option.label} appearance`}
-                      accessibilityRole="button"
-                      onPress={() => setPreference(option.id)}
-                      style={isSelected ? { backgroundColor: colors.surface } : undefined}
-                      className={`flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-xl ${
-                        isSelected ? 'shadow-sm' : ''
-                      }`}>
-                      <Ionicons
-                        name={option.icon}
-                        size={14}
-                        color={isSelected ? '#2563EB' : colors.secondaryText}
-                      />
-                      <Text
-                        className={`text-xs font-bold ${
-                          isSelected ? 'text-primary' : 'text-on-surface-variant'
-                        }`}>
-                        {option.label}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </GlassCard>
-
             {/* DEVELOPER SPOTLIGHT CARD */}
             <DeveloperInfoCard />
 
@@ -122,7 +80,7 @@ export default function SettingsScreen() {
               <View className="flex-row items-center justify-between py-1">
                 <View className="flex-row items-center gap-3">
                   <View className="w-8 h-8 rounded-xl bg-blue-500/10 items-center justify-center">
-                    <Ionicons name="phone-portrait-outline" size={16} color="#2563EB" />
+                    <Ionicons name="phone-portrait-outline" size={16} color="#55D6FF" />
                   </View>
                   <View>
                     <Text className="text-on-surface font-bold text-sm">Haptic Feedback</Text>
@@ -133,14 +91,14 @@ export default function SettingsScreen() {
                   accessibilityLabel="Toggle haptic feedback"
                   value={hapticsEnabled}
                   onValueChange={toggleHaptics}
-                  trackColor={{ false: '#E5E7EB', true: '#2563EB' }}
+                  trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
                 />
               </View>
 
               <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
                 <View className="flex-row items-center gap-3">
                   <View className="w-8 h-8 rounded-xl bg-emerald-500/10 items-center justify-center">
-                    <Ionicons name="bookmark-outline" size={16} color="#10B981" />
+                    <Ionicons name="bookmark-outline" size={16} color="#39D98A" />
                   </View>
                   <View>
                     <Text className="text-on-surface font-bold text-sm">Auto-Save Generated Codes</Text>
@@ -151,14 +109,14 @@ export default function SettingsScreen() {
                   accessibilityLabel="Toggle auto save generated codes"
                   value={autoSave}
                   onValueChange={setAutoSave}
-                  trackColor={{ false: '#E5E7EB', true: '#2563EB' }}
+                  trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
                 />
               </View>
 
               <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
                 <View className="flex-row items-center gap-3">
                   <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
-                    <Ionicons name="sparkles-outline" size={16} color="#7C3AED" />
+                    <Ionicons name="sparkles-outline" size={16} color="#73B8FF" />
                   </View>
                   <View>
                     <Text className="text-on-surface font-bold text-sm">Ultra HD Vector Engine</Text>
@@ -169,7 +127,7 @@ export default function SettingsScreen() {
                   accessibilityLabel="Toggle ultra HD vector engine"
                   value={highQualityExports}
                   onValueChange={setHighQualityExports}
-                  trackColor={{ false: '#E5E7EB', true: '#2563EB' }}
+                  trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
                 />
               </View>
             </GlassCard>
@@ -190,7 +148,7 @@ export default function SettingsScreen() {
                 className="flex-row items-center justify-between py-2 active:opacity-70">
                 <View className="flex-row items-center gap-3">
                   <View className="w-8 h-8 rounded-xl bg-red-500/10 items-center justify-center">
-                    <Ionicons name="trash-outline" size={16} color="#EF4444" />
+                    <Ionicons name="trash-outline" size={16} color="#FF7A7A" />
                   </View>
                   <View>
                     <Text className="text-red-600 font-bold text-sm">Clear History Library</Text>

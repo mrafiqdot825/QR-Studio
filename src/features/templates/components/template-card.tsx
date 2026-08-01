@@ -35,7 +35,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(({
           </View>
         </View>
 
-        <View className="p-2 rounded-2xl bg-white border border-black/[0.04] shadow-xs">
+        <View className="p-2 rounded-2xl bg-white border border-black/[0.04]">
           <QRCode
             value={template.sampleValue}
             size={48}
@@ -53,7 +53,7 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(({
         onPress={() => onUseTemplate(template)}
         className="w-full py-3 rounded-2xl bg-primary/10 border border-primary/20 flex-row items-center justify-center gap-2 active:scale-98">
         <Text className="text-primary font-extrabold text-xs">USE TEMPLATE</Text>
-        <Ionicons name="arrow-forward" size={14} color={Palette.accentBlue} />
+        <Ionicons name="arrow-forward" size={14} color={Palette.cyan} />
       </Pressable>
     </GlassCard>
   );

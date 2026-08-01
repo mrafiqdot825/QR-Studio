@@ -61,10 +61,10 @@ export const DeveloperInfoCard: React.FC = memo(() => {
       {/* HEADER WITH LOGO & APP VERSION */}
       <View className="flex-row items-center gap-4">
         <LinearGradient
-          colors={['#2563EB', '#1D4ED8']}
+          colors={['#145CA8', '#062045']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          className="w-14 h-14 rounded-3xl items-center justify-center border border-white/20 shadow-md shadow-blue-500/20">
+          className="w-14 h-14 rounded-3xl items-center justify-center border border-white/20">
           <Ionicons name="qr-code" size={28} color="#FFFFFF" />
         </LinearGradient>
 
@@ -88,7 +88,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-2.5">
             <View className="w-8 h-8 rounded-full bg-primary/10 items-center justify-center">
-              <Ionicons name="code-slash" size={16} color={Palette.accentBlue} />
+              <Ionicons name="code-slash" size={16} color={Palette.cyan} />
             </View>
             <View>
               <Text className="text-on-surface text-xs font-bold">Senior Mobile Engineer</Text>
@@ -105,7 +105,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
             accessibilityRole="button"
             onPress={() => handleOpenEmail(APP_CONFIG.supportEmail)}
             className="flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 active:scale-95">
-            <Ionicons name="mail-outline" size={14} color={Palette.accentBlue} />
+            <Ionicons name="mail-outline" size={14} color={Palette.cyan} />
             <Text className="text-primary text-xs font-bold">Support Email</Text>
           </Pressable>
 

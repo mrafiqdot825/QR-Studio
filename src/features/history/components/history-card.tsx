@@ -29,10 +29,10 @@ export const HistoryCard: React.FC<HistoryCardProps> = memo(({
   return (
     <GlassCard
       hasGlow={isPinned}
-      style={isPinned ? { borderColor: Palette.accentBlue, borderWidth: 2 } : undefined}
+      style={isPinned ? { borderColor: Palette.cyan, borderWidth: 2 } : undefined}
       className="w-[47%] p-4 gap-3">
       {/* QR Code Container */}
-      <View style={{ borderColor: colors.border }} className="bg-white p-3.5 rounded-3xl items-center justify-center border shadow-xs">
+      <View style={{ borderColor: colors.border }} className="bg-white p-3.5 rounded-3xl items-center justify-center border">
         <QRCode
           value={item.value || 'https://qrify.me'}
           size={Math.min(width * 0.34, 130)}
@@ -55,7 +55,7 @@ export const HistoryCard: React.FC<HistoryCardProps> = memo(({
             <Ionicons
               name={isPinned ? 'bookmark' : 'bookmark-outline'}
               size={16}
-              color={isPinned ? Palette.accentBlue : colors.secondaryText}
+              color={isPinned ? Palette.cyan : colors.secondaryText}
             />
           </Pressable>
         </View>
@@ -73,7 +73,7 @@ export const HistoryCard: React.FC<HistoryCardProps> = memo(({
           accessibilityRole="button"
           onPress={() => onEdit(item)}
           className="flex-1 flex-row items-center justify-center gap-1 py-2 rounded-xl bg-primary/10 active:scale-95">
-          <Ionicons name="create-outline" size={14} color={Palette.accentBlue} />
+          <Ionicons name="create-outline" size={14} color={Palette.cyan} />
           <Text className="text-primary text-xs font-bold">Edit</Text>
         </Pressable>
 

@@ -25,7 +25,7 @@ export const PoliciesCard: React.FC = memo(() => {
           className="flex-row items-center justify-between py-2 border-b active:opacity-70">
           <View className="flex-row items-center gap-3">
             <View className="w-8 h-8 rounded-xl bg-blue-500/10 items-center justify-center">
-              <Ionicons name="shield-checkmark-outline" size={16} color="#2563EB" />
+              <Ionicons name="shield-checkmark-outline" size={16} color="#55D6FF" />
             </View>
             <View>
               <Text className="text-on-surface font-bold text-sm">Privacy Policy</Text>
@@ -44,7 +44,7 @@ export const PoliciesCard: React.FC = memo(() => {
           className="flex-row items-center justify-between py-2 border-b active:opacity-70">
           <View className="flex-row items-center gap-3">
             <View className="w-8 h-8 rounded-xl bg-emerald-500/10 items-center justify-center">
-              <Ionicons name="document-text-outline" size={16} color="#10B981" />
+              <Ionicons name="document-text-outline" size={16} color="#39D98A" />
             </View>
             <View>
               <Text className="text-on-surface font-bold text-sm">Terms of Service</Text>
@@ -62,7 +62,7 @@ export const PoliciesCard: React.FC = memo(() => {
           className="flex-row items-center justify-between py-2 active:opacity-70">
           <View className="flex-row items-center gap-3">
             <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
-              <Ionicons name="code-working-outline" size={16} color="#7C3AED" />
+              <Ionicons name="code-working-outline" size={16} color="#73B8FF" />
             </View>
             <View>
               <Text className="text-on-surface font-bold text-sm">Software & Open Source Licenses</Text>

@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
 import {
@@ -13,7 +12,8 @@ import {
 } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassInputProps extends Omit<TextInputProps, 'style'> {
@@ -35,13 +35,13 @@ export function GlassInput({
   style,
   ...props
 }: GlassInputProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
   const focusProgress = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      borderColor: focusProgress.value === 1 ? Palette.accentBlue : colors.border,
+      borderColor: focusProgress.value === 1 ? Palette.cyan : colors.border,
       borderWidth: focusProgress.value === 1 ? 1.5 : 1,
     };
   });
@@ -70,19 +70,13 @@ export function GlassInput({
       <Animated.View
         style={[shadows.subtle, { backgroundColor: colors.glassSurface }, animatedStyle, style]}
         className="flex-row items-center px-4 py-3 rounded-2xl overflow-hidden relative gap-2.5">
-        <BlurView
-          intensity={BlurTokens.card}
-          tint={isDark ? 'dark' : 'light'}
-          style={StyleSheet.absoluteFill}
-          pointerEvents="none"
-        />
-        <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
+        <LiquidGlassView blurLevel="card" tintColor={colors.glassSurface} specularInset={12} style={StyleSheet.absoluteFill} />
 
         {icon && (
           <Ionicons
             name={icon}
             size={18}
-            color={isFocused ? Palette.accentBlue : colors.secondaryText}
+            color={isFocused ? Palette.cyan : colors.secondaryText}
           />
         )}
 
@@ -113,13 +107,3 @@ export function GlassInput({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  topSpecular: {
-    position: 'absolute',
-    top: 0,
-    left: 12,
-    right: 12,
-    height: 1,
-  },
-});

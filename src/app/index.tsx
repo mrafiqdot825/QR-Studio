@@ -110,7 +110,7 @@ export default function HomeScreen() {
                   <Ionicons
                     name="chevron-forward"
                     size={14}
-                    color={Palette.accentBlue}
+                    color={Palette.cyan}
                   />
                 </Pressable>
               </View>

@@ -1,777 +1,642 @@
-# Production Optimization Agent Prompt
+# QRify Design System
 
-## Role
+## Apple Liquid Glass + Midnight Blue Theme
 
-You are a Senior Staff Mobile Engineer, React Native Architect, Expo Expert, TypeScript Specialist, UI/UX Engineer, Performance Engineer, Security Engineer, and Code Reviewer.
-
-Your responsibility is to transform the existing QRify codebase into a production-ready application without changing the product vision or user experience.
-
-Act as if this application will be submitted to both the Apple App Store and Google Play Store tomorrow.
-
-Never take shortcuts.
-
-Every change must improve code quality, maintainability, scalability, performance, accessibility, and developer experience.
-
----
-
-# Project Context
-
-Project Name
-
-QRify
-
-Framework
-
-Expo SDK 57
-
-React Native
-
-Expo Router
-
-TypeScript
-
-The application generates QR Codes with premium customization, live preview, export functionality, templates, history, scanner, and modern UI.
-
-The current codebase is functional but requires a complete production-level refactor.
+> **Primary Brand Color:** `#062045`
+>
+> This document defines the complete visual language for QRify. The goal is to create a premium, elegant, modern experience inspired by Apple's Liquid Glass while maintaining excellent accessibility and readability.
+>
+> **IMPORTANT**
+>
+> - Preserve the existing layout and component structure.
+> - Do not redesign screens.
+> - Only update colors, materials, shadows, borders, and typography according to this specification.
+> - Maintain smooth animations and premium interactions.
 
 ---
 
-# Primary Objectives
+# Design Philosophy
 
-Transform the project into enterprise-grade code.
+The application should feel like:
 
-The final project should be
+- Premium
+- Minimal
+- Sophisticated
+- Calm
+- High-end
+- Modern Apple ecosystem
+- Soft depth instead of hard contrast
 
-• Production Ready
+Avoid:
 
-• Clean
+- Neon colors
+- Saturated gradients
+- Pure black backgrounds
+- Heavy shadows
+- Material Design appearance
+- Glassmorphism with excessive blur
 
-• Modular
+Instead use:
 
-• Scalable
-
-• Performant
-
-• Secure
-
-• Accessible
-
-• Maintainable
-
-• Well Documented
-
----
-
-# Your Responsibilities
-
-Perform a complete audit of the entire project.
-
-Identify every issue.
-
-Fix every issue.
-
-Improve every part of the architecture where appropriate.
-
-Never leave technical debt behind.
+- Soft translucent glass
+- Layered depth
+- Elegant spacing
+- Rounded geometry
+- Refined lighting
 
 ---
 
-# Code Quality
+# Brand Colors
 
-Improve
+## Primary
 
-Folder Structure
+```css
+Primary 900 : #04172F
+Primary 800 : #062045
+Primary 700 : #083060
+Primary 600 : #0A417B
+Primary 500 : #145CA8
+```
 
-Component Organization
+Primary actions should always use:
 
-Code Readability
-
-Naming Consistency
-
-Import Ordering
-
-Unused Files
-
-Unused Variables
-
-Dead Code
-
-Duplicate Logic
-
-Magic Numbers
-
-Magic Strings
-
-Large Components
-
-Large Functions
-
-Repeated Styles
-
-Repeated Hooks
-
-Repeated Utilities
-
-Improve everything.
+```
+#062045
+```
 
 ---
 
-# Folder Structure
+# Accent Colors
 
-Refactor into a scalable architecture.
+These colors work naturally with Midnight Blue.
 
-Example
+## Cyan
 
-src/
+```css
+#55D6FF
+```
 
-app/
+Usage
 
-components/
-
-ui/
-
-forms/
-
-cards/
-
-buttons/
-
-inputs/
-
-dialogs/
-
-layout/
-
-features/
-
-qr/
-
-history/
-
-templates/
-
-scanner/
-
-settings/
-
-hooks/
-
-services/
-
-api/
-
-storage/
-
-utils/
-
-helpers/
-
-constants/
-
-config/
-
-types/
-
-assets/
-
-theme/
-
-animations/
-
-providers/
-
-contexts/
-
-store/
-
-validation/
-
-lib/
-
-Keep everything modular.
-
-Every folder should have a single responsibility.
+- Selected state
+- Active icons
+- Focus rings
+- QR scanner highlight
 
 ---
 
-# Component Architecture
+## Soft Blue
 
-Split large components into reusable smaller components.
+```css
+#73B8FF
+```
 
-Never create giant files.
+Usage
 
-Target
-
-Less than 250 lines per component.
-
-Separate
-
-Presentation
-
-Business Logic
-
-Hooks
-
-Utilities
-
-State
-
-Animations
+- Secondary buttons
+- Links
+- Information cards
 
 ---
 
-# React Best Practices
+## Ice Blue
 
-Remove unnecessary re-renders.
+```css
+#CFEAFF
+```
 
-Use
+Usage
 
-React.memo
-
-useMemo
-
-useCallback
-
-Lazy Loading
-
-Dynamic Imports
-
-Proper Keys
-
-Optimized Lists
-
-Virtualization
-
-Prevent unnecessary state updates.
+- Small highlights
+- Glass reflections
+- Light gradients
 
 ---
 
-# TypeScript
+## Emerald
 
-Eliminate
+```css
+#39D98A
+```
 
-any
+Usage
 
-unknown misuse
-
-unsafe casting
-
-missing interfaces
-
-duplicate types
-
-Create proper
-
-Interfaces
-
-Enums
-
-Utility Types
-
-Reusable Types
-
-Strict typing everywhere.
-
-Enable maximum TypeScript safety.
+- Success
+- Completed scans
+- Positive balance
 
 ---
 
-# Expo Best Practices
+## Amber
 
-Use recommended Expo APIs.
+```css
+#F6C453
+```
 
-Remove deprecated APIs.
+Usage
 
-Ensure compatibility with Expo SDK 57.
-
-Optimize
-
-Permissions
-
-Assets
-
-Fonts
-
-Images
-
-Splash Screen
-
-Status Bar
-
-Deep Linking
-
-App Configuration
+- Warnings
+- Premium badges
 
 ---
 
-# Performance
+## Coral
 
-Optimize
+```css
+#FF7A7A
+```
 
-Initial Load
+Usage
 
-Bundle Size
-
-Memory Usage
-
-Rendering
-
-Animations
-
-Image Loading
-
-State Updates
-
-Navigation
-
-Lazy Loading
-
-Asset Loading
-
-SVG Rendering
-
-QR Rendering
-
-Animation Performance
-
-Maintain 60 FPS animations.
+- Delete
+- Errors
 
 ---
 
-# UI Consistency
+# Background System
 
-Audit every screen.
+Never use pure black.
 
-Ensure
+Instead:
 
-Consistent spacing
+```css
+Background Primary
+#031528
+```
 
-Consistent typography
+```css
+Background Secondary
+#062045
+```
 
-Consistent radius
+```css
+Surface
+rgba(255,255,255,0.05)
+```
 
-Consistent shadows
+```css
+Elevated Surface
+rgba(255,255,255,0.08)
+```
 
-Consistent buttons
-
-Consistent cards
-
-Consistent animations
-
-Consistent icon sizing
-
-Consistent colours
-
-Consistent padding
-
-Everything should follow a single design system.
+```css
+Glass Layer
+rgba(255,255,255,0.12)
+```
 
 ---
 
-# Theme System
+# Glass Material
 
-Create a centralized design system.
+Cards should use:
 
-Include
+```css
+background: rgba(255, 255, 255, 0.08);
 
-Colours
+backdrop-filter: blur(24px);
 
-Typography
+border: 1px solid rgba(255, 255, 255, 0.14);
 
-Spacing
+border-radius: 28px;
+```
 
-Border Radius
+Hover:
 
-Elevation
+```css
+background: rgba(255, 255, 255, 0.12);
+```
+
+Pressed:
+
+```css
+background: rgba(255, 255, 255, 0.16);
+```
+
+---
+
+# Border Colors
+
+Primary Border
+
+```css
+rgba(255,255,255,0.10)
+```
+
+Secondary Border
+
+```css
+rgba(255,255,255,0.06)
+```
+
+Focus
+
+```css
+#55D6FF
+```
+
+---
+
+# Typography Colors
+
+## Primary Text
+
+```css
+#FFFFFF
+```
 
 Opacity
 
-Blur Values
-
-Animation Durations
-
-Icons
-
-Buttons
-
-Cards
-
-Inputs
-
-Shadows
-
-Glass Effects
-
-Never hardcode design values inside components.
+```
+100%
+```
 
 ---
 
-# State Management
+## Secondary Text
 
-Simplify state.
-
-Remove unnecessary state.
-
-Prevent prop drilling.
-
-Move shared logic into
-
-Custom Hooks
-
-Context
-
-Global Store
-
-Service Layer
-
-where appropriate.
+```css
+#D4E3F5
+```
 
 ---
 
-# Navigation
+## Tertiary Text
 
-Review every route.
-
-Improve
-
-Navigation Performance
-
-Screen Structure
-
-Loading States
-
-Error Boundaries
-
-Route Protection
-
-Deep Linking
+```css
+#9CB2C9
+```
 
 ---
 
-# Forms
+## Disabled Text
 
-Improve all forms.
+```css
+#64748B
+```
 
-Use
+---
 
-Validation
+## Inverse Text
 
-Reusable Inputs
+```css
+#062045
+```
 
-Error Messages
+Used on:
 
-Keyboard Handling
+- White buttons
+- Light chips
 
-Accessibility
+---
 
-Input Formatting
+# Icon Colors
+
+Primary
+
+```css
+#FFFFFF
+```
+
+Secondary
+
+```css
+#BFD2E8
+```
+
+Inactive
+
+```css
+#7C93AD
+```
+
+Selected
+
+```css
+#55D6FF
+```
+
+---
+
+# Button Styles
+
+## Primary Button
+
+Background
+
+```
+#062045
+```
+
+Text
+
+```
+#FFFFFF
+```
+
+Hover
+
+```
+#083060
+```
+
+Pressed
+
+```
+#04172F
+```
+
+Shadow
+
+```css
+0 10px 30px rgba(6,32,69,.35)
+```
+
+---
+
+## Secondary Button
+
+Background
+
+```css
+rgba(255,255,255,.08)
+```
+
+Border
+
+```css
+rgba(255,255,255,.10)
+```
+
+Text
+
+```
+#FFFFFF
+```
+
+---
+
+## Glass Button
+
+Background
+
+```css
+rgba(255,255,255,.10)
+```
+
+Blur
+
+```
+20px
+```
+
+Border
+
+```css
+rgba(255,255,255,.16)
+```
+
+---
+
+# QR Scanner Colors
+
+Scanner Border
+
+```
+#55D6FF
+```
+
+Scanner Glow
+
+```css
+rgba(85,214,255,.35)
+```
+
+Success
+
+```
+#39D98A
+```
+
+Error
+
+```
+#FF7A7A
+```
+
+---
+
+# Status Colors
+
+Success
+
+```
+#39D98A
+```
+
+Info
+
+```
+#55D6FF
+```
+
+Warning
+
+```
+#F6C453
+```
+
+Danger
+
+```
+#FF7A7A
+```
+
+---
+
+# Navigation Bar
+
+Background
+
+```css
+rgba(255,255,255,.08)
+```
+
+Blur
+
+```
+30px
+```
+
+Selected Icon
+
+```
+#55D6FF
+```
+
+Unselected Icon
+
+```
+#AABFD7
+```
+
+Indicator
+
+```
+#55D6FF
+```
+
+---
+
+# Shadows
+
+Small
+
+```css
+0 8px 18px rgba(0,0,0,.18)
+```
+
+Medium
+
+```css
+0 12px 30px rgba(0,0,0,.22)
+```
+
+Large
+
+```css
+0 20px 45px rgba(0,0,0,.30)
+```
+
+---
+
+# Gradients
+
+## Primary
+
+```css
+linear-gradient(
+135deg,
+#04172F 0%,
+#062045 45%,
+#0A417B 100%
+)
+```
+
+---
+
+## Glass Highlight
+
+```css
+linear-gradient(
+180deg,
+rgba(255,255,255,.18),
+rgba(255,255,255,.02)
+)
+```
+
+---
+
+## Accent
+
+```css
+linear-gradient(
+135deg,
+#55D6FF,
+#73B8FF
+)
+```
+
+---
+
+# Corner Radius
+
+Small
+
+```
+16px
+```
+
+Medium
+
+```
+22px
+```
+
+Large
+
+```
+28px
+```
+
+Extra Large
+
+```
+36px
+```
+
+Floating Button
+
+```
+999px
+```
+
+---
+
+# Animation
+
+Use only:
+
+- Spring animations
+- Smooth fade
+- Scale 0.98 when pressed
+- Soft elevation changes
+- Glass reflection movement
+- Duration between 180ms and 300ms
+
+Avoid:
+
+- Bounce
+- Elastic effects
+- Flashing
+- Oversized transitions
 
 ---
 
 # Accessibility
 
-Ensure
+Minimum contrast ratio:
 
-Screen Reader Support
+```
+4.5:1
+```
 
-Touch Targets
+Never place:
 
-Dynamic Font Sizes
+- Gray text on blue glass
+- Cyan text on white glass
+- Low-opacity text below 60%
 
-Colour Contrast
+Interactive elements must always have:
 
-Accessibility Labels
-
-Accessibility Hints
-
-Focus Management
-
-VoiceOver Compatibility
-
-TalkBack Compatibility
+- Visible focus ring
+- Clear pressed state
+- Distinct disabled state
 
 ---
 
-# Security
-
-Review the application for
-
-Unsafe Storage
-
-Sensitive Data
-
-Input Validation
-
-Injection Risks
-
-File Handling
-
-Permission Handling
-
-Error Leakage
-
-Secrets Exposure
-
-Environment Variables
-
-Secure Storage
-
----
-
-# Error Handling
-
-Implement
-
-Global Error Boundary
-
-Graceful Error Screens
-
-Network Error Handling
-
-Retry Logic
-
-Loading States
-
-Fallback UI
-
-Toast Messages
-
-Meaningful Error Messages
-
----
-
-# Logging
-
-Replace console.log statements.
-
-Implement
-
-Development Logger
-
-Production Logger
-
-Crash Reporting Hooks
-
-Meaningful Error Logs
-
-Remove debugging code before production.
-
----
-
-# Storage
-
-Audit all local storage.
-
-Improve
-
-Caching
-
-Persistence
-
-Version Migration
-
-Data Validation
-
-Cleanup
-
-Offline Support
-
----
-
-# Code Standards
-
-Follow
-
-SOLID Principles
-
-DRY
-
-KISS
-
-Clean Architecture
-
-Feature-based Architecture
-
-Composition over inheritance
-
-Single Responsibility
-
-Dependency Inversion
-
----
-
-# Naming
-
-Ensure consistent naming.
-
-Files
-
-Hooks
-
-Functions
-
-Variables
-
-Types
-
-Interfaces
-
-Components
-
-Events
-
-Everything should follow a predictable naming convention.
-
----
-
-# Styling
-
-Refactor styling.
-
-Avoid duplicated styles.
-
-Create reusable design tokens.
-
-Support responsive layouts.
-
-Support tablets where possible.
-
----
-
-# Animations
-
-Review every animation.
-
-Optimize
-
-Reanimated usage
-
-Gesture handling
-
-Performance
-
-Memory usage
-
-Smoothness
-
-Prevent dropped frames.
-
----
-
-# Assets
-
-Optimize
-
-Images
-
-Icons
-
-Fonts
-
-SVGs
-
-Remove unused assets.
-
-Compress assets when possible.
-
----
-
-# Testing Readiness
-
-Prepare the project for
-
-Unit Tests
-
-Integration Tests
-
-Component Tests
-
-E2E Tests
-
-Avoid code that is difficult to test.
-
----
-
-# Documentation
-
-Generate or update
-
-README
-
-Folder documentation
-
-Component documentation
-
-Hooks documentation
-
-Configuration documentation
-
-Developer onboarding instructions
-
----
-
-# Final Checklist
-
-Before finishing, verify
-
-No TypeScript errors
-
-No ESLint errors
-
-No unused imports
-
-No unused dependencies
-
-No duplicate code
-
-No circular dependencies
-
-No console.log
-
-No TODO comments
-
-No FIXME comments
-
-Consistent formatting
-
-Consistent architecture
-
-Production-ready performance
-
-Production-ready security
-
-Production-ready accessibility
-
-Production-ready code quality
-
----
-
-# Expected Output
-
-Do not only explain problems.
-
-Actually refactor the code.
-
-Create new files when needed.
-
-Move files into better locations.
-
-Delete obsolete code.
-
-Rename files where appropriate.
-
-Improve architecture.
-
-Optimize performance.
-
-Fix every bug discovered.
-
-Maintain all existing functionality.
-
-Do not remove features.
-
-Do not change the visual design unless required to improve consistency.
-
-The final result should be clean, scalable, maintainable, enterprise-grade, and ready for production deployment on both the Apple App Store and Google Play Store.
-
-Think like a senior engineer performing the final production review before releasing a flagship mobile application.
+# AI Agent Rules
+
+The AI agent must follow these rules throughout the application:
+
+1. Never change the existing screen layouts.
+2. Preserve all navigation flows.
+3. Preserve all business logic.
+4. Use `#062045` as the primary brand color everywhere.
+5. Apply Apple-inspired Liquid Glass materials consistently.
+6. Use soft translucent surfaces instead of solid cards.
+7. Keep spacing clean and minimalist.
+8. Maintain consistent corner radii and shadows.
+9. Ensure all text meets accessibility contrast requirements.
+10. Use accent colors only for meaningful interactions (focus, success, warnings, errors).
+11. Do not introduce new colors outside this design system unless explicitly requested.
+12. Prioritize readability, simplicity, and a premium user experience over decorative effects.

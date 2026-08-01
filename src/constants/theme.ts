@@ -1,32 +1,9 @@
 import '@/global.css';
 import { Platform } from 'react-native';
-import { GlassColors, Palette, Schemes } from './theme/colors';
+import { GlassColors } from './theme/colors';
 export * from './theme/tokens';
 
 export const LiquidGlassColors = GlassColors;
-
-function buildColors(scheme: typeof Schemes.light) {
-  return {
-    text: scheme.primaryText,
-    background: scheme.background,
-    backgroundElement: scheme.surface,
-    backgroundSelected: scheme.secondaryBackground,
-    textSecondary: scheme.secondaryText,
-    primary: Palette.accentBlue,
-    secondary: Palette.accentEmerald,
-    accent: Palette.accentViolet,
-    cardBg: scheme.glassSurface,
-    border: scheme.border,
-    glow: scheme.glowPrimary,
-  };
-}
-
-export const Colors = {
-  light: buildColors(Schemes.light),
-  dark: buildColors(Schemes.dark),
-} as const;
-
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 
 export const CinematicPresets = [
   {

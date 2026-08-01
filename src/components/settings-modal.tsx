@@ -61,7 +61,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
           <View className="flex-row items-center justify-between py-1">
             <View className="flex-row items-center gap-3">
               <View className="w-8 h-8 rounded-xl bg-blue-500/10 items-center justify-center">
-                <Ionicons name="phone-portrait-outline" size={16} color="#2563EB" />
+                <Ionicons name="phone-portrait-outline" size={16} color="#55D6FF" />
               </View>
               <View>
                 <Text className="text-on-surface font-bold text-sm">Haptic Feedback</Text>
@@ -72,14 +72,14 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
               accessibilityLabel="Toggle haptic feedback"
               value={hapticsEnabled}
               onValueChange={toggleHaptics}
-              trackColor={{ false: '#E5E7EB', true: '#2563EB' }}
+              trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
             />
           </View>
 
           <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
             <View className="flex-row items-center gap-3">
               <View className="w-8 h-8 rounded-xl bg-emerald-500/10 items-center justify-center">
-                <Ionicons name="bookmark-outline" size={16} color="#10B981" />
+                <Ionicons name="bookmark-outline" size={16} color="#39D98A" />
               </View>
               <View>
                 <Text className="text-on-surface font-bold text-sm">Auto-Save Generated Codes</Text>
@@ -90,14 +90,14 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
               accessibilityLabel="Toggle auto save generated codes"
               value={autoSave}
               onValueChange={setAutoSave}
-              trackColor={{ false: '#E5E7EB', true: '#2563EB' }}
+              trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
             />
           </View>
 
           <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
             <View className="flex-row items-center gap-3">
               <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
-                <Ionicons name="sparkles-outline" size={16} color="#7C3AED" />
+                <Ionicons name="sparkles-outline" size={16} color="#73B8FF" />
               </View>
               <View>
                 <Text className="text-on-surface font-bold text-sm">Ultra HD Vector Engine</Text>
@@ -108,7 +108,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
               accessibilityLabel="Toggle ultra HD vector engine"
               value={highQualityExports}
               onValueChange={setHighQualityExports}
-              trackColor={{ false: '#E5E7EB', true: '#2563EB' }}
+              trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
             />
           </View>
         </GlassCard>
@@ -126,7 +126,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
             className="flex-row items-center justify-between py-2 active:opacity-70">
             <View className="flex-row items-center gap-3">
               <View className="w-8 h-8 rounded-xl bg-red-500/10 items-center justify-center">
-                <Ionicons name="trash-outline" size={16} color="#EF4444" />
+                <Ionicons name="trash-outline" size={16} color="#FF7A7A" />
               </View>
               <View>
                 <Text className="text-red-600 font-bold text-sm">Clear History Library</Text>

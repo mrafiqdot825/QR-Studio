@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassChipProps {
@@ -23,7 +23,7 @@ export function GlassChip({
   onPress,
   className = '',
 }: GlassChipProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -60,11 +60,12 @@ export function GlassChip({
           selected ? 'bg-primary border-primary' : ''
         } ${className}`}>
         {!selected && (
-          <BlurView
-            intensity={BlurTokens.subtle}
-            tint={isDark ? 'dark' : 'light'}
+          <LiquidGlassView
+            blurLevel="subtle"
+            tintColor={colors.glassSurfaceHigh}
+            isInteractive
+            specular={false}
             style={StyleSheet.absoluteFill}
-            pointerEvents="none"
           />
         )}
         <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
@@ -73,7 +74,7 @@ export function GlassChip({
           <Ionicons
             name={icon}
             size={16}
-            color={selected ? '#FFFFFF' : Palette.accentBlue}
+            color={selected ? '#FFFFFF' : Palette.cyan}
           />
         )}
 

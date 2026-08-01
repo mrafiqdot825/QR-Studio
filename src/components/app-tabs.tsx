@@ -1,14 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
+import { GlassContainer } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, SpringConfigs } from '@/constants/theme';
 import { AppScheme } from '@/constants/theme/colors';
-import { ShadowSets } from '@/constants/theme/shadows';
+import { MidnightShadows } from '@/constants/theme/shadows';
+import { useLiquidGlassAvailable } from '@/hooks/use-liquid-glass-available';
 import { useTheme } from '@/hooks/use-theme';
+import { withAlpha } from '@/utils/color';
 
 interface LiquidGlassTabBarProps {
   state: any;
@@ -29,10 +32,11 @@ function TabItem({
   options: any;
   navigation: any;
   colors: AppScheme;
-  shadows: (typeof ShadowSets)['light'];
+  shadows: typeof MidnightShadows;
   onPress: () => void;
 }) {
   const scale = useSharedValue(1);
+  const isNativeGlassAvailable = useLiquidGlassAvailable();
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -70,8 +74,18 @@ function TabItem({
         accessibilityLabel={route.name}
         accessibilityState={isFocused ? { selected: true } : {}}>
         {isFocused ? (
-          <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: 'rgba(37, 99, 235, 0.25)' }]}>
-            <Ionicons name={iconName} size={22} color="#2563EB" />
+          <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: withAlpha(Palette.cyan, 0.25) }]}>
+            {isNativeGlassAvailable && (
+              <LiquidGlassView
+                blurLevel="dock"
+                glassStyle="regular"
+                tintColor={withAlpha(Palette.cyan, 0.12)}
+                isInteractive
+                specular={false}
+                style={StyleSheet.absoluteFill}
+              />
+            )}
+            <Ionicons name={iconName} size={22} color={Palette.cyan} />
           </View>
         ) : (
           <View style={styles.inactiveTabContent}>
@@ -84,55 +98,65 @@ function TabItem({
 }
 
 export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlassTabBarProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
+  const isNativeGlassAvailable = useLiquidGlassAvailable();
+
+  const dockStyle = [styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }];
+
+  const dockContent = (
+    <>
+      <LiquidGlassView blurLevel="dock" tintColor={colors.glassSurfaceHigh} specularInset={20} style={styles.blurViewContainer} />
+
+      <View style={styles.tabItemsRow}>
+        {state.routes.map((route: any, index: number) => {
+          const { options } = descriptors[route.key];
+          const isFocused = state.index === index;
+
+          const onPress = () => {
+            if (Platform.OS !== 'web') {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+            }
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          return (
+            <TabItem
+              key={route.key}
+              route={route}
+              index={index}
+              isFocused={isFocused}
+              options={options}
+              navigation={navigation}
+              colors={colors}
+              shadows={shadows}
+              onPress={onPress}
+            />
+          );
+        })}
+      </View>
+    </>
+  );
 
   return (
     <View style={styles.tabBarWrapper} pointerEvents="box-none">
-      <View style={[styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}>
-        <BlurView
-          intensity={BlurTokens.dock}
-          tint={isDark ? 'dark' : 'light'}
-          style={styles.blurViewContainer}
-          pointerEvents="none"
-        />
-        <View style={[styles.topGlassSpecularLine, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
-
-        <View style={styles.tabItemsRow}>
-          {state.routes.map((route: any, index: number) => {
-            const { options } = descriptors[route.key];
-            const isFocused = state.index === index;
-
-            const onPress = () => {
-              if (Platform.OS !== 'web') {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-              }
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
-
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route.name);
-              }
-            };
-
-            return (
-              <TabItem
-                key={route.key}
-                route={route}
-                index={index}
-                isFocused={isFocused}
-                options={options}
-                navigation={navigation}
-                colors={colors}
-                shadows={shadows}
-                onPress={onPress}
-              />
-            );
-          })}
-        </View>
-      </View>
+      {/* GlassContainer lets the focused tab's own glass pill visually merge with the dock's
+          glass material (Apple's tab-bar liquid-merge behavior) — native iOS 26 only. On the
+          fallback path this stays a plain View so the pixel-tuned dock/pill layout is untouched. */}
+      {isNativeGlassAvailable ? (
+        <GlassContainer spacing={20} style={dockStyle}>
+          {dockContent}
+        </GlassContainer>
+      ) : (
+        <View style={dockStyle}>{dockContent}</View>
+      )}
     </View>
   );
 }
@@ -163,13 +187,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  topGlassSpecularLine: {
-    position: 'absolute',
-    top: 0,
-    left: 20,
-    right: 20,
-    height: 1.5,
-  },
   tabItemsRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -189,6 +206,8 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     borderWidth: 1,
+    overflow: 'hidden',
+    position: 'relative',
   },
   inactiveTabContent: {
     alignItems: 'center',

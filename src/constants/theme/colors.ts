@@ -1,17 +1,20 @@
-// Scheme-independent brand accents — same hue in light and dark, tuned for contrast on both.
+// Midnight Blue accents — see AGENTS.md for the full design system spec.
 export const Palette = {
-  accentBlue: '#2563EB',
-  accentEmerald: '#10B981',
-  accentViolet: '#7C3AED',
-  accentOrange: '#F59E0B',
-  accentRose: '#F43F5E',
-  accentSky: '#0284C7',
-  accentPurple: '#A855F7',
-  premiumGold: '#C9A227',
+  primary900: '#04172F',
+  primary800: '#062045', // primary brand — CTAs, brand marks
+  primary700: '#083060', // hover
+  primary600: '#0A417B',
+  primary500: '#145CA8',
+  cyan: '#55D6FF', // selected state, active icons, focus rings, scanner
+  softBlue: '#73B8FF', // secondary buttons, links, info
+  iceBlue: '#CFEAFF', // small highlights, glass reflections
+  emerald: '#39D98A', // success
+  amber: '#F6C453', // warnings, premium
+  coral: '#FF7A7A', // delete, errors
   onPrimary: '#FFFFFF',
-  success: '#22C55E',
-  error: '#EF4444',
-  warning: '#F59E0B',
+  success: '#39D98A',
+  error: '#FF7A7A',
+  warning: '#F6C453',
 } as const;
 
 export interface AppScheme {
@@ -33,60 +36,34 @@ export interface AppScheme {
   glowTertiary: string;
 }
 
-export const LightScheme: AppScheme = {
-  background: '#FAFAFA',
-  secondaryBackground: '#F1F5F9',
-  surface: '#FFFFFF',
-  glassSurface: 'rgba(255, 255, 255, 0.75)',
-  glassSurfaceHigh: 'rgba(255, 255, 255, 0.88)',
-  glassSurfaceSubtle: 'rgba(255, 255, 255, 0.60)',
-  border: 'rgba(0, 0, 0, 0.06)',
-  hairline: 'rgba(255, 255, 255, 0.35)',
-  hairlineSubtle: 'rgba(255, 255, 255, 0.20)',
-  specularTop: 'rgba(255, 255, 255, 0.95)',
-  primaryText: '#111827',
-  secondaryText: '#6B7280',
-  tertiaryText: '#9CA3AF',
-  glowPrimary: 'rgba(37, 99, 235, 0.15)',
-  glowSecondary: 'rgba(16, 185, 129, 0.15)',
-  glowTertiary: 'rgba(124, 58, 237, 0.15)',
+export const MidnightScheme: AppScheme = {
+  background: '#031528',
+  secondaryBackground: '#062045',
+  surface: 'rgba(255, 255, 255, 0.05)',
+  glassSurface: 'rgba(255, 255, 255, 0.08)',
+  glassSurfaceHigh: 'rgba(255, 255, 255, 0.12)',
+  glassSurfaceSubtle: 'rgba(255, 255, 255, 0.05)',
+  border: 'rgba(255, 255, 255, 0.14)',
+  hairline: 'rgba(255, 255, 255, 0.10)',
+  hairlineSubtle: 'rgba(255, 255, 255, 0.06)',
+  specularTop: 'rgba(255, 255, 255, 0.18)',
+  primaryText: '#FFFFFF',
+  secondaryText: '#D4E3F5',
+  tertiaryText: '#9CB2C9',
+  glowPrimary: 'rgba(85, 214, 255, 0.18)',
+  glowSecondary: 'rgba(57, 217, 138, 0.15)',
+  glowTertiary: 'rgba(115, 184, 255, 0.15)',
 };
-
-// Dark Liquid Glass keeps a thin light rim/specular for edge definition — a pure black
-// border would make glass surfaces disappear against a dark background.
-export const DarkScheme: AppScheme = {
-  background: '#0B0D12',
-  secondaryBackground: '#14171D',
-  surface: '#1C1F26',
-  glassSurface: 'rgba(32, 35, 42, 0.72)',
-  glassSurfaceHigh: 'rgba(42, 46, 54, 0.85)',
-  glassSurfaceSubtle: 'rgba(24, 26, 32, 0.55)',
-  border: 'rgba(255, 255, 255, 0.09)',
-  hairline: 'rgba(255, 255, 255, 0.16)',
-  hairlineSubtle: 'rgba(255, 255, 255, 0.08)',
-  specularTop: 'rgba(255, 255, 255, 0.20)',
-  primaryText: '#F3F4F6',
-  secondaryText: '#9BA3AF',
-  tertiaryText: '#6B7280',
-  glowPrimary: 'rgba(59, 130, 246, 0.28)',
-  glowSecondary: 'rgba(16, 185, 129, 0.24)',
-  glowTertiary: 'rgba(167, 139, 250, 0.26)',
-};
-
-export const Schemes = { light: LightScheme, dark: DarkScheme } as const;
-export type SchemeName = keyof typeof Schemes;
 
 /**
- * @deprecated Static light-only snapshot kept for the handful of call sites still being
- * migrated. Prefer `useTheme().colors`, which adapts to the active scheme.
+ * @deprecated Static snapshot kept for the handful of call sites still being migrated.
+ * Prefer `useTheme().colors`, which resolves to the active scheme.
  */
 export const GlassColors = {
-  ...LightScheme,
-  accentBlue: Palette.accentBlue,
-  accentEmerald: Palette.accentEmerald,
-  accentViolet: Palette.accentViolet,
-  accentOrange: Palette.accentOrange,
-  premiumGold: Palette.premiumGold,
+  ...MidnightScheme,
+  accentBlue: Palette.cyan,
+  accentEmerald: Palette.emerald,
+  accentOrange: Palette.amber,
   success: Palette.success,
   error: Palette.error,
 } as const;

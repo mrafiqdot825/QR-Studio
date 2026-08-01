@@ -4,7 +4,7 @@ import { GlobalModals } from '@/components/global-modals';
 import '@/global.css';
 import { useTheme } from '@/hooks/use-theme';
 import { AppProvider } from '@/providers/app-provider';
-import { DefaultTheme, DarkTheme, Tabs, ThemeProvider } from 'expo-router';
+import { DefaultTheme, Tabs, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
@@ -20,26 +20,26 @@ configureReanimatedLogger({
 SplashScreen.preventAutoHideAsync();
 
 function AppNavigation() {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
 
   const navTheme = React.useMemo(
     () => ({
-      ...(isDark ? DarkTheme : DefaultTheme),
+      ...DefaultTheme,
       colors: {
-        ...(isDark ? DarkTheme.colors : DefaultTheme.colors),
+        ...DefaultTheme.colors,
         background: colors.background,
         card: colors.surface,
         text: colors.primaryText,
         border: colors.border,
-        primary: '#2563EB',
+        primary: '#062045',
       },
     }),
-    [isDark, colors.background, colors.surface, colors.primaryText, colors.border]
+    [colors.background, colors.surface, colors.primaryText, colors.border]
   );
 
   return (
     <ThemeProvider value={navTheme}>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <StatusBar style="light" />
       <AnimatedSplashOverlay />
       <Tabs
         tabBar={(props) => <LiquidGlassTabBar {...props} />}

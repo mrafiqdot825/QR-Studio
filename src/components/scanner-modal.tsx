@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { Alert, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -13,7 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { GlassBadge } from '@/components/ui/glass-badge';
-import { BlurTokens, Palette, Shadows } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, Shadows } from '@/constants/theme';
 import { saveHistoryItem } from '@/utils/storage';
 
 interface ScannerModalProps {
@@ -105,25 +105,20 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
         {/* SCANNING TARGET FRAME WITH GLASS SCAN LINE */}
         <View className="self-center items-center justify-center relative">
           <View className="w-64 h-64 rounded-4xl border-2 border-white/40 overflow-hidden relative justify-center items-center bg-white/5">
-            <BlurView
-              intensity={BlurTokens.subtle}
-              tint="dark"
-              style={StyleSheet.absoluteFill}
-              pointerEvents="none"
-            />
+            <LiquidGlassView blurLevel="subtle" colorScheme="dark" specular={false} style={StyleSheet.absoluteFill} />
 
             {/* CORNER BRACKETS */}
-            <View className="absolute top-3 left-3 w-6 h-6 border-t-4 border-l-4 border-primary rounded-tl-xl" />
-            <View className="absolute top-3 right-3 w-6 h-6 border-t-4 border-r-4 border-primary rounded-tr-xl" />
-            <View className="absolute bottom-3 left-3 w-6 h-6 border-b-4 border-l-4 border-primary rounded-bl-xl" />
-            <View className="absolute bottom-3 right-3 w-6 h-6 border-b-4 border-r-4 border-primary rounded-br-xl" />
+            <View className="absolute top-3 left-3 w-6 h-6 border-t-4 border-l-4 border-accent rounded-tl-xl" />
+            <View className="absolute top-3 right-3 w-6 h-6 border-t-4 border-r-4 border-accent rounded-tr-xl" />
+            <View className="absolute bottom-3 left-3 w-6 h-6 border-b-4 border-l-4 border-accent rounded-bl-xl" />
+            <View className="absolute bottom-3 right-3 w-6 h-6 border-b-4 border-r-4 border-accent rounded-br-xl" />
 
             {/* ANIMATED GLASS SCAN LINE */}
             <Animated.View
               style={[
                 animatedScanLine,
                 Shadows.glowBlue,
-                { position: 'absolute', top: 20, left: 10, right: 10, height: 3, backgroundColor: Palette.accentBlue, borderRadius: 2 },
+                { position: 'absolute', top: 20, left: 10, right: 10, height: 3, backgroundColor: Palette.cyan, borderRadius: 2 },
               ]}
             />
           </View>
@@ -152,6 +147,6 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
 
 const styles = StyleSheet.create({
   scanButtonShadow: {
-    boxShadow: '0px 10px 15px rgba(37, 99, 235, 0.4)',
+    boxShadow: '0px 10px 15px rgba(85, 214, 255, 0.4)',
   },
 });

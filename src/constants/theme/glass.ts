@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { AppScheme, Palette, Schemes, SchemeName } from './colors';
+import { AppScheme, MidnightScheme, Palette } from './colors';
 
 export interface GlassMaterial {
   backgroundColor: string;
@@ -42,14 +42,7 @@ function buildMaterials(scheme: AppScheme): Record<'card' | 'cardHigh' | 'pill' 
   };
 }
 
-export const GlassMaterials = {
-  light: buildMaterials(Schemes.light),
-  dark: buildMaterials(Schemes.dark),
-} as const;
-
-export function getGlassMaterials(scheme: SchemeName) {
-  return GlassMaterials[scheme];
-}
+export const GlassMaterials = buildMaterials(MidnightScheme);
 
 function buildGlassStyles(scheme: AppScheme) {
   return StyleSheet.create({
@@ -70,7 +63,7 @@ function buildGlassStyles(scheme: AppScheme) {
       backgroundColor: scheme.specularTop,
     },
     ambientGlowPrimary: {
-      shadowColor: Palette.accentBlue,
+      shadowColor: Palette.cyan,
       shadowOffset: { width: 0, height: 12 },
       shadowOpacity: 0.15,
       shadowRadius: 24,
@@ -78,14 +71,4 @@ function buildGlassStyles(scheme: AppScheme) {
   });
 }
 
-export const GlassStyleSets = {
-  light: buildGlassStyles(Schemes.light),
-  dark: buildGlassStyles(Schemes.dark),
-} as const;
-
-export function getGlassStyles(scheme: SchemeName) {
-  return GlassStyleSets[scheme];
-}
-
-/** @deprecated Light-only snapshot — prefer `useTheme().glass` / `getGlassMaterials(scheme)`. */
-export const GlassStyles = GlassStyleSets.light;
+export const GlassStyles = buildGlassStyles(MidnightScheme);

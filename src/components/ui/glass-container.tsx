@@ -17,7 +17,7 @@ interface GlassContainerProps extends ViewProps {
 }
 
 export function GlassContainer({ children, className = '', style, ...props }: GlassContainerProps) {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const blob1Offset = useSharedValue(0);
   const blob2Offset = useSharedValue(0);
 
@@ -53,17 +53,12 @@ export function GlassContainer({ children, className = '', style, ...props }: Gl
     transform: [{ translateY: blob2Offset.value }, { translateX: blob2Offset.value * -0.5 }],
   }));
 
-  // Soft ambient blobs use a radial-style LinearGradient (transparent-to-tint) instead of a
-  // CSS `blur-*` className — `filter: blur()` has no native equivalent, so on iOS/Android
-  // that class previously rendered as a hard-edged circle instead of a soft glow.
-  const glowOpacity = isDark ? 0.5 : 1;
-
   return (
     <View className={`flex-1 bg-background relative ${className}`} style={style} {...props}>
       <Animated.View style={[styles.blob1, animatedBlob1]} pointerEvents="none">
         <LinearGradient
           colors={[colors.glowPrimary, 'transparent']}
-          style={[styles.blobFill, { opacity: glowOpacity }]}
+          style={styles.blobFill}
           start={{ x: 0.5, y: 0.5 }}
           end={{ x: 1, y: 1 }}
         />
@@ -71,7 +66,7 @@ export function GlassContainer({ children, className = '', style, ...props }: Gl
       <Animated.View style={[styles.blob2, animatedBlob2]} pointerEvents="none">
         <LinearGradient
           colors={[colors.glowTertiary, 'transparent']}
-          style={[styles.blobFill, { opacity: glowOpacity }]}
+          style={styles.blobFill}
           start={{ x: 0.5, y: 0.5 }}
           end={{ x: 1, y: 1 }}
         />
@@ -79,7 +74,7 @@ export function GlassContainer({ children, className = '', style, ...props }: Gl
       <View style={styles.blob3} pointerEvents="none">
         <LinearGradient
           colors={[colors.glowSecondary, 'transparent']}
-          style={[styles.blobFill, { opacity: glowOpacity }]}
+          style={styles.blobFill}
           start={{ x: 0.5, y: 0.5 }}
           end={{ x: 1, y: 1 }}
         />

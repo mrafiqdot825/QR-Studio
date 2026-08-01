@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
 import {
@@ -20,8 +19,9 @@ import Animated, {
 
 import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassButton } from "@/components/ui/glass-button";
+import { GlassShimmer } from "@/components/ui/glass-shimmer";
+import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
 import {
-  BlurTokens,
   CinematicPresets,
   Palette,
   PresetId,
@@ -51,7 +51,7 @@ export function QRStage3D({
   onExport,
   fgColor,
 }: QRStage3DProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
   const flipAnim = useSharedValue(0);
 
@@ -101,7 +101,6 @@ export function QRStage3D({
           pointerEvents={isFlipped ? "none" : "auto"}
           style={[
             frontAnimatedStyle,
-            shadows.heroStage,
             {
               backgroundColor: colors.glassSurfaceHigh,
               borderColor: colors.hairline,
@@ -109,19 +108,13 @@ export function QRStage3D({
           ]}
           className="absolute w-full h-full rounded-5xl overflow-hidden border p-6 justify-between relative"
         >
-          <BlurView
-            intensity={BlurTokens.card}
-            tint={isDark ? "dark" : "light"}
+          <LiquidGlassView
+            blurLevel="card"
+            tintColor={colors.glassSurfaceHigh}
+            specularInset={16}
             style={StyleSheet.absoluteFill}
-            pointerEvents="none"
           />
-          <View
-            style={[
-              styles.topSpecular,
-              { backgroundColor: colors.specularTop },
-            ]}
-            pointerEvents="none"
-          />
+          <GlassShimmer />
 
           {/* Top Bar */}
           <View className="flex-row items-center justify-between">
@@ -129,7 +122,7 @@ export function QRStage3D({
               <Ionicons
                 name="qr-code-outline"
                 size={18}
-                color={Palette.accentBlue}
+                color={Palette.cyan}
               />
               <Text className="text-on-surface text-base font-bold">
                 {title}
@@ -143,8 +136,15 @@ export function QRStage3D({
                 backgroundColor: colors.glassSurfaceSubtle,
                 borderColor: colors.hairline,
               }}
-              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full active:opacity-70"
+              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
             >
+              <LiquidGlassView
+                blurLevel="subtle"
+                tintColor={colors.glassSurfaceSubtle}
+                isInteractive
+                specular={false}
+                style={StyleSheet.absoluteFill}
+              />
               <Ionicons
                 name="sync-outline"
                 size={14}
@@ -155,7 +155,6 @@ export function QRStage3D({
 
           {/* QR Code Glass Container */}
           <View
-            style={styles.qrGlassShadow}
             className="self-center bg-white p-5 rounded-4xl border border-black/[0.04] relative"
           >
             <QRCode
@@ -201,7 +200,6 @@ export function QRStage3D({
           pointerEvents={isFlipped ? "auto" : "none"}
           style={[
             backAnimatedStyle,
-            shadows.heroStage,
             {
               backgroundColor: colors.glassSurfaceHigh,
               borderColor: colors.hairline,
@@ -209,18 +207,11 @@ export function QRStage3D({
           ]}
           className="absolute w-full h-full rounded-5xl overflow-hidden border p-6 justify-between relative"
         >
-          <BlurView
-            intensity={BlurTokens.card}
-            tint={isDark ? "dark" : "light"}
+          <LiquidGlassView
+            blurLevel="card"
+            tintColor={colors.glassSurfaceHigh}
+            specularInset={16}
             style={StyleSheet.absoluteFill}
-            pointerEvents="none"
-          />
-          <View
-            style={[
-              styles.topSpecular,
-              { backgroundColor: colors.specularTop },
-            ]}
-            pointerEvents="none"
           />
 
           <View className="flex-row items-center justify-between">
@@ -235,8 +226,15 @@ export function QRStage3D({
                 backgroundColor: colors.glassSurfaceSubtle,
                 borderColor: colors.hairline,
               }}
-              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full active:opacity-70"
+              className="flex-row items-center gap-1 border px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
             >
+              <LiquidGlassView
+                blurLevel="subtle"
+                tintColor={colors.glassSurfaceSubtle}
+                isInteractive
+                specular={false}
+                style={StyleSheet.absoluteFill}
+              />
               <Ionicons
                 name="sync-outline"
                 size={14}
@@ -308,15 +306,3 @@ export function QRStage3D({
   );
 }
 
-const styles = StyleSheet.create({
-  topSpecular: {
-    position: "absolute",
-    top: 0,
-    left: 16,
-    right: 16,
-    height: 1,
-  },
-  qrGlassShadow: {
-    boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.05)",
-  },
-});

@@ -2,6 +2,7 @@ import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassButton } from "@/components/ui/glass-button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { GlassChip } from "@/components/ui/glass-chip";
+import { GlassShimmer } from "@/components/ui/glass-shimmer";
 import { CinematicPresets, Palette, PresetId } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { withAlpha } from "@/utils/color";
@@ -130,7 +131,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
         </View>
 
         {/* Stats Strip */}
-        <View className="flex-row items-center mt-2 pt-2 border-t border-black/5 dark:border-white/5">
+        <View className="flex-row items-center mt-2 pt-2 border-t border-black/5">
           {HERO_STATS.map((stat, index) => (
             <View key={stat.label} className="flex-row items-center">
               {index > 0 && (
@@ -175,10 +176,11 @@ export const HomeHeroCard: React.FC = React.memo(() => {
           </Animated.View>
 
           <GlassCard
-            style={styles.heroCardShadow}
             className="w-full max-w-[380px] p-6 items-center"
             hasGlow
           >
+            <GlassShimmer />
+
             {/* Live Indicator Badge */}
             <View className="absolute top-4 right-4 z-10">
               <View
@@ -203,10 +205,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
 
             {/* QR Code Container with Active Preset Colors */}
             <View
-              style={[
-                styles.heroQrShadow,
-                { backgroundColor: activePreset.qrBg },
-              ]}
+              style={{ backgroundColor: activePreset.qrBg }}
               className="p-5 rounded-4xl mb-4 border border-black/[0.06] items-center justify-center"
             >
               <QRCode
@@ -225,7 +224,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             </Text>
 
             {/* Interactive Theme Swatch Bar */}
-            <View className="flex-row items-center gap-2 mt-4 pt-3 border-t border-black/5 dark:border-white/5 w-full justify-center">
+            <View className="flex-row items-center gap-2 mt-4 pt-3 border-t border-black/5 w-full justify-center">
               {PRESET_QUICK_CHOICES.map((id) => {
                 const preset = CinematicPresets.find((p) => p.id === id);
                 if (!preset) return null;
@@ -247,7 +246,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
                           : "transparent",
                       }}
                       className={`w-7 h-7 rounded-full border-2 items-center justify-center transition-all ${
-                        isSelected ? "scale-110 shadow-sm" : "opacity-80"
+                        isSelected ? "scale-110" : "opacity-80"
                       }`}
                     >
                       {isSelected && (
@@ -268,12 +267,6 @@ export const HomeHeroCard: React.FC = React.memo(() => {
 HomeHeroCard.displayName = "HomeHeroCard";
 
 const styles = StyleSheet.create({
-  heroCardShadow: {
-    boxShadow: "0px 25px 50px rgba(0, 0, 0, 0.14)",
-  },
-  heroQrShadow: {
-    boxShadow: "0px 12px 20px rgba(0, 0, 0, 0.08)",
-  },
   heroGlow: {
     position: "absolute",
     width: 340,

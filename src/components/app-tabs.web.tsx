@@ -11,14 +11,14 @@ interface LiquidGlassTabBarProps {
 }
 
 export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlassTabBarProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
 
   return (
     <View style={styles.tabBarWrapper} pointerEvents="box-none">
       <View style={[styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}>
         <BlurView
           intensity={BlurTokens.dock}
-          tint={isDark ? 'dark' : 'light'}
+          tint="dark"
           style={styles.blurViewContainer}
           pointerEvents="none"
         />
@@ -70,8 +70,8 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
                 accessibilityLabel={label as string}
                 accessibilityState={isFocused ? { selected: true } : {}}>
                 {isFocused ? (
-                  <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: 'rgba(37, 99, 235, 0.25)' }]}>
-                    <Ionicons name={iconName} size={22} color="#2563EB" />
+                  <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: 'rgba(85, 214, 255, 0.25)' }]}>
+                    <Ionicons name={iconName} size={22} color="#55D6FF" />
                   </View>
                 ) : (
                   <View style={styles.inactiveTabContent}>

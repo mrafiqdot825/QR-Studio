@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassChip } from '@/components/ui/glass-chip';
+import { Palette } from '@/constants/theme';
 import { CustomizationOptions } from '@/types/qr';
 
 export type { CustomizationOptions };
@@ -30,7 +31,7 @@ export function CustomizationStudioControls({
             Configure matrix module shapes, eye frames, and badge logos.
           </Text>
         </View>
-        <Ionicons name="options-outline" size={20} color="#2563EB" />
+        <Ionicons name="options-outline" size={20} color={Palette.cyan} />
       </View>
 
       {/* Module Shape Controls */}

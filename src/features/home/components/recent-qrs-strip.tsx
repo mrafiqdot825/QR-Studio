@@ -37,7 +37,7 @@ export const RecentQRsStrip: React.FC = React.memo(() => {
           className="flex-row items-center gap-1"
         >
           <Text className="text-primary text-xs font-bold">View All</Text>
-          <Ionicons name="chevron-forward" size={14} color={Palette.accentBlue} />
+          <Ionicons name="chevron-forward" size={14} color={Palette.cyan} />
         </Pressable>
       </View>
 
@@ -47,7 +47,7 @@ export const RecentQRsStrip: React.FC = React.memo(() => {
             <Ionicons
               name="time-outline"
               size={20}
-              color={Palette.accentBlue}
+              color={Palette.cyan}
             />
           </View>
           <Text className="text-on-surface font-extrabold text-sm text-center">
@@ -90,7 +90,7 @@ export const RecentQRsStrip: React.FC = React.memo(() => {
                     <Ionicons
                       name="pin"
                       size={12}
-                      color={Palette.accentOrange}
+                      color={Palette.amber}
                     />
                   )}
                 </View>
@@ -109,14 +109,14 @@ export const RecentQRsStrip: React.FC = React.memo(() => {
                   {item.value}
                 </Text>
 
-                <View className="flex-row items-center justify-between mt-3 pt-2 border-t border-black/5 dark:border-white/5">
+                <View className="flex-row items-center justify-between mt-3 pt-2 border-t border-black/5">
                   <Text className="text-on-surface-variant text-[10px] font-medium">
                     {item.date}
                   </Text>
                   <Ionicons
                     name="arrow-forward"
                     size={12}
-                    color={Palette.accentBlue}
+                    color={Palette.cyan}
                   />
                 </View>
               </GlassCard>

@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View, ViewProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassButtonProps extends ViewProps {
@@ -31,7 +31,7 @@ export function GlassButton({
   style,
   ...props
 }: GlassButtonProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -67,7 +67,7 @@ export function GlassButton({
   const isGhost = variant === 'ghost';
   const isGlass = variant === 'glass';
 
-  const iconColor = isPrimary ? '#FFFFFF' : Palette.accentBlue;
+  const iconColor = isPrimary ? '#FFFFFF' : Palette.cyan;
 
   const surfaceStyle = isSecondary
     ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }
@@ -92,11 +92,12 @@ export function GlassButton({
         } ${className}`}
         {...props}>
         {(isSecondary || isGlass) && (
-          <BlurView
-            intensity={BlurTokens.subtle}
-            tint={isDark ? 'dark' : 'light'}
+          <LiquidGlassView
+            blurLevel="subtle"
+            tintColor={isSecondary ? colors.glassSurfaceHigh : colors.glassSurfaceSubtle}
+            isInteractive
+            specular={false}
             style={StyleSheet.absoluteFill}
-            pointerEvents="none"
           />
         )}
         <View style={[styles.topHighlight, { backgroundColor: colors.specularTop }]} pointerEvents="none" />

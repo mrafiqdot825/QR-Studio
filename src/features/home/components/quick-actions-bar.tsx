@@ -27,8 +27,8 @@ export const QuickActionsBar: React.FC = React.memo(() => {
       title: "QR Studio",
       subtitle: "Custom colors & eyes",
       icon: "create-outline",
-      color: Palette.accentBlue,
-      bgAlpha: "rgba(37, 99, 235, 0.1)",
+      color: Palette.cyan,
+      bgAlpha: "rgba(85, 214, 255, 0.1)",
       onPress: () => router.navigate("/studio"),
     },
     {
@@ -36,8 +36,8 @@ export const QuickActionsBar: React.FC = React.memo(() => {
       title: "Camera Scanner",
       subtitle: "Instant auto scan",
       icon: "scan-outline",
-      color: Palette.accentEmerald,
-      bgAlpha: "rgba(16, 185, 129, 0.1)",
+      color: Palette.emerald,
+      bgAlpha: "rgba(57, 217, 138, 0.1)",
       onPress: openScanner,
     },
     {
@@ -45,8 +45,8 @@ export const QuickActionsBar: React.FC = React.memo(() => {
       title: "Template Gallery",
       subtitle: "Pre-designed cards",
       icon: "color-palette-outline",
-      color: Palette.accentViolet,
-      bgAlpha: "rgba(124, 58, 237, 0.1)",
+      color: Palette.softBlue,
+      bgAlpha: "rgba(115, 184, 255, 0.1)",
       onPress: () => router.navigate("/explore"),
     },
     {
@@ -54,8 +54,8 @@ export const QuickActionsBar: React.FC = React.memo(() => {
       title: "Guest Wi-Fi",
       subtitle: "1-Tap Wi-Fi share",
       icon: "wifi-outline",
-      color: Palette.accentOrange,
-      bgAlpha: "rgba(245, 158, 11, 0.1)",
+      color: Palette.amber,
+      bgAlpha: "rgba(246, 196, 83, 0.1)",
       onPress: () =>
         router.navigate({
           pathname: "/studio",

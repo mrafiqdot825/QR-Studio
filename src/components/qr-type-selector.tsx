@@ -68,7 +68,7 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
             onPress={() => onSelectType(typeObj.id)}
             interactive
             hasGlow={isSelected}
-            style={isSelected ? { borderColor: Palette.accentBlue } : undefined}
+            style={isSelected ? { borderColor: Palette.cyan } : undefined}
             className={`w-[48%] p-4 transition-all ${
               isSelected ? 'border-primary ring-2 ring-primary/20' : ''
             }`}>
@@ -81,7 +81,7 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
                   <Ionicons
                     name={typeObj.icon}
                     size={20}
-                    color={isSelected ? '#FFFFFF' : '#2563EB'}
+                    color={isSelected ? '#FFFFFF' : '#55D6FF'}
                   />
                 </View>
 

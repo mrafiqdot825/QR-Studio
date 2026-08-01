@@ -31,7 +31,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
           className="flex-row items-center gap-1"
         >
           <Text className="text-primary text-xs font-bold">Gallery</Text>
-          <Ionicons name="chevron-forward" size={14} color={Palette.accentBlue} />
+          <Ionicons name="chevron-forward" size={14} color={Palette.cyan} />
         </Pressable>
       </View>
 
@@ -86,7 +86,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
                 {template.desc}
               </Text>
 
-              <View className="flex-row items-center justify-between mt-4 pt-3 border-t border-black/5 dark:border-white/5">
+              <View className="flex-row items-center justify-between mt-4 pt-3 border-t border-black/5">
                 <Text
                   style={{ color: template.color }}
                   className="text-xs font-extrabold"

@@ -1,10 +1,10 @@
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, View, ViewProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { withAlpha } from '@/utils/color';
 
@@ -13,10 +13,10 @@ interface GlassCardProps extends ViewProps {
   className?: string;
   onPress?: () => void;
   interactive?: boolean;
-  blurIntensity?: number;
-  glassTint?: 'light' | 'default' | 'extraLight';
+  glassTint?: 'dark' | 'light' | 'default' | 'extraLight';
   hasGlow?: boolean;
   glowColor?: string;
+  isInteractive?: boolean;
 }
 
 export function GlassCard({
@@ -24,14 +24,14 @@ export function GlassCard({
   className = '',
   onPress,
   interactive = false,
-  blurIntensity = BlurTokens.card,
-  glassTint = 'light',
+  glassTint = 'dark',
   hasGlow = false,
-  glowColor = Palette.accentBlue,
+  glowColor = Palette.cyan,
+  isInteractive,
   style,
   ...props
 }: GlassCardProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors } = useTheme();
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -62,16 +62,16 @@ export function GlassCard({
   };
 
   const containerStyle = React.useMemo(() => [
-    shadows.card,
     { backgroundColor: colors.glassSurface, borderColor: colors.border },
     hasGlow && {
-      boxShadow: `0px 0px 24px ${withAlpha(glowColor, 0.18)}`,
+      borderColor: withAlpha(glowColor, 0.4),
+      borderWidth: 1.5,
     },
     style,
-  ], [shadows.card, colors.glassSurface, colors.border, hasGlow, glowColor, style]);
+  ], [colors.glassSurface, colors.border, hasGlow, glowColor, style]);
 
-  const specularStyle = React.useMemo(() => ({ backgroundColor: colors.specularTop }), [colors.specularTop]);
   const hairlineStyle = React.useMemo(() => ({ borderColor: colors.hairline }), [colors.hairline]);
+  const resolvedInteractive = isInteractive ?? (interactive || !!onPress);
 
   if (onPress || interactive) {
     return (
@@ -83,13 +83,14 @@ export function GlassCard({
           style={containerStyle}
           className={`rounded-4xl border overflow-hidden relative ${className}`}
           {...props}>
-          <BlurView
-            intensity={blurIntensity}
-            tint={isDark ? 'dark' : glassTint}
+          <LiquidGlassView
+            blurLevel="card"
+            glassTint={glassTint}
+            tintColor={colors.glassSurface}
+            isInteractive={resolvedInteractive}
+            specularInset={12}
             style={StyleSheet.absoluteFill}
-            pointerEvents="none"
           />
-          <View style={[styles.specularTop, specularStyle]} pointerEvents="none" />
           <View style={[styles.hairlineBorder, hairlineStyle]} pointerEvents="none" />
           {children}
         </Pressable>
@@ -102,13 +103,13 @@ export function GlassCard({
       style={containerStyle}
       className={`rounded-4xl border overflow-hidden relative ${className}`}
       {...props}>
-      <BlurView
-        intensity={blurIntensity}
-        tint={isDark ? 'dark' : glassTint}
+      <LiquidGlassView
+        blurLevel="card"
+        glassTint={glassTint}
+        tintColor={colors.glassSurface}
+        specularInset={12}
         style={StyleSheet.absoluteFill}
-        pointerEvents="none"
       />
-      <View style={[styles.specularTop, specularStyle]} pointerEvents="none" />
       <View style={[styles.hairlineBorder, hairlineStyle]} pointerEvents="none" />
       {children}
     </View>
@@ -116,14 +117,6 @@ export function GlassCard({
 }
 
 const styles = StyleSheet.create({
-  specularTop: {
-    position: 'absolute',
-    top: 0,
-    left: 12,
-    right: 12,
-    height: 1,
-    zIndex: 1,
-  },
   hairlineBorder: {
     position: 'absolute',
     top: 0,

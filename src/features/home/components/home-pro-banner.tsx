@@ -24,8 +24,8 @@ export const HomeProBanner: React.FC = React.memo(() => {
       >
         <LinearGradient
           colors={[
-            withAlpha(Palette.accentBlue, 0.12),
-            withAlpha(Palette.accentViolet, 0.08),
+            withAlpha(Palette.cyan, 0.12),
+            withAlpha(Palette.softBlue, 0.08),
             "transparent",
           ]}
           style={StyleSheet.absoluteFill}
@@ -38,7 +38,7 @@ export const HomeProBanner: React.FC = React.memo(() => {
           <Ionicons
             name="sparkles"
             size={26}
-            color={Palette.accentBlue}
+            color={Palette.cyan}
           />
         </View>
 

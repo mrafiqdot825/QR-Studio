@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APP_CONFIG } from '@/config/app.config';
 import { Logger } from '@/services/logger/logger.service';
 import { QRHistoryItem } from '@/types/history';
@@ -38,39 +37,6 @@ type StorageListener = () => void;
 class StorageService {
   private memoryHistory: QRHistoryItem[] = [...DEFAULT_HISTORY];
   private listeners: Set<StorageListener> = new Set();
-  private isInitialized = false;
-
-  constructor() {
-    this.initStorage();
-  }
-
-  private async initStorage(): Promise<void> {
-    try {
-      const storedData = await AsyncStorage.getItem(APP_CONFIG.storageKeys.history);
-      if (storedData) {
-        const parsed = JSON.parse(storedData);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          this.memoryHistory = parsed;
-        }
-      }
-    } catch (error) {
-      Logger.error('Failed to load history from persistent storage:', error);
-    } finally {
-      this.isInitialized = true;
-      this.notifyListeners();
-    }
-  }
-
-  private async persist(): Promise<void> {
-    try {
-      await AsyncStorage.setItem(
-        APP_CONFIG.storageKeys.history,
-        JSON.stringify(this.memoryHistory)
-      );
-    } catch (error) {
-      Logger.error('Failed to persist history to storage:', error);
-    }
-  }
 
   public getHistory(): QRHistoryItem[] {
     return [...this.memoryHistory];
@@ -95,7 +61,6 @@ class StorageService {
       APP_CONFIG.maxHistoryItems
     );
     this.notifyListeners();
-    await this.persist();
     return newItem;
   }
 
@@ -104,19 +69,16 @@ class StorageService {
       item.id === id ? { ...item, isPinned: !item.isPinned } : item
     );
     this.notifyListeners();
-    await this.persist();
   }
 
   public async deleteHistoryItem(id: string): Promise<void> {
     this.memoryHistory = this.memoryHistory.filter((item) => item.id !== id);
     this.notifyListeners();
-    await this.persist();
   }
 
   public async clearHistory(): Promise<void> {
     this.memoryHistory = [];
     this.notifyListeners();
-    await this.persist();
   }
 
   public subscribe(listener: StorageListener): () => void {

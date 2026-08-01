@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { BlurTokens, Palette } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassBadgeProps {
@@ -19,17 +19,17 @@ export function GlassBadge({
   variant = 'primary',
   className = '',
 }: GlassBadgeProps) {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const isPrimary = variant === 'primary';
   const isSuccess = variant === 'success';
   const isWarning = variant === 'warning';
 
   const badgeColor = isPrimary
-    ? Palette.accentBlue
+    ? Palette.cyan
     : isSuccess
-    ? Palette.accentEmerald
+    ? Palette.emerald
     : isWarning
-    ? Palette.accentOrange
+    ? Palette.amber
     : colors.secondaryText;
 
   const bgStyle = isPrimary
@@ -44,13 +44,7 @@ export function GlassBadge({
     <View
       style={!isPrimary && !isSuccess && !isWarning ? { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border } : undefined}
       className={`flex-row items-center gap-1.5 px-3 py-1 rounded-full border overflow-hidden relative ${bgStyle} ${className}`}>
-      <BlurView
-        intensity={BlurTokens.subtle}
-        tint={isDark ? 'dark' : 'light'}
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-      />
-      <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
+      <LiquidGlassView blurLevel="subtle" tintColor={colors.glassSurfaceSubtle} specularInset={4} style={StyleSheet.absoluteFill} />
 
       {icon && <Ionicons name={icon} size={12} color={badgeColor} />}
 
@@ -60,13 +54,3 @@ export function GlassBadge({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  topSpecular: {
-    position: 'absolute',
-    top: 0,
-    left: 4,
-    right: 4,
-    height: 1,
-  },
-});

@@ -1,5 +1,5 @@
 import { GlassCard } from '@/components/ui/glass-card';
-import { CinematicPresets, PresetId } from '@/constants/theme';
+import { CinematicPresets, Palette, PresetId } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -41,7 +41,7 @@ export function ThemePresetsBar({
             Select a luxury preset or custom foreground tint.
           </Text>
         </View>
-        <Ionicons name="color-palette-outline" size={20} color="#2563EB" />
+        <Ionicons name="color-palette-outline" size={20} color={Palette.cyan} />
       </View>
 
       {/* Preset Cards Carousel */}

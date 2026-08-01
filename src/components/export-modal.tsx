@@ -56,7 +56,7 @@ export function ExportModal({
 
         {isExporting && (
           <View className="flex-row items-center justify-center gap-3 py-4 bg-primary/10 rounded-2xl border border-primary/20">
-            <ActivityIndicator size="small" color="#2563EB" />
+            <ActivityIndicator size="small" color="#55D6FF" />
             <Text className="text-primary font-bold text-sm">Rendering Liquid Vector Assets...</Text>
           </View>
         )}
@@ -68,7 +68,7 @@ export function ExportModal({
             interactive
             className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-blue-500/10 items-center justify-center">
-              <Ionicons name="image-outline" size={18} color="#2563EB" />
+              <Ionicons name="image-outline" size={18} color="#55D6FF" />
             </View>
             <Text className="text-on-surface font-extrabold text-sm">PNG Image</Text>
             <Text className="text-on-surface-variant text-[11px]">HD raster 2048x2048px transparent</Text>
@@ -79,7 +79,7 @@ export function ExportModal({
             interactive
             className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-emerald-500/10 items-center justify-center">
-              <Ionicons name="code-slash-outline" size={18} color="#10B981" />
+              <Ionicons name="code-slash-outline" size={18} color="#39D98A" />
             </View>
             <Text className="text-on-surface font-extrabold text-sm">SVG Vector</Text>
             <Text className="text-on-surface-variant text-[11px]">Infinite scale vector format for web</Text>
@@ -90,7 +90,7 @@ export function ExportModal({
             interactive
             className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-amber-500/10 items-center justify-center">
-              <Ionicons name="document-text-outline" size={18} color="#F59E0B" />
+              <Ionicons name="document-text-outline" size={18} color="#F6C453" />
             </View>
             <Text className="text-on-surface font-extrabold text-sm">PDF Document</Text>
             <Text className="text-on-surface-variant text-[11px]">Ready to print CMYK vector PDF sheet</Text>
@@ -101,7 +101,7 @@ export function ExportModal({
             interactive
             className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-violet-500/10 items-center justify-center">
-              <Ionicons name="share-social-outline" size={18} color="#7C3AED" />
+              <Ionicons name="share-social-outline" size={18} color="#73B8FF" />
             </View>
             <Text className="text-on-surface font-extrabold text-sm">Share Link</Text>
             <Text className="text-on-surface-variant text-[11px]">Send via AirDrop, Messages, or Mail</Text>
@@ -112,7 +112,7 @@ export function ExportModal({
             interactive
             className="w-[48%] p-4 gap-2">
             <View className="w-9 h-9 rounded-2xl bg-rose-500/10 items-center justify-center">
-              <Ionicons name="print-outline" size={18} color="#F43F5E" />
+              <Ionicons name="print-outline" size={18} color="#FF7A7A" />
             </View>
             <Text className="text-on-surface font-extrabold text-sm">AirPrint</Text>
             <Text className="text-on-surface-variant text-[11px]">Direct wireless printer output</Text>

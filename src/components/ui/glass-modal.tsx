@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect } from 'react';
 import {
@@ -16,7 +15,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { BlurTokens, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassModalProps {
@@ -34,7 +34,7 @@ export function GlassModal({
   children,
   variant = 'modal',
 }: GlassModalProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
   const translateY = useSharedValue(300);
   const opacity = useSharedValue(0);
 
@@ -65,15 +65,18 @@ export function GlassModal({
   return (
     <Modal transparent visible={visible} onRequestClose={onClose} animationType="fade">
       <View className="flex-1 justify-end items-center relative">
-        {/* Backdrop Blur */}
+        {/* Backdrop Blur — the bg-black/30 layer sits behind the glass on every path,
+            giving the backdrop its dimming even where BlurView/GlassView are purely translucent. */}
         <Pressable
           accessibilityLabel="Close modal overlay"
           accessibilityRole="button"
           onPress={onClose}
           className="absolute inset-0 bg-black/30">
-          <BlurView
-            intensity={BlurTokens.modal}
-            tint="dark"
+          <LiquidGlassView
+            blurLevel="modal"
+            glassTint="dark"
+            colorScheme="dark"
+            specular={false}
             style={StyleSheet.absoluteFill}
           />
         </Pressable>
@@ -87,13 +90,12 @@ export function GlassModal({
             isSheet ? styles.sheetRadius : styles.modalRadius,
           ]}
           className="w-full max-w-[540px] border overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
-          <BlurView
-            intensity={BlurTokens.card}
-            tint={isDark ? 'dark' : 'light'}
+          <LiquidGlassView
+            blurLevel="card"
+            tintColor={colors.glassSurfaceHigh}
+            specularInset={16}
             style={StyleSheet.absoluteFill}
-            pointerEvents="none"
           />
-          <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
 
           {/* Sheet Handle */}
           {isSheet && <View style={{ backgroundColor: colors.border }} className="w-12 h-1.5 rounded-full self-center mt-3 mb-1" />}
@@ -129,13 +131,6 @@ export function GlassModal({
 }
 
 const styles = StyleSheet.create({
-  topSpecular: {
-    position: 'absolute',
-    top: 0,
-    left: 16,
-    right: 16,
-    height: 1,
-  },
   sheetRadius: {
     borderTopLeftRadius: 36,
     borderTopRightRadius: 36,

@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { BlurTokens, Palette, SpringConfigs } from '@/constants/theme';
+import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
+import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassToastProps {
@@ -16,7 +16,7 @@ interface GlassToastProps {
 }
 
 export function GlassToast({ visible, message, type = 'success', onHide }: GlassToastProps) {
-  const { colors, shadows, isDark } = useTheme();
+  const { colors, shadows } = useTheme();
   const translateY = useSharedValue(-100);
   const opacity = useSharedValue(0);
 
@@ -47,7 +47,7 @@ export function GlassToast({ visible, message, type = 'success', onHide }: Glass
   if (!visible) return null;
 
   const iconName = type === 'success' ? 'checkmark-circle' : type === 'warning' ? 'warning' : 'information-circle';
-  const iconColor = type === 'success' ? Palette.accentEmerald : type === 'warning' ? Palette.accentOrange : Palette.accentBlue;
+  const iconColor = type === 'success' ? Palette.emerald : type === 'warning' ? Palette.amber : Palette.cyan;
 
   return (
     <Animated.View
@@ -56,13 +56,7 @@ export function GlassToast({ visible, message, type = 'success', onHide }: Glass
       <View
         style={{ backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline }}
         className="flex-row items-center gap-2.5 px-5 py-3 rounded-full border overflow-hidden relative">
-        <BlurView
-          intensity={BlurTokens.card}
-          tint={isDark ? 'dark' : 'light'}
-          style={StyleSheet.absoluteFill}
-          pointerEvents="none"
-        />
-        <View style={[styles.topSpecular, { backgroundColor: colors.specularTop }]} pointerEvents="none" />
+        <LiquidGlassView blurLevel="card" tintColor={colors.glassSurfaceHigh} specularInset={10} style={StyleSheet.absoluteFill} />
 
         <Ionicons name={iconName} size={18} color={iconColor} />
         <Text className="text-on-surface text-xs font-bold">{message}</Text>
@@ -76,12 +70,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: Platform.OS === 'ios' ? 60 : 40,
     alignSelf: 'center',
-  },
-  topSpecular: {
-    position: 'absolute',
-    top: 0,
-    left: 10,
-    right: 10,
-    height: 1,
   },
 });
