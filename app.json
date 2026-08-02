@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "jsEngine": "hermes"
+      "jsEngine": "hermes",
+      "package": "com.rafiqdev.qrify"
     },
     "web": {
       "output": "static",
@@ -40,6 +41,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": false
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a87a3b24-e658-4242-bb7f-48573a1f1313"
+      }
     }
   }
 }

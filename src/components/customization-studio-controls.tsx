@@ -104,5 +104,7 @@ export const CustomizationStudioControls = React.memo(
     prev.options.moduleShape === next.options.moduleShape &&
     prev.options.eyeStyle === next.options.eyeStyle &&
     prev.options.logo === next.options.logo &&
+    prev.options.fgColor === next.options.fgColor &&
+    prev.options.bgColor === next.options.bgColor &&
     prev.onChangeOptions === next.onChangeOptions
 );

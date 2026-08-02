@@ -115,6 +115,7 @@ export default function StudioScreen() {
               typeLabel={selectedType}
               title="Live QR Preview"
               fgColor={customOpts.fgColor}
+              options={customOpts}
               onExport={openExport}
             />
             {/* Action Buttons */}
@@ -142,6 +143,7 @@ export default function StudioScreen() {
           presetId={presetId}
           typeLabel={selectedType}
           fgColor={customOpts.fgColor}
+          options={customOpts}
         />
       </SafeAreaView>
     </GlassContainer>

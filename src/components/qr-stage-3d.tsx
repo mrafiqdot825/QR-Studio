@@ -28,6 +28,8 @@ import {
 } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 
+import { CustomizationOptions } from "@/types/qr";
+
 const { width } = Dimensions.get("window");
 const STAGE_SIZE = Math.min(width * 0.85, 340);
 
@@ -39,6 +41,7 @@ interface QRStage3DProps {
   typeLabel?: string;
   onExport?: () => void;
   fgColor?: string;
+  options?: CustomizationOptions;
 }
 
 export const QRStage3D = React.memo(function QRStage3D({
@@ -49,6 +52,7 @@ export const QRStage3D = React.memo(function QRStage3D({
   typeLabel = "URL Link",
   onExport: _onExport,
   fgColor,
+  options,
 }: QRStage3DProps) {
   const { colors } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -57,7 +61,8 @@ export const QRStage3D = React.memo(function QRStage3D({
   const currentPreset =
     CinematicPresets.find((p) => p.id === presetId) || CinematicPresets[0];
 
-  const effectiveQrColor = fgColor || currentPreset.qrColor;
+  const effectiveQrColor = fgColor || options?.fgColor || currentPreset.qrColor;
+  const showLogo = options?.logo && options.logo !== 'none';
 
   const handleFlip = useCallback(() => {
     if (Platform.OS !== "web") {
@@ -162,6 +167,16 @@ export const QRStage3D = React.memo(function QRStage3D({
               color={effectiveQrColor}
               backgroundColor="transparent"
               getRef={handleSetQrRef}
+              {...(showLogo
+                ? {
+                    logo: require("@/assets/images/icon.png"),
+                    logoSize: STAGE_SIZE * 0.14,
+                    logoBackgroundColor: "#FFFFFF",
+                    logoMargin: 2,
+                    logoRadius: 8,
+                    ecl: "H",
+                  }
+                : { ecl: "M" })}
             />
           </View>
 

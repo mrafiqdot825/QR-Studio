@@ -14,6 +14,8 @@ import * as Haptics from 'expo-haptics';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Platform, Text, View } from 'react-native';
 
+import { CustomizationOptions } from '@/types/qr';
+
 interface ExportModalProps {
   visible: boolean;
   onClose: () => void;
@@ -22,6 +24,7 @@ interface ExportModalProps {
   presetId: PresetId;
   typeLabel: string;
   fgColor?: string;
+  options?: CustomizationOptions;
 }
 
 export function ExportModal({
@@ -32,6 +35,7 @@ export function ExportModal({
   presetId: _presetId,
   typeLabel: _typeLabel,
   fgColor = '#111827',
+  options: _options,
 }: ExportModalProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportingText, setExportingText] = useState('Rendering QR Code...');

@@ -1,5 +1,5 @@
 import { PresetId, CustomizationOptions, QRType } from '@/types/qr';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export interface UseQRGeneratorProps {
   initialType?: QRType;
@@ -7,6 +7,12 @@ export interface UseQRGeneratorProps {
 
 export const useQRGenerator = (props?: UseQRGeneratorProps) => {
   const [selectedType, setSelectedType] = useState<QRType>(props?.initialType || 'url');
+
+  useEffect(() => {
+    if (props?.initialType) {
+      setSelectedType(props.initialType);
+    }
+  }, [props?.initialType]);
   const [presetId, setPresetId] = useState<PresetId>('minimal-white');
 
   const [customOpts, setCustomOpts] = useState<CustomizationOptions>({

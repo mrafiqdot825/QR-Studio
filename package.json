@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~57.0.0",
     "tailwindcss": "^3.4.17",
@@ -51,7 +52,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build:apk": "eas build -p android --profile preview",
+    "build:apk:local": "eas build -p android --profile preview --local"
   },
   "private": true
 }
