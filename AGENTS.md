@@ -1,484 +1,105 @@
-# Fix Hermes Out-of-Memory Crash in Expo SDK 57 (React Native)
-
-## Objective
-
-Act as a Senior React Native, Expo SDK 57, Hermes, and Performance Engineer.
-
-Your task is to locate and permanently fix the application crash that occurs in the iOS Simulator.
-
-The crash report indicates that Hermes runs out of memory while React Native is performing UI updates and layout calculations.
-
-Do not apply temporary workarounds.
-
-Instead, identify the actual root cause and refactor the code where necessary.
-
----
-
-# Crash Summary
-
-The application crashes with:
-
-- EXC_BAD_ACCESS (SIGSEGV)
-- Hermes Fatal Error
-- Hermes GC Out Of Memory (OOM)
-- HadesGC::allocSlow()
-- GCBase::oom()
-- hermesFatalErrorHandler()
-
-The crash stack also contains:
-
-- JSON.stringify()
-- Object.keys()
-- ReanimatedModuleProxy::commitUpdates()
-- YogaLayoutableShadowNode
-- roundLayoutResultsToPixelGrid()
-
-This indicates memory exhaustion caused by JavaScript objects, rendering, animations, or layout recursion.
-
----
-
-# Your Responsibilities
-
-Perform a complete project audit.
-
-Do NOT stop after fixing one issue.
-
-Continue until every possible root cause has been verified.
-
----
-
-## Phase 1 — Memory Audit
-
-Search the entire project for:
-
-- JSON.stringify()
-- Object.keys()
-- Object.values()
-- Object.entries()
-- console.log()
-- console.table()
-- console.dir()
-
-Look for code that serializes:
-
-- API responses
-- Images
-- PDFs
-- SVGs
-- Base64 strings
-- File objects
-- React state
-- AsyncStorage values
-- Supabase responses
-- Large arrays
-- Nested objects
-
-If found:
-
-Determine whether the operation is necessary.
-
-Replace it with safer alternatives.
-
-Never stringify huge objects.
-
----
-
-## Phase 2 — Infinite Render Detection
-
-Inspect every component.
-
-Find:
-
-- setState() inside render
-- state updates during rendering
-- recursive rendering
-- useEffect dependency mistakes
-- useMemo misuse
-- useCallback misuse
-- missing dependency arrays
-
-Detect loops such as:
-
-useEffect(() => {
-setState(...)
-}, [state])
-
-Fix every render loop.
-
----
-
-## Phase 3 — React Reanimated Audit
-
-Inspect every file using:
-
-- react-native-reanimated
-- sharedValue
-- useAnimatedStyle
-- useAnimatedReaction
-- useDerivedValue
-- withTiming
-- withSpring
-- withRepeat
-- withSequence
-
-Check for:
-
-- animation updates every frame
-- recursive shared value updates
-- shared values modified inside animated styles
-- layout animation loops
-
-Refactor animations to avoid unnecessary UI commits.
-
----
-
-## Phase 4 — Layout Audit
-
-Inspect every screen for:
-
-- flex recursion
-- nested ScrollViews
-- nested FlatLists
-- nested FlashLists
-- dynamic height calculations
-- percentage layouts
-- layout animation recursion
-
-Look for components that continuously change size.
-
-Fix layout recalculation loops.
-
----
-
-## Phase 5 — Large Data Audit
-
-Search for:
-
-- FlatList
-- FlashList
-- map()
-- filter()
-- reduce()
-
-Check if extremely large arrays are rendered.
-
-Implement:
-
-- pagination
-- virtualization
-- memoization
-
-Avoid rendering thousands of components.
-
----
-
-## Phase 6 — State Management Audit
-
-Inspect:
-
-- Context API
-- Zustand
-- Redux
-- Jotai
-- React Query
-- TanStack Query
-
-Check for:
-
-- gigantic state objects
-- duplicated data
-- unnecessary re-renders
-- deep object cloning
-- repeated object creation
-
-Split large states into smaller slices.
-
----
-
-## Phase 7 — AsyncStorage Audit
-
-Search for:
-
-- AsyncStorage.setItem()
-- AsyncStorage.getItem()
-
-Check whether entire application state is being serialized.
-
-Avoid storing:
-
-- images
-- PDFs
-- Base64
-- huge objects
-
-Store IDs instead of complete objects whenever possible.
-
----
-
-## Phase 8 — Supabase Audit
-
-Inspect every query.
-
-Look for:
-
-select("\*")
-
-Replace with explicit column selection.
-
-Limit records.
-
-Avoid downloading unnecessary nested relationships.
-
-Paginate large queries.
-
----
-
-## Phase 9 — Expo Modules
-
-Inspect usage of:
-
-- expo-file-system
-- expo-sharing
-- expo-image
-- expo-image-picker
-- expo-document-picker
-- expo-print
-- expo-camera
-
-Check for:
-
-- loading entire files into memory
-- reading Base64 unnecessarily
-- duplicate file loading
-- memory leaks
-
-Use streaming APIs whenever possible.
-
----
-
-## Phase 10 — Image Optimization
-
-Locate every image.
-
-Check:
-
-- PNG size
-- JPG size
-- SVG complexity
-- Image dimensions
-
-Replace oversized assets.
-
-Enable lazy loading.
-
-Avoid rendering full-resolution images.
-
----
-
-## Phase 11 — PDF Handling
-
-If PDFs exist:
-
-Avoid:
-
-JSON.stringify(pdf)
-
-Avoid Base64 conversion unless absolutely required.
-
-Generate PDFs incrementally.
-
-Dispose of temporary files after sharing.
-
----
-
-## Phase 12 — Logging Audit
-
-Remove development logs such as:
-
-console.log(hugeObject)
-
-Replace with:
-
-console.log(object.id)
-
-or
-
-console.log(object.length)
-
-Never log massive API responses.
-
----
-
-## Phase 13 — Memory Leak Detection
-
-Inspect for:
-
-- event listeners
-- intervals
-- timeouts
-- subscriptions
-- animation listeners
-- navigation listeners
-
-Ensure every listener is removed.
-
----
-
-## Phase 14 — Component Optimization
-
-Wrap expensive components using:
-
-- React.memo
-- useMemo
-- useCallback
-
-Memoize expensive calculations.
-
-Prevent unnecessary rerenders.
-
----
-
-## Phase 15 — Navigation Audit
-
-Inspect React Navigation.
-
-Look for:
-
-- screens recreated repeatedly
-- unnecessary params
-- huge objects passed through navigation
-
-Pass IDs instead of objects.
-
----
-
-## Phase 16 — Hermes Optimization
-
-Enable Hermes best practices.
-
-Avoid creating unnecessary objects inside render.
-
-Avoid repeated object spreads.
-
-Avoid deep cloning.
-
-Avoid repeated JSON serialization.
-
----
-
-## Phase 17 — Performance Profiling
-
-Identify:
-
-- slow renders
-- memory spikes
-- excessive commits
-- unnecessary layout passes
-- repeated React reconciliation
-
-Provide recommendations.
-
----
-
-# Refactoring Rules
-
-Do NOT change:
-
-- UI design
-- Theme
-- Colors
-- Typography
-- Navigation flow
-- Business logic
-- Features
-- User experience
-
-Only improve:
-
-- performance
-- stability
-- memory usage
-- rendering efficiency
-
----
-
-# Deliverables
-
-Produce a complete report containing:
-
-## 1. Root Cause
-
-Explain the exact reason for the Hermes Out-of-Memory crash.
-
----
-
-## 2. Every Problem Found
-
-For each issue include:
-
-- File path
-- Line number
-- Why it causes memory problems
-- Severity (Critical / High / Medium / Low)
-
----
-
-## 3. Fix Applied
-
-Show:
-
-Before
-
-```tsx
-// original code
-```
-
-After
-
-```tsx
-// optimized code
-```
-
-Explain why the fix works.
-
----
-
-## 4. Performance Improvements
-
-Estimate improvements for:
-
-- Memory usage
-- Render count
-- JS thread performance
-- UI thread performance
-- Startup time
-- Bundle size (if affected)
-
----
-
-## 5. Validation Checklist
-
-Confirm:
-
-- No render loops
-- No layout recursion
-- No animation loops
-- No oversized serialization
-- No memory leaks
-- No unnecessary re-renders
-- No Hermes OOM risk
-- No Yoga layout recursion
-- Expo SDK 57 compatibility
-- React Native New Architecture compatibility
-
----
-
-# Success Criteria
-
-The application should:
-
-- Run without Hermes Out-of-Memory crashes.
-- Maintain stable memory usage.
-- Eliminate unnecessary renders and layout recalculations.
-- Preserve all existing functionality and UI.
-- Be production-ready, performant, and compatible with Expo SDK 57 and the latest React Native architecture.
+You are a Principal React Native Performance Engineer with 15+ years of experience building high-performance production applications. Your task is to optimise my existing React Native application "HisabKitab" for maximum performance while preserving the current UI, UX, animations, navigation flow, business logic, and functionality.
+
+## Primary Goals
+- Reduce application bundle size.
+- Improve cold and warm startup time.
+- Reduce memory consumption.
+- Reduce unnecessary CPU usage.
+- Improve screen transition performance.
+- Improve scrolling performance.
+- Reduce unnecessary re-renders.
+- Improve overall responsiveness.
+- Maintain pixel-perfect UI with zero visual regressions.
+
+## Strict Rules
+- DO NOT redesign the UI.
+- DO NOT change colours, typography, spacing, layouts, animations, or navigation behaviour.
+- DO NOT modify business logic or API contracts unless required for performance.
+- DO NOT remove features.
+- DO NOT introduce breaking changes.
+- Preserve all user-facing behaviour.
+
+## Perform a complete optimisation audit
+
+### 1. Project Audit
+- Analyse project structure.
+- Identify performance bottlenecks.
+- Detect duplicate code.
+- Find unused files, assets, components, hooks, utilities, and libraries.
+- Remove dead code safely.
+
+### 2. Dependency Optimisation
+- Remove unused dependencies.
+- Replace heavy libraries with lighter alternatives where behaviour remains identical.
+- Optimise imports to minimise bundle size.
+
+### 3. Rendering Optimisation
+- Detect unnecessary re-renders.
+- Apply React.memo where appropriate.
+- Use useMemo and useCallback only when they provide measurable benefits.
+- Avoid premature optimisation.
+
+### 4. Navigation Optimisation
+- Enable lazy loading of screens.
+- Optimise React Navigation configuration.
+- Enable freezeOnBlur and detachInactiveScreens where appropriate.
+- Reduce memory usage during navigation.
+
+### 5. List Performance
+- Optimise all FlatList and SectionList components.
+- Configure windowSize, initialNumToRender, maxToRenderPerBatch, removeClippedSubviews, and getItemLayout where applicable.
+- Eliminate nested ScrollViews that hurt performance.
+
+### 6. Asset Optimisation
+- Find oversized images.
+- Convert PNG/JPG assets to WebP where supported.
+- Compress assets without visible quality loss.
+- Remove unused assets.
+- Optimise SVG usage.
+
+### 7. Font Optimisation
+- Remove unused fonts.
+- Load only required font weights.
+- Prevent duplicate font loading.
+
+### 8. State Management
+- Identify excessive Context usage.
+- Reduce unnecessary subscriptions.
+- Improve selector performance.
+- Prevent global re-renders.
+
+### 9. Startup Optimisation
+- Reduce work performed during App startup.
+- Defer non-critical initialisation until after the first screen is rendered.
+- Lazy initialise services where appropriate.
+
+### 10. Network Optimisation
+- Cache requests where appropriate.
+- Prevent duplicate requests.
+- Optimise retry behaviour.
+- Reduce unnecessary API calls.
+
+### 11. Storage Optimisation
+- Review local storage usage.
+- Optimise read/write frequency.
+- Suggest migration to MMKV if it provides measurable gains.
+
+### 12. Production Build
+- Verify Hermes configuration.
+- Verify R8/ProGuard configuration.
+- Remove development-only code.
+- Remove console.log statements from production builds.
+- Ensure release builds are fully optimised.
+
+### 13. Code Quality
+- Simplify complex components without changing behaviour.
+- Split oversized files into maintainable modules where appropriate.
+- Improve maintainability while preserving functionality.
+
+## Deliverables
+1. A prioritised optimisation report with expected performance impact.
+2. All code changes required to implement the improvements.
+3. A summary of every optimisation made and why.
+4. Estimated improvements to startup time, memory usage, bundle size, and rendering performance.
+5. A regression checklist confirming that the UI, UX, animations, navigation, accessibility, and functionality remain unchanged.
+6. Ensure the application builds successfully on both Android and iOS after all optimisations.

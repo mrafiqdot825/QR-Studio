@@ -17,9 +17,65 @@ interface QuickAction {
   onPress: () => void;
 }
 
+const QuickActionItem = React.memo(
+  ({ action, index }: { action: QuickAction; index: number }) => (
+    <Animated.View entering={FadeInRight.duration(400).delay(index * 80)}>
+      <GlassCard
+        onPress={action.onPress}
+        interactive
+        hasGlow
+        className="w-44 p-4 rounded-3xl"
+        style={styles.actionCard}
+      >
+        <View className="flex-row items-center justify-between mb-2">
+          <View
+            style={{ backgroundColor: action.bgAlpha }}
+            className="w-10 h-10 rounded-2xl items-center justify-center"
+          >
+            <Ionicons name={action.icon} size={20} color={action.color} />
+          </View>
+          <Ionicons
+            name="arrow-forward-circle-outline"
+            size={18}
+            color={action.color}
+          />
+        </View>
+
+        <Text className="text-on-surface font-extrabold text-sm mt-1">
+          {action.title}
+        </Text>
+        <Text
+          className="text-on-surface-variant text-xs mt-0.5 leading-4"
+          numberOfLines={1}
+        >
+          {action.subtitle}
+        </Text>
+      </GlassCard>
+    </Animated.View>
+  )
+);
+QuickActionItem.displayName = "QuickActionItem";
+
 export const QuickActionsBar: React.FC = React.memo(() => {
   const router = useRouter();
   const { openScanner } = useModals();
+
+  const handleNavigateStudio = React.useCallback(
+    () => router.navigate("/studio"),
+    [router]
+  );
+  const handleNavigateExplore = React.useCallback(
+    () => router.navigate("/explore"),
+    [router]
+  );
+  const handleNavigateWifi = React.useCallback(
+    () =>
+      router.navigate({
+        pathname: "/studio",
+        params: { initialType: "wifi" },
+      }),
+    [router]
+  );
 
   const ACTIONS: QuickAction[] = useMemo(
     () => [
@@ -30,7 +86,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         icon: "create-outline",
         color: Palette.cyan,
         bgAlpha: "rgba(85, 214, 255, 0.1)",
-        onPress: () => router.navigate("/studio"),
+        onPress: handleNavigateStudio,
       },
       {
         id: "scan",
@@ -48,7 +104,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         icon: "color-palette-outline",
         color: Palette.softBlue,
         bgAlpha: "rgba(115, 184, 255, 0.1)",
-        onPress: () => router.navigate("/explore"),
+        onPress: handleNavigateExplore,
       },
       {
         id: "wifi",
@@ -57,14 +113,10 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         icon: "wifi-outline",
         color: Palette.amber,
         bgAlpha: "rgba(246, 196, 83, 0.1)",
-        onPress: () =>
-          router.navigate({
-            pathname: "/studio",
-            params: { initialType: "wifi" },
-          }),
+        onPress: handleNavigateWifi,
       },
     ],
-    [router, openScanner]
+    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, openScanner]
   );
 
   return (
@@ -84,42 +136,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         contentContainerStyle={{ gap: 12, paddingVertical: 4 }}
       >
         {ACTIONS.map((action, index) => (
-          <Animated.View
-            key={action.id}
-            entering={FadeInRight.duration(400).delay(index * 80)}
-          >
-            <GlassCard
-              onPress={action.onPress}
-              interactive
-              hasGlow
-              className="w-44 p-4 rounded-3xl"
-              style={styles.actionCard}
-            >
-              <View className="flex-row items-center justify-between mb-2">
-                <View
-                  style={{ backgroundColor: action.bgAlpha }}
-                  className="w-10 h-10 rounded-2xl items-center justify-center"
-                >
-                  <Ionicons name={action.icon} size={20} color={action.color} />
-                </View>
-                <Ionicons
-                  name="arrow-forward-circle-outline"
-                  size={18}
-                  color={action.color}
-                />
-              </View>
-
-              <Text className="text-on-surface font-extrabold text-sm mt-1">
-                {action.title}
-              </Text>
-              <Text
-                className="text-on-surface-variant text-xs mt-0.5 leading-4"
-                numberOfLines={1}
-              >
-                {action.subtitle}
-              </Text>
-            </GlassCard>
-          </Animated.View>
+          <QuickActionItem key={action.id} action={action} index={index} />
         ))}
       </ScrollView>
     </View>

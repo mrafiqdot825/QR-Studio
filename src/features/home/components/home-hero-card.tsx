@@ -39,11 +39,70 @@ const PRESET_QUICK_CHOICES: PresetId[] = [
   "sunset",
 ];
 
+const PresetSwatchItem = React.memo(
+  ({
+    presetId,
+    isSelected,
+    colors,
+    onSelect,
+  }: {
+    presetId: PresetId;
+    isSelected: boolean;
+    colors: any;
+    onSelect: (id: PresetId) => void;
+  }) => {
+    const preset = useMemo(
+      () => CinematicPresets.find((p) => p.id === presetId),
+      [presetId]
+    );
+    if (!preset) return null;
+
+    const handlePress = () => onSelect(presetId);
+
+    return (
+      <Pressable
+        onPress={handlePress}
+        accessibilityLabel={`Select ${preset.name} theme`}
+        accessibilityRole="button"
+        className="items-center"
+      >
+        <View
+          style={{
+            backgroundColor: preset.accentColor,
+            borderColor: isSelected ? colors.primaryText : "transparent",
+          }}
+          className={`w-7 h-7 rounded-full border-2 items-center justify-center ${
+            isSelected ? "opacity-100" : "opacity-70"
+          }`}
+        >
+          {isSelected && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+        </View>
+      </Pressable>
+    );
+  }
+);
+PresetSwatchItem.displayName = "PresetSwatchItem";
+
 export const HomeHeroCard: React.FC = React.memo(() => {
   const router = useRouter();
   const { colors } = useTheme();
   const [selectedPresetId, setSelectedPresetId] =
     useState<PresetId>("ocean-blue");
+
+  const handleNavigateStudio = React.useCallback(
+    () => router.navigate("/studio"),
+    [router]
+  );
+
+  const handleNavigateExplore = React.useCallback(
+    () => router.navigate("/explore"),
+    [router]
+  );
+
+  const handleSelectPreset = React.useCallback(
+    (id: PresetId) => setSelectedPresetId(id),
+    []
+  );
 
   const activePreset = useMemo(() => {
     return (
@@ -121,14 +180,14 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             icon="sparkles"
             iconPosition="right"
             variant="primary"
-            onPress={() => router.navigate("/studio")}
+            onPress={handleNavigateStudio}
           />
 
           <GlassButton
             title="Explore Gallery"
             icon="grid-outline"
             variant="secondary"
-            onPress={() => router.navigate("/explore")}
+            onPress={handleNavigateExplore}
           />
         </View>
         {/* Stats Strip */}
@@ -191,37 +250,15 @@ export const HomeHeroCard: React.FC = React.memo(() => {
 
             {/* Interactive Theme Swatch Bar */}
             <View className="flex-row items-center gap-2 mt-4 pt-3 border-t border-black/5 w-full justify-center">
-              {PRESET_QUICK_CHOICES.map((id) => {
-                const preset = CinematicPresets.find((p) => p.id === id);
-                if (!preset) return null;
-                const isSelected = selectedPresetId === id;
-
-                return (
-                  <Pressable
-                    key={id}
-                    onPress={() => setSelectedPresetId(id)}
-                    accessibilityLabel={`Select ${preset.name} theme`}
-                    accessibilityRole="button"
-                    className="items-center"
-                  >
-                    <View
-                      style={{
-                        backgroundColor: preset.accentColor,
-                        borderColor: isSelected
-                          ? colors.primaryText
-                          : "transparent",
-                      }}
-                      className={`w-7 h-7 rounded-full border-2 items-center justify-center ${
-                        isSelected ? "opacity-100" : "opacity-70"
-                      }`}
-                    >
-                      {isSelected && (
-                        <Ionicons name="checkmark" size={14} color="#FFFFFF" />
-                      )}
-                    </View>
-                  </Pressable>
-                );
-              })}
+              {PRESET_QUICK_CHOICES.map((id) => (
+                <PresetSwatchItem
+                  key={id}
+                  presetId={id}
+                  isSelected={selectedPresetId === id}
+                  colors={colors}
+                  onSelect={handleSelectPreset}
+                />
+              ))}
             </View>
           </GlassCard>
         </View>

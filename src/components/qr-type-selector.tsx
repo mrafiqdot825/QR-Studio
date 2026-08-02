@@ -24,46 +24,51 @@ export const QR_TYPES: QRTypeConfig[] = [
   { id: 'text', label: 'Plain Text', icon: 'document-text-outline', desc: 'Encode custom messages, instructions, or notes.' },
 ];
 
-interface QRTypeSelectorProps {
-  selectedType: QRType;
-  onSelectType: (type: QRType) => void;
-  variant?: 'grid' | 'pills' | 'carousel';
-}
+const QRTypeChipItem = React.memo(
+  ({
+    typeObj,
+    isSelected,
+    onSelect,
+  }: {
+    typeObj: QRTypeConfig;
+    isSelected: boolean;
+    onSelect: (type: QRType) => void;
+  }) => {
+    const handlePress = React.useCallback(() => {
+      onSelect(typeObj.id);
+    }, [onSelect, typeObj.id]);
 
-export const QRTypeSelector = React.memo(function QRTypeSelector({
-  selectedType,
-  onSelectType,
-  variant = 'pills',
-}: QRTypeSelectorProps) {
-  if (variant === 'pills') {
     return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 8, paddingVertical: 4 }}
-        className="my-2">
-        {QR_TYPES.map((typeObj) => {
-          const isSelected = selectedType === typeObj.id;
-          return (
-            <GlassChip
-              key={typeObj.id}
-              label={typeObj.label}
-              icon={typeObj.icon}
-              selected={isSelected}
-              onPress={() => onSelectType(typeObj.id)}
-            />
-          );
-        })}
-      </ScrollView>
+      <GlassChip
+        label={typeObj.label}
+        icon={typeObj.icon}
+        selected={isSelected}
+        onPress={handlePress}
+      />
     );
   }
+);
+QRTypeChipItem.displayName = 'QRTypeChipItem';
 
-  const renderCard = (typeObj: QRTypeConfig, extraStyle: object) => {
-    const isSelected = selectedType === typeObj.id;
+const QRTypeCardItem = React.memo(
+  ({
+    typeObj,
+    isSelected,
+    extraStyle,
+    onSelect,
+  }: {
+    typeObj: QRTypeConfig;
+    isSelected: boolean;
+    extraStyle: object;
+    onSelect: (type: QRType) => void;
+  }) => {
+    const handlePress = React.useCallback(() => {
+      onSelect(typeObj.id);
+    }, [onSelect, typeObj.id]);
+
     return (
       <GlassCard
-        key={typeObj.id}
-        onPress={() => onSelectType(typeObj.id)}
+        onPress={handlePress}
         interactive
         hasGlow={isSelected}
         style={[extraStyle, isSelected ? { borderColor: Palette.cyan } : undefined]}
@@ -95,7 +100,39 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
         </View>
       </GlassCard>
     );
-  };
+  }
+);
+QRTypeCardItem.displayName = 'QRTypeCardItem';
+
+interface QRTypeSelectorProps {
+  selectedType: QRType;
+  onSelectType: (type: QRType) => void;
+  variant?: 'grid' | 'pills' | 'carousel';
+}
+
+export const QRTypeSelector = React.memo(function QRTypeSelector({
+  selectedType,
+  onSelectType,
+  variant = 'pills',
+}: QRTypeSelectorProps) {
+  if (variant === 'pills') {
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: 8, paddingVertical: 4 }}
+        className="my-2">
+        {QR_TYPES.map((typeObj) => (
+          <QRTypeChipItem
+            key={typeObj.id}
+            typeObj={typeObj}
+            isSelected={selectedType === typeObj.id}
+            onSelect={onSelectType}
+          />
+        ))}
+      </ScrollView>
+    );
+  }
 
   if (variant === 'carousel') {
     return (
@@ -104,14 +141,30 @@ export const QRTypeSelector = React.memo(function QRTypeSelector({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ gap: 12, paddingVertical: 4 }}
         className="my-2">
-        {QR_TYPES.map((typeObj) => renderCard(typeObj, { width: 168 }))}
+        {QR_TYPES.map((typeObj) => (
+          <QRTypeCardItem
+            key={typeObj.id}
+            typeObj={typeObj}
+            isSelected={selectedType === typeObj.id}
+            extraStyle={{ width: 168 }}
+            onSelect={onSelectType}
+          />
+        ))}
       </ScrollView>
     );
   }
 
   return (
     <View className="flex-row flex-wrap gap-3 my-2 w-full">
-      {QR_TYPES.map((typeObj) => renderCard(typeObj, { flexBasis: '48%', flexGrow: 1 }))}
+      {QR_TYPES.map((typeObj) => (
+        <QRTypeCardItem
+          key={typeObj.id}
+          typeObj={typeObj}
+          isSelected={selectedType === typeObj.id}
+          extraStyle={{ flexBasis: '48%', flexGrow: 1 }}
+          onSelect={onSelectType}
+        />
+      ))}
     </View>
   );
 });

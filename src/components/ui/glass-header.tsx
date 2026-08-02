@@ -16,7 +16,7 @@ interface GlassHeaderProps {
   className?: string;
 }
 
-export function GlassHeader({
+export const GlassHeader = React.memo(function GlassHeader({
   title = 'QRify',
   showBack = false,
   onBack,
@@ -81,4 +81,4 @@ export function GlassHeader({
       </View>
     </View>
   );
-}
+});

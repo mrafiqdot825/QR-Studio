@@ -11,6 +11,14 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 
+import { LogBox } from 'react-native';
+
+// Ignore harmless Expo Go Android media library permission notification
+LogBox.ignoreLogs([
+  'Due to changes in Androids permission requirements',
+  'Expo Go can no longer provide full access to the media library',
+]);
+
 // Configure Reanimated Logger per official documentation to disable strict mode reading/writing value warnings
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
@@ -50,6 +58,7 @@ function AppNavigation() {
         tabBar={renderTabBar}
         screenOptions={{
           headerShown: false,
+          freezeOnBlur: true,
         }}>
         <Tabs.Screen
           name="index"

@@ -9,6 +9,11 @@ export const PoliciesCard: React.FC = memo(() => {
   const { colors } = useTheme();
   const [activePolicy, setActivePolicy] = useState<'privacy' | 'terms' | 'licenses' | null>(null);
 
+  const openPrivacy = React.useCallback(() => setActivePolicy('privacy'), []);
+  const openTerms = React.useCallback(() => setActivePolicy('terms'), []);
+  const openLicenses = React.useCallback(() => setActivePolicy('licenses'), []);
+  const closeModal = React.useCallback(() => setActivePolicy(null), []);
+
   return (
     <>
       <GlassCard className="p-5 my-3 w-full gap-3">
@@ -20,7 +25,7 @@ export const PoliciesCard: React.FC = memo(() => {
         <Pressable
           accessibilityLabel="Open Privacy Policy"
           accessibilityRole="button"
-          onPress={() => setActivePolicy('privacy')}
+          onPress={openPrivacy}
           style={{ borderColor: colors.border }}
           className="flex-row items-center justify-between py-2 border-b active:opacity-70">
           <View className="flex-row items-center gap-3">
@@ -39,7 +44,7 @@ export const PoliciesCard: React.FC = memo(() => {
         <Pressable
           accessibilityLabel="Open Terms of Service"
           accessibilityRole="button"
-          onPress={() => setActivePolicy('terms')}
+          onPress={openTerms}
           style={{ borderColor: colors.border }}
           className="flex-row items-center justify-between py-2 border-b active:opacity-70">
           <View className="flex-row items-center gap-3">
@@ -58,7 +63,7 @@ export const PoliciesCard: React.FC = memo(() => {
         <Pressable
           accessibilityLabel="Open Software Licenses"
           accessibilityRole="button"
-          onPress={() => setActivePolicy('licenses')}
+          onPress={openLicenses}
           className="flex-row items-center justify-between py-2 active:opacity-70">
           <View className="flex-row items-center gap-3">
             <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
@@ -76,7 +81,7 @@ export const PoliciesCard: React.FC = memo(() => {
       {/* POLICY MODAL DIALOG */}
       <GlassModal
         visible={!!activePolicy}
-        onClose={() => setActivePolicy(null)}
+        onClose={closeModal}
         title={
           activePolicy === 'privacy'
             ? 'Privacy Policy'

@@ -6,8 +6,8 @@ import {
   TEMPLATES_LIST,
 } from "@/features/templates/constants/templates";
 import { useRouter } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useCallback, useMemo, useState } from "react";
+import { FlatList, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ExploreScreen() {
@@ -29,11 +29,49 @@ export default function ExploreScreen() {
     [router]
   );
 
+  const renderItem = useCallback(
+    ({ item }: { item: QRTemplate }) => (
+      <View className="mb-4 w-full max-w-[640px]">
+        <TemplateCard template={item} onUseTemplate={handleUseTemplate} />
+      </View>
+    ),
+    [handleUseTemplate]
+  );
+
+  const keyExtractor = useCallback((item: QRTemplate) => item.id, []);
+
+  const ListHeaderComponent = useMemo(
+    () => (
+      <View className="w-full max-w-[640px]">
+        {/* Header Section */}
+        <View className="my-3">
+          <Text className="text-on-surface text-3xl font-extrabold tracking-tight">
+            Template Gallery
+          </Text>
+          <Text className="text-on-surface-variant text-sm mt-1">
+            Pre-designed luxury light templates for business, hospitality,
+            and events.
+          </Text>
+        </View>
+        {/* Category Filter Chips */}
+        <CategoryBar
+          selectedCategory={selectedCat}
+          onSelectCategory={setSelectedCat}
+        />
+        <View className="h-3" />
+      </View>
+    ),
+    [selectedCat]
+  );
+
   return (
     <GlassContainer>
       <SafeAreaView className="flex-1">
-        <ScrollView
-          className="flex-1"
+        <FlatList
+          data={filteredTemplates}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          ListHeaderComponent={ListHeaderComponent}
           contentContainerStyle={{
             alignItems: "center",
             paddingHorizontal: 20,
@@ -41,35 +79,11 @@ export default function ExploreScreen() {
             paddingBottom: 120,
           }}
           showsVerticalScrollIndicator={false}
-        >
-          <View className="w-full max-w-[640px]">
-            {/* Header Section */}
-            <View className="my-3">
-              <Text className="text-on-surface text-3xl font-extrabold tracking-tight">
-                Template Gallery
-              </Text>
-              <Text className="text-on-surface-variant text-sm mt-1">
-                Pre-designed luxury light templates for business, hospitality,
-                and events.
-              </Text>
-            </View>
-            {/* Category Filter Chips */}
-            <CategoryBar
-              selectedCategory={selectedCat}
-              onSelectCategory={setSelectedCat}
-            />
-            {/* Template Cards List */}
-            <View className="gap-4 my-3">
-              {filteredTemplates.map((t) => (
-                <TemplateCard
-                  key={t.id}
-                  template={t}
-                  onUseTemplate={handleUseTemplate}
-                />
-              ))}
-            </View>
-          </View>
-        </ScrollView>
+          initialNumToRender={4}
+          maxToRenderPerBatch={4}
+          windowSize={5}
+          removeClippedSubviews={Platform.OS !== "web"}
+        />
       </SafeAreaView>
     </GlassContainer>
   );

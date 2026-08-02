@@ -18,9 +18,12 @@ function CustomizationStudioControlsImpl({
   options,
   onChangeOptions,
 }: CustomizationStudioControlsProps) {
-  const updateOption = <K extends keyof CustomizationOptions>(key: K, value: CustomizationOptions[K]) => {
-    onChangeOptions((prev) => ({ ...prev, [key]: value }));
-  };
+  const updateOption = React.useCallback(
+    <K extends keyof CustomizationOptions>(key: K, value: CustomizationOptions[K]) => {
+      onChangeOptions((prev) => ({ ...prev, [key]: value }));
+    },
+    [onChangeOptions]
+  );
 
   return (
     <GlassCard className="p-5 my-3 w-full gap-5">

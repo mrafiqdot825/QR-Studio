@@ -11,6 +11,81 @@ import Animated, { FadeInRight } from "react-native-reanimated";
 
 const FEATURED_TEMPLATES = TEMPLATES_LIST.slice(0, 5);
 
+const FeaturedTemplateItem = React.memo(
+  ({
+    template,
+    index,
+    onSelect,
+  }: {
+    template: (typeof FEATURED_TEMPLATES)[0];
+    index: number;
+    onSelect: (type: string) => void;
+  }) => {
+    const handlePress = useCallback(() => {
+      onSelect(template.type);
+    }, [onSelect, template.type]);
+
+    return (
+      <Animated.View entering={FadeInRight.duration(450).delay(index * 75)}>
+        <GlassCard
+          onPress={handlePress}
+          interactive
+          hasGlow
+          className="w-60 p-4 rounded-3xl"
+          style={styles.templateCard}
+        >
+          <View className="flex-row items-center justify-between mb-3">
+            <View
+              style={{ backgroundColor: `${template.color}15` }}
+              className="w-10 h-10 rounded-2xl items-center justify-center"
+            >
+              <Ionicons
+                name={template.icon as keyof typeof Ionicons.glyphMap}
+                size={20}
+                color={template.color}
+              />
+            </View>
+
+            <GlassBadge
+              label={template.category}
+              variant="secondary"
+              className="py-0.5 px-2 text-[9px]"
+            />
+          </View>
+
+          <Text className="text-on-surface font-extrabold text-base">
+            {template.title}
+          </Text>
+          <Text
+            className="text-on-surface-variant text-xs mt-1 leading-4"
+            numberOfLines={2}
+          >
+            {template.desc}
+          </Text>
+
+          <View
+            style={{
+              backgroundColor: withAlpha(template.color, 0.14),
+              borderColor: withAlpha(template.color, 0.3),
+            }}
+            className="flex-row items-center justify-center gap-1.5 mt-4 py-2.5 rounded-full border overflow-hidden relative"
+          >
+            <Text className="text-on-surface text-xs font-extrabold">
+              Use Template
+            </Text>
+            <Ionicons
+              name="arrow-forward-circle"
+              size={16}
+              color={template.color}
+            />
+          </View>
+        </GlassCard>
+      </Animated.View>
+    );
+  }
+);
+FeaturedTemplateItem.displayName = "FeaturedTemplateItem";
+
 export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
   const router = useRouter();
 
@@ -23,6 +98,10 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
     },
     [router]
   );
+
+  const handleOpenExplore = useCallback(() => {
+    router.navigate("/explore");
+  }, [router]);
 
   return (
     <View className="w-full my-4">
@@ -37,7 +116,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
         </View>
 
         <Pressable
-          onPress={() => router.navigate("/explore")}
+          onPress={handleOpenExplore}
           accessibilityLabel="View all templates"
           accessibilityRole="button"
           className="flex-row items-center gap-1"
@@ -53,64 +132,12 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
         contentContainerStyle={{ gap: 14, paddingVertical: 4 }}
       >
         {FEATURED_TEMPLATES.map((template, index) => (
-          <Animated.View
+          <FeaturedTemplateItem
             key={template.id}
-            entering={FadeInRight.duration(450).delay(index * 75)}
-          >
-            <GlassCard
-              onPress={() => handleSelectTemplate(template.type)}
-              interactive
-              hasGlow
-              className="w-60 p-4 rounded-3xl"
-              style={styles.templateCard}
-            >
-              <View className="flex-row items-center justify-between mb-3">
-                <View
-                  style={{ backgroundColor: `${template.color}15` }}
-                  className="w-10 h-10 rounded-2xl items-center justify-center"
-                >
-                  <Ionicons
-                    name={template.icon as keyof typeof Ionicons.glyphMap}
-                    size={20}
-                    color={template.color}
-                  />
-                </View>
-
-                <GlassBadge
-                  label={template.category}
-                  variant="secondary"
-                  className="py-0.5 px-2 text-[9px]"
-                />
-              </View>
-
-              <Text className="text-on-surface font-extrabold text-base">
-                {template.title}
-              </Text>
-              <Text
-                className="text-on-surface-variant text-xs mt-1 leading-4"
-                numberOfLines={2}
-              >
-                {template.desc}
-              </Text>
-
-              <View
-                style={{
-                  backgroundColor: withAlpha(template.color, 0.14),
-                  borderColor: withAlpha(template.color, 0.3),
-                }}
-                className="flex-row items-center justify-center gap-1.5 mt-4 py-2.5 rounded-full border overflow-hidden relative"
-              >
-                <Text className="text-on-surface text-xs font-extrabold">
-                  Use Template
-                </Text>
-                <Ionicons
-                  name="arrow-forward-circle"
-                  size={16}
-                  color={template.color}
-                />
-              </View>
-            </GlassCard>
-          </Animated.View>
+            template={template}
+            index={index}
+            onSelect={handleSelectTemplate}
+          />
         ))}
       </ScrollView>
     </View>

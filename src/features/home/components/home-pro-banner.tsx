@@ -13,6 +13,11 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 export const HomeProBanner: React.FC = React.memo(() => {
   const router = useRouter();
 
+  const handlePress = React.useCallback(
+    () => router.navigate("/studio"),
+    [router]
+  );
+
   return (
     <Animated.View
       entering={FadeInUp.duration(500).delay(200)}
@@ -61,7 +66,7 @@ export const HomeProBanner: React.FC = React.memo(() => {
           icon="arrow-forward"
           iconPosition="right"
           variant="primary"
-          onPress={() => router.navigate("/studio")}
+          onPress={handlePress}
         />
       </GlassCard>
     </Animated.View>

@@ -11,7 +11,7 @@ import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
 export const DeveloperInfoCard: React.FC = memo(() => {
   const { colors } = useTheme();
-  const handleOpenEmail = async (email: string) => {
+  const handleOpenEmail = React.useCallback(async (email: string) => {
     const subject = encodeURIComponent('QRify App Support & Inquiry');
     const mailtoUrl = `mailto:${email}?subject=${subject}`;
     const webGmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}`;
@@ -41,9 +41,9 @@ export const DeveloperInfoCard: React.FC = memo(() => {
         );
       }
     }
-  };
+  }, []);
 
-  const handleOpenLink = async (url: string, title: string) => {
+  const handleOpenLink = React.useCallback(async (url: string, title: string) => {
     try {
       if (Platform.OS === 'web') {
         window.open(url, '_blank');
@@ -54,7 +54,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
       Logger.error(`Failed to open link ${url}:`, err);
       Alert.alert('Open Link', `Unable to open ${title} (${url})`);
     }
-  };
+  }, []);
 
   return (
     <GlassCard className="p-6 my-3 w-full gap-4">

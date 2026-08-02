@@ -8,6 +8,31 @@ interface CategoryBarProps {
   onSelectCategory: (cat: string) => void;
 }
 
+const CategoryChipItem = React.memo(
+  ({
+    category,
+    isSelected,
+    onSelect,
+  }: {
+    category: string;
+    isSelected: boolean;
+    onSelect: (cat: string) => void;
+  }) => {
+    const handlePress = React.useCallback(() => {
+      onSelect(category);
+    }, [category, onSelect]);
+
+    return (
+      <GlassChip
+        label={category}
+        selected={isSelected}
+        onPress={handlePress}
+      />
+    );
+  }
+);
+CategoryChipItem.displayName = 'CategoryChipItem';
+
 export const CategoryBar: React.FC<CategoryBarProps> = memo(({
   selectedCategory,
   onSelectCategory,
@@ -18,11 +43,11 @@ export const CategoryBar: React.FC<CategoryBarProps> = memo(({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ gap: 8, paddingVertical: 8 }}>
       {TEMPLATE_CATEGORIES.map((cat) => (
-        <GlassChip
+        <CategoryChipItem
           key={cat}
-          label={cat}
-          selected={selectedCategory === cat}
-          onPress={() => onSelectCategory(cat)}
+          category={cat}
+          isSelected={selectedCategory === cat}
+          onSelect={onSelectCategory}
         />
       ))}
     </ScrollView>
