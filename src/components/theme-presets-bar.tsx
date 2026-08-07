@@ -1,5 +1,5 @@
 import { GlassCard } from '@/components/ui/glass-card';
-import { CinematicPresets, Palette, PresetId } from '@/constants/theme';
+import { CinematicPresets, PresetId } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -99,9 +99,8 @@ const SwatchItem = React.memo(
         accessibilityLabel={`Select color tint ${color}`}
         accessibilityRole="button"
         onPress={handlePress}
-        className={`w-8 h-8 rounded-full items-center justify-center ${
-          isSelected ? 'opacity-100' : 'opacity-80'
-        }`}
+        className={`w-8 h-8 rounded-full items-center justify-center ${isSelected ? 'opacity-100' : 'opacity-80'
+          }`}
         style={[
           { backgroundColor: color },
           isSelected && styles.swatchShadow,

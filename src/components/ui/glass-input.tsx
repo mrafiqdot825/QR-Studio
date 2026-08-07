@@ -70,7 +70,7 @@ export function GlassInput({
       <Animated.View
         style={[shadows.subtle, { backgroundColor: colors.surface }, animatedStyle, style]}
         className="flex-row items-center px-4 py-3 rounded-2xl overflow-hidden relative gap-2.5">
-        <LiquidGlassView blurLevel="card" tintColor={colors.surface} specular={false} style={StyleSheet.absoluteFill} />
+        <LiquidGlassView blurLevel="card" tintColor={colors.surface} specular={false} pointerEvents="none" style={StyleSheet.absoluteFill} />
 
         {icon && (
           <Ionicons

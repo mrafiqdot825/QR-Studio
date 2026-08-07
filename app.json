@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "QR Studio",
-    "slug": "qr-studio",
+    "slug": "qrify",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

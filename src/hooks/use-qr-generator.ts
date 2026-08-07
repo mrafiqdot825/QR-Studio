@@ -19,7 +19,7 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     bgColor: '#FFFFFF',
     moduleShape: 'rounded',
     eyeStyle: 'rounded',
-    logo: 'qrstudio',
+    logo: 'none',
     padding: 16,
   });
 

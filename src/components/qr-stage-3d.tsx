@@ -63,6 +63,19 @@ export const QRStage3D = React.memo(function QRStage3D({
 
   const effectiveQrColor = fgColor || options?.fgColor || currentPreset.qrColor;
   const showLogo = options?.logo && options.logo !== 'none';
+  const logoRadius =
+    options?.eyeStyle === 'circle'
+      ? 9999
+      : options?.eyeStyle === 'square'
+      ? 0
+      : 8;
+
+  const qrContainerRadius =
+    options?.eyeStyle === 'circle'
+      ? 'rounded-full'
+      : options?.eyeStyle === 'square'
+      ? 'rounded-2xl'
+      : 'rounded-4xl';
 
   const handleFlip = useCallback(() => {
     if (Platform.OS !== "web") {
@@ -157,7 +170,7 @@ export const QRStage3D = React.memo(function QRStage3D({
           {/* QR Code Container */}
           <View
             style={{ borderColor: colors.border, borderWidth: 1 }}
-            className="self-center bg-white p-5 rounded-4xl relative shadow-sm"
+            className={`self-center bg-white p-5 ${qrContainerRadius} relative shadow-sm`}
           >
             <QRCode
               value={validValue}
@@ -165,13 +178,14 @@ export const QRStage3D = React.memo(function QRStage3D({
               color={effectiveQrColor}
               backgroundColor="transparent"
               getRef={handleSetQrRef}
+              quietZone={options?.moduleShape === 'dots' ? 4 : options?.moduleShape === 'rounded' ? 2 : 0}
               {...(showLogo
                 ? {
                     logo: require("@/assets/images/icon.png"),
                     logoSize: STAGE_SIZE * 0.14,
                     logoBackgroundColor: "#FFFFFF",
                     logoMargin: 2,
-                    logoRadius: 8,
+                    logoRadius,
                     ecl: "H",
                   }
                 : { ecl: "M" })}
@@ -230,31 +244,34 @@ export const QRStage3D = React.memo(function QRStage3D({
             </Pressable>
           </View>
 
-          <View className="flex-1 justify-center gap-3 my-2">
-            <View className="flex-row justify-between items-center pb-2">
-              <Text className="text-on-surface-variant text-xs">
-                Active Theme
-              </Text>
-              <Text
-                className="text-xs font-bold"
-                style={{ color: currentPreset.accentColor }}
-              >
+          <View className="flex-1 justify-center gap-2 my-2">
+            <View className="flex-row justify-between items-center pb-1">
+              <Text className="text-on-surface-variant text-xs">Active Theme</Text>
+              <Text className="text-xs font-bold" style={{ color: currentPreset.accentColor }}>
                 {currentPreset.name}
               </Text>
             </View>
-            <View className="flex-row justify-between items-center pb-2">
-              <Text className="text-on-surface-variant text-xs">
-                Payload Type
-              </Text>
-              <Text className="text-on-surface text-xs font-bold">
-                {typeLabel}
+            <View className="flex-row justify-between items-center pb-1">
+              <Text className="text-on-surface-variant text-xs">Module Shape</Text>
+              <Text className="text-on-surface text-xs font-bold uppercase">
+                {options?.moduleShape || 'ROUNDED'}
               </Text>
             </View>
-            <View className="flex-row justify-between items-center pb-2">
-              <Text className="text-on-surface-variant text-xs">Length</Text>
-              <Text className="text-on-surface text-xs font-bold">
-                {validValue.length} characters
+            <View className="flex-row justify-between items-center pb-1">
+              <Text className="text-on-surface-variant text-xs">Eye Style</Text>
+              <Text className="text-on-surface text-xs font-bold uppercase">
+                {options?.eyeStyle || 'ROUNDED'}
               </Text>
+            </View>
+            <View className="flex-row justify-between items-center pb-1">
+              <Text className="text-on-surface-variant text-xs">Center Badge</Text>
+              <Text className="text-on-surface text-xs font-bold uppercase">
+                {options?.logo || 'NONE'}
+              </Text>
+            </View>
+            <View className="flex-row justify-between items-center pb-1">
+              <Text className="text-on-surface-variant text-xs">Payload Type</Text>
+              <Text className="text-on-surface text-xs font-bold">{typeLabel}</Text>
             </View>
 
             <View
@@ -266,7 +283,7 @@ export const QRStage3D = React.memo(function QRStage3D({
               </Text>
               <Text
                 className="text-accent text-xs font-mono"
-                numberOfLines={3}
+                numberOfLines={2}
               >
                 {validValue}
               </Text>
