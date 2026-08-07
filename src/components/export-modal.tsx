@@ -1,7 +1,9 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassModal } from '@/components/ui/glass-modal';
 import { GlassToast } from '@/components/ui/glass-toast';
-import { PresetId } from '@/constants/theme';
+import { Palette, PresetId } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
+import { withAlpha } from '@/utils/color';
 import {
   ExportFormat,
   saveToGallery,
@@ -34,9 +36,10 @@ export function ExportModal({
   qrRef,
   presetId: _presetId,
   typeLabel: _typeLabel,
-  fgColor = '#111827',
+  fgColor = '#1E2A38',
   options: _options,
 }: ExportModalProps) {
+  const { colors } = useTheme();
   const [isExporting, setIsExporting] = useState(false);
   const [exportingText, setExportingText] = useState('Rendering QR Code...');
   const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('png');
@@ -107,8 +110,8 @@ export function ExportModal({
         </Text>
 
         {isExporting && (
-          <View className="flex-row items-center justify-center gap-3 py-4 bg-primary/10 rounded-2xl border border-primary/20">
-            <ActivityIndicator size="small" color="#55D6FF" />
+          <View style={{ backgroundColor: withAlpha(colors.accent, 0.10), borderColor: withAlpha(colors.accent, 0.20) }} className="flex-row items-center justify-center gap-3 py-4 rounded-2xl border">
+            <ActivityIndicator size="small" color={colors.accent} />
             <Text className="text-accent font-bold text-sm">{exportingText}</Text>
           </View>
         )}
@@ -124,7 +127,7 @@ export function ExportModal({
               interactive
               style={{
                 flex: 1,
-                borderColor: selectedFormat === 'png' ? '#55D6FF' : 'transparent',
+                borderColor: selectedFormat === 'png' ? colors.accent : 'transparent',
                 borderWidth: selectedFormat === 'png' ? 1.5 : 0,
               }}
               className="p-3 items-center gap-1.5"
@@ -132,7 +135,7 @@ export function ExportModal({
               <Ionicons
                 name="image-outline"
                 size={20}
-                color={selectedFormat === 'png' ? '#55D6FF' : '#8A93A6'}
+                color={selectedFormat === 'png' ? colors.accent : colors.tertiaryText}
               />
               <Text
                 className={`text-xs font-bold ${
@@ -151,7 +154,7 @@ export function ExportModal({
               interactive
               style={{
                 flex: 1,
-                borderColor: selectedFormat === 'svg' ? '#39D98A' : 'transparent',
+                borderColor: selectedFormat === 'svg' ? Palette.emerald : 'transparent',
                 borderWidth: selectedFormat === 'svg' ? 1.5 : 0,
               }}
               className="p-3 items-center gap-1.5"
@@ -159,12 +162,11 @@ export function ExportModal({
               <Ionicons
                 name="code-slash-outline"
                 size={20}
-                color={selectedFormat === 'svg' ? '#39D98A' : '#8A93A6'}
+                color={selectedFormat === 'svg' ? Palette.emerald : colors.tertiaryText}
               />
               <Text
-                className={`text-xs font-bold ${
-                  selectedFormat === 'svg' ? 'text-emerald-400' : 'text-on-surface-variant'
-                }`}
+                className="text-xs font-bold"
+                style={{ color: selectedFormat === 'svg' ? Palette.emerald : colors.secondaryText }}
               >
                 SVG Vector
               </Text>
@@ -178,7 +180,7 @@ export function ExportModal({
               interactive
               style={{
                 flex: 1,
-                borderColor: selectedFormat === 'pdf' ? '#F6C453' : 'transparent',
+                borderColor: selectedFormat === 'pdf' ? Palette.amber : 'transparent',
                 borderWidth: selectedFormat === 'pdf' ? 1.5 : 0,
               }}
               className="p-3 items-center gap-1.5"
@@ -186,12 +188,11 @@ export function ExportModal({
               <Ionicons
                 name="document-text-outline"
                 size={20}
-                color={selectedFormat === 'pdf' ? '#F6C453' : '#8A93A6'}
+                color={selectedFormat === 'pdf' ? Palette.amber : colors.tertiaryText}
               />
               <Text
-                className={`text-xs font-bold ${
-                  selectedFormat === 'pdf' ? 'text-amber-400' : 'text-on-surface-variant'
-                }`}
+                className="text-xs font-bold"
+                style={{ color: selectedFormat === 'pdf' ? Palette.amber : colors.secondaryText }}
               >
                 PDF Document
               </Text>
@@ -217,8 +218,8 @@ export function ExportModal({
               className="p-3.5 gap-2"
             >
               <View className="flex-row items-center gap-2.5">
-                <View className="w-9 h-9 rounded-xl bg-blue-500/15 items-center justify-center">
-                  <Ionicons name="download-outline" size={18} color="#55D6FF" />
+                <View style={{ backgroundColor: withAlpha(colors.accent, 0.12) }} className="w-9 h-9 rounded-xl items-center justify-center">
+                  <Ionicons name="download-outline" size={18} color={colors.accent} />
                 </View>
                 <View className="flex-1">
                   <Text className="text-on-surface font-extrabold text-sm" numberOfLines={1}>

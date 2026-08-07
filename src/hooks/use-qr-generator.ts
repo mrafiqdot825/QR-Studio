@@ -19,12 +19,12 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     bgColor: '#FFFFFF',
     moduleShape: 'rounded',
     eyeStyle: 'rounded',
-    logo: 'qrify',
+    logo: 'qrstudio',
     padding: 16,
   });
 
   // Inputs
-  const [url, setUrl] = useState('https://qrify.me/business-pro');
+  const [url, setUrl] = useState('https://qrstudio.me/business-pro');
   const [text, setText] = useState('Hello from Liquid Glass Studio');
 
   // WiFi
@@ -35,12 +35,12 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
   // VCard
   const [vName, setVName] = useState('Alex Morgan');
   const [vPhone, setVPhone] = useState('+1 415 555 0199');
-  const [vEmail, setVEmail] = useState('alex.morgan@qrify.me');
+  const [vEmail, setVEmail] = useState('alex.morgan@qrstudio.me');
   const [vOrg, setVOrg] = useState('Liquid Design Studio');
 
   // Email
-  const [emailTo, setEmailTo] = useState('contact@qrify.me');
-  const [emailSubject, setEmailSubject] = useState('Inquiry via QRify');
+  const [emailTo, setEmailTo] = useState('contact@qrstudio.me');
+  const [emailSubject, setEmailSubject] = useState('Inquiry via QR Studio');
 
   // Phone
   const [phoneNum, setPhoneNum] = useState('+1 415 555 0199');

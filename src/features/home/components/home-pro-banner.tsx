@@ -2,6 +2,7 @@ import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassButton } from "@/components/ui/glass-button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Palette } from "@/constants/theme";
+import { useTheme } from "@/hooks/use-theme";
 import { withAlpha } from "@/utils/color";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,6 +13,7 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 
 export const HomeProBanner: React.FC = React.memo(() => {
   const router = useRouter();
+  const { colors } = useTheme();
 
   const handlePress = React.useCallback(
     () => router.navigate("/studio"),
@@ -25,12 +27,11 @@ export const HomeProBanner: React.FC = React.memo(() => {
     >
       <GlassCard
         style={styles.bannerCardShadow}
-        className="p-7 items-center text-center gap-4 overflow-hidden rounded-3xl"
+        className="p-7 items-center text-center gap-4 overflow-hidden rounded-4xl"
       >
         <LinearGradient
           colors={[
-            withAlpha(Palette.cyan, 0.12),
-            withAlpha(Palette.softBlue, 0.08),
+            withAlpha(colors.accent, 0.10),
             "transparent",
           ]}
           style={StyleSheet.absoluteFill}
@@ -39,11 +40,14 @@ export const HomeProBanner: React.FC = React.memo(() => {
           pointerEvents="none"
         />
 
-        <View className="w-14 h-14 rounded-3xl bg-primary/10 items-center justify-center">
+        <View
+          style={{ backgroundColor: withAlpha(colors.accent, 0.10) }}
+          className="w-14 h-14 rounded-3xl items-center justify-center"
+        >
           <Ionicons
             name="sparkles"
             size={26}
-            color={Palette.cyan}
+            color={colors.accent}
           />
         </View>
 
@@ -77,6 +81,6 @@ HomeProBanner.displayName = "HomeProBanner";
 
 const styles = StyleSheet.create({
   bannerCardShadow: {
-    boxShadow: "0px 20px 30px rgba(0, 0, 0, 0.08)",
+    boxShadow: "0px 4px 20px rgba(30, 42, 56, 0.08)",
   },
 });

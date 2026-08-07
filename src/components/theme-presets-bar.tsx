@@ -14,14 +14,14 @@ interface ThemePresetsBarProps {
 }
 
 const ACCENT_PALETTE = [
-  '#111827',
-  '#2563EB',
-  '#10B981',
-  '#7C3AED',
-  '#F59E0B',
-  '#EF4444',
+  '#1E2A38',
+  '#3E6FA6',
+  '#2E7D32',
+  '#6B46C1',
+  '#ED6C02',
+  '#D32F2F',
   '#0284C7',
-  '#A855F7',
+  '#8B5CF6',
   '#C9A227',
 ];
 
@@ -48,13 +48,13 @@ const PresetCardItem = React.memo(
         onPress={handlePress}
         style={[
           isSelected ? styles.presetCardShadow : undefined,
-          isSelected
-            ? { backgroundColor: colors.glassSurfaceHigh }
-            : { backgroundColor: colors.glassSurfaceSubtle },
+          {
+            backgroundColor: isSelected ? colors.surface : colors.glassSurfaceSubtle,
+            borderColor: isSelected ? colors.accent : colors.border,
+            borderWidth: isSelected ? 2 : 1,
+          },
         ]}
-        className={`w-28 p-2.5 rounded-2xl items-center gap-2 ${
-          isSelected ? 'border-2 border-primary' : ''
-        }`}>
+        className="w-28 p-2.5 rounded-2xl items-center gap-2">
         <LinearGradient
           colors={preset.gradient}
           start={{ x: 0, y: 0 }}
@@ -66,7 +66,7 @@ const PresetCardItem = React.memo(
             <Ionicons name="qr-code" size={14} color="#FFFFFF" />
           </View>
           {isSelected && (
-            <View className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-primary items-center justify-center">
+            <View style={{ backgroundColor: colors.accent }} className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full items-center justify-center">
               <Ionicons name="checkmark" size={10} color="#FFFFFF" />
             </View>
           )}
@@ -129,7 +129,7 @@ export const ThemePresetsBar = React.memo(function ThemePresetsBar({
             Select a luxury preset or custom foreground tint.
           </Text>
         </View>
-        <Ionicons name="color-palette-outline" size={20} color={Palette.cyan} />
+        <Ionicons name="color-palette-outline" size={20} color={colors.accent} />
       </View>
 
       {/* Preset Cards Carousel */}
@@ -172,12 +172,12 @@ export const ThemePresetsBar = React.memo(function ThemePresetsBar({
 
 const styles = StyleSheet.create({
   presetCardShadow: {
-    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0px 4px 12px rgba(30, 42, 56, 0.08)',
   },
   badgeShadow: {
-    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.05)',
+    boxShadow: '0px 1px 4px rgba(30, 42, 56, 0.05)',
   },
   swatchShadow: {
-    boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0px 2px 6px rgba(30, 42, 56, 0.10)',
   },
 });

@@ -66,17 +66,16 @@ export function GlassModal({
   return (
     <Modal transparent visible={visible} onRequestClose={onClose} animationType="fade">
       <View className="flex-1 justify-end items-center relative">
-        {/* Backdrop Blur — the bg-black/30 layer sits behind the glass on every path,
-            giving the backdrop its dimming even where BlurView/GlassView are purely translucent. */}
+        {/* Backdrop Blur */}
         <Pressable
           accessibilityLabel="Close modal overlay"
           accessibilityRole="button"
           onPress={onClose}
-          className="absolute inset-0 bg-black/30">
+          className="absolute inset-0 bg-black/10">
           <LiquidGlassView
             blurLevel="modal"
-            glassTint="dark"
-            colorScheme="dark"
+            glassTint="light"
+            colorScheme="light"
             specular={false}
             style={StyleSheet.absoluteFill}
           />
@@ -86,13 +85,15 @@ export function GlassModal({
         <Animated.View
           style={[
             shadows.modal,
-            { backgroundColor: colors.glassSurfaceHigh },
+            { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border, borderWidth: 1 },
             animatedStyle,
             isSheet ? styles.sheetRadius : styles.modalRadius,
           ]}
           className="w-full max-w-[540px] overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
           <LiquidGlassView
             blurLevel="card"
+            glassTint="light"
+            colorScheme="light"
             tintColor={colors.glassSurfaceHigh}
             specular={false}
             style={StyleSheet.absoluteFill}
@@ -139,13 +140,13 @@ export function GlassModal({
 
 const styles = StyleSheet.create({
   sheetRadius: {
-    borderTopLeftRadius: 36,
-    borderTopRightRadius: 36,
-    borderBottomLeftRadius: Platform.OS === 'web' ? 36 : 0,
-    borderBottomRightRadius: Platform.OS === 'web' ? 36 : 0,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    borderBottomLeftRadius: Platform.OS === 'web' ? 28 : 0,
+    borderBottomRightRadius: Platform.OS === 'web' ? 28 : 0,
   },
   modalRadius: {
-    borderRadius: 36,
+    borderRadius: 24,
   },
   contentContainer: {
     padding: 24,

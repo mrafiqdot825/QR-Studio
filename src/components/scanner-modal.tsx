@@ -14,6 +14,7 @@ import Animated, {
 import { GlassBadge } from '@/components/ui/glass-badge';
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, Shadows } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 interface ScannerModalProps {
   visible: boolean;
@@ -21,6 +22,7 @@ interface ScannerModalProps {
 }
 
 export function ScannerModal({ visible, onClose }: ScannerModalProps) {
+  const { colors, shadows } = useTheme();
   const [torch, setTorch] = useState(false);
   const scanLineY = useSharedValue(0);
 
@@ -48,7 +50,7 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
     if (Platform.OS !== 'web') {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     }
-    const scannedCode = 'https://qrify.me/demo-scanned-access';
+    const scannedCode = 'https://qrstudio.me/demo-scanned-access';
 
     Alert.alert(
       'QR Code Scanned!',
@@ -101,17 +103,17 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
             <LiquidGlassView blurLevel="subtle" colorScheme="dark" specular={false} style={StyleSheet.absoluteFill} />
 
             {/* CORNER BRACKETS */}
-            <View className="absolute top-3 left-3 w-6 h-6 border-t-4 border-l-4 border-accent rounded-tl-xl" />
-            <View className="absolute top-3 right-3 w-6 h-6 border-t-4 border-r-4 border-accent rounded-tr-xl" />
-            <View className="absolute bottom-3 left-3 w-6 h-6 border-b-4 border-l-4 border-accent rounded-bl-xl" />
-            <View className="absolute bottom-3 right-3 w-6 h-6 border-b-4 border-r-4 border-accent rounded-br-xl" />
+            <View style={{ borderColor: colors.accent }} className="absolute top-3 left-3 w-6 h-6 border-t-4 border-l-4 rounded-tl-xl" />
+            <View style={{ borderColor: colors.accent }} className="absolute top-3 right-3 w-6 h-6 border-t-4 border-r-4 rounded-tr-xl" />
+            <View style={{ borderColor: colors.accent }} className="absolute bottom-3 left-3 w-6 h-6 border-b-4 border-l-4 rounded-bl-xl" />
+            <View style={{ borderColor: colors.accent }} className="absolute bottom-3 right-3 w-6 h-6 border-b-4 border-r-4 rounded-br-xl" />
 
             {/* ANIMATED GLASS SCAN LINE */}
             <Animated.View
               style={[
+                shadows.glowBlue,
                 animatedScanLine,
-                Shadows.glowBlue,
-                { position: 'absolute', top: 20, left: 10, right: 10, height: 3, backgroundColor: Palette.cyan, borderRadius: 2 },
+                { position: 'absolute', top: 20, left: 10, right: 10, height: 3, backgroundColor: colors.accent, borderRadius: 2 },
               ]}
             />
           </View>
@@ -127,8 +129,8 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
             accessibilityLabel="Test scan payload"
             accessibilityRole="button"
             onPress={handleSimulateScan}
-            style={styles.scanButtonShadow}
-            className="flex-row items-center gap-2 bg-primary px-8 py-4 rounded-full active:scale-95">
+            style={[styles.scanButtonShadow, { backgroundColor: colors.accent }]}
+            className="flex-row items-center gap-2 px-8 py-4 rounded-full active:scale-95">
             <Ionicons name="scan" size={20} color="#FFFFFF" />
             <Text className="text-white font-extrabold text-sm tracking-wider">TEST SCAN PAYLOAD</Text>
           </Pressable>
@@ -140,6 +142,6 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
 
 const styles = StyleSheet.create({
   scanButtonShadow: {
-    boxShadow: '0px 10px 15px rgba(85, 214, 255, 0.4)',
+    boxShadow: '0px 6px 20px rgba(62, 111, 166, 0.3)',
   },
 });

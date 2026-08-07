@@ -2,6 +2,7 @@ import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Palette } from "@/constants/theme";
 import { TEMPLATES_LIST } from "@/features/templates/constants/templates";
+import { useTheme } from "@/hooks/use-theme";
 import { withAlpha } from "@/utils/color";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -88,6 +89,7 @@ FeaturedTemplateItem.displayName = "FeaturedTemplateItem";
 
 export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
   const router = useRouter();
+  const { colors } = useTheme();
 
   const handleSelectTemplate = useCallback(
     (type: string) => {
@@ -122,7 +124,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
           className="flex-row items-center gap-1"
         >
           <Text className="text-accent text-xs font-bold">Gallery</Text>
-          <Ionicons name="chevron-forward" size={14} color={Palette.cyan} />
+          <Ionicons name="chevron-forward" size={14} color={colors.accent} />
         </Pressable>
       </View>
 
@@ -148,6 +150,6 @@ FeaturedTemplatesStrip.displayName = "FeaturedTemplatesStrip";
 
 const styles = StyleSheet.create({
   templateCard: {
-    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0px 4px 16px rgba(30, 42, 56, 0.06)",
   },
 });

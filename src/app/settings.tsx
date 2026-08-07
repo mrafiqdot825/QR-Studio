@@ -54,8 +54,8 @@ export default function SettingsScreen() {
 
               <View className="flex-row items-center justify-between py-1">
                 <View className="flex-row items-center gap-3">
-                  <View className="w-8 h-8 rounded-xl bg-blue-500/10 items-center justify-center">
-                    <Ionicons name="phone-portrait-outline" size={16} color="#55D6FF" />
+                  <View style={{ backgroundColor: colors.secondaryBackground }} className="w-8 h-8 rounded-xl items-center justify-center">
+                    <Ionicons name="phone-portrait-outline" size={16} color={colors.accent} />
                   </View>
                   <View>
                     <Text className="text-on-surface font-bold text-sm">Haptic Feedback</Text>
@@ -66,14 +66,15 @@ export default function SettingsScreen() {
                   accessibilityLabel="Toggle haptic feedback"
                   value={hapticsEnabled}
                   onValueChange={toggleHaptics}
-                  trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
+                  trackColor={{ false: colors.border, true: colors.accent }}
+                  thumbColor="#FFFFFF"
                 />
               </View>
 
               <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
                 <View className="flex-row items-center gap-3">
-                  <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
-                    <Ionicons name="sparkles-outline" size={16} color="#73B8FF" />
+                  <View style={{ backgroundColor: colors.secondaryBackground }} className="w-8 h-8 rounded-xl items-center justify-center">
+                    <Ionicons name="sparkles-outline" size={16} color={colors.accent} />
                   </View>
                   <View>
                     <Text className="text-on-surface font-bold text-sm">Ultra HD Vector Engine</Text>
@@ -84,7 +85,8 @@ export default function SettingsScreen() {
                   accessibilityLabel="Toggle ultra HD vector engine"
                   value={highQualityExports}
                   onValueChange={setHighQualityExports}
-                  trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
+                  trackColor={{ false: colors.border, true: colors.accent }}
+                  thumbColor="#FFFFFF"
                 />
               </View>
             </GlassCard>

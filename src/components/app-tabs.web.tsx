@@ -18,7 +18,7 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
       <View style={[styles.glassContainerOuter, shadows.dock, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}>
         <BlurView
           intensity={BlurTokens.dock}
-          tint="dark"
+          tint="light"
           style={styles.blurViewContainer}
           pointerEvents="none"
         />
@@ -68,8 +68,8 @@ export function LiquidGlassTabBar({ state, descriptors, navigation }: LiquidGlas
                 accessibilityLabel={label as string}
                 accessibilityState={isFocused ? { selected: true } : {}}>
                 {isFocused ? (
-                  <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: 'rgba(85, 214, 255, 0.25)' }]}>
-                    <Ionicons name={iconName} size={22} color="#55D6FF" />
+                  <View style={[styles.activeLiquidPill, shadows.glowBlue, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                    <Ionicons name={iconName} size={22} color={colors.accent} />
                   </View>
                 ) : (
                   <View style={styles.inactiveTabContent}>

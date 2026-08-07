@@ -48,7 +48,7 @@ export const QRStage3D = React.memo(function QRStage3D({
   value,
   presetId,
   qrRef,
-  title = "QRify Code",
+  title = "QR Studio Code",
   typeLabel = "URL Link",
   onExport: _onExport,
   fgColor,
@@ -101,14 +101,14 @@ export const QRStage3D = React.memo(function QRStage3D({
     };
   });
 
-  const validValue = value.trim() || "https://qrify.me/business-pro";
+  const validValue = value.trim() || "https://qrstudio.me/business-pro";
 
   return (
     <View className="items-center justify-center my-4 relative">
       {/* Soft Ambient Background Glow */}
       <View
-        className="absolute w-80 h-80 rounded-full -z-10 opacity-30"
-        style={{ backgroundColor: currentPreset.accentColor }}
+        className="absolute w-80 h-80 rounded-full -z-10 opacity-15"
+        style={{ backgroundColor: colors.accent }}
       />
 
       <View style={{ width: STAGE_SIZE, height: STAGE_SIZE + 90 }}>
@@ -117,13 +117,15 @@ export const QRStage3D = React.memo(function QRStage3D({
           pointerEvents={isFlipped ? "none" : "auto"}
           style={[
             frontAnimatedStyle,
-            { backgroundColor: colors.glassSurfaceHigh },
+            { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
           ]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between"
+          className="absolute w-full h-full rounded-4xl overflow-hidden p-6 justify-between shadow-sm"
         >
           <LiquidGlassView
             blurLevel="card"
-            tintColor={colors.glassSurfaceHigh}
+            glassTint="light"
+            colorScheme="light"
+            tintColor={colors.surface}
             specular={false}
             style={StyleSheet.absoluteFill}
           />
@@ -132,7 +134,7 @@ export const QRStage3D = React.memo(function QRStage3D({
           {/* Top Bar */}
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center gap-2">
-              <Ionicons name="qr-code-outline" size={18} color={Palette.cyan} />
+              <Ionicons name="qr-code-outline" size={18} color={colors.accent} />
               <Text className="text-on-surface text-base font-bold">
                 {title}
               </Text>
@@ -141,16 +143,9 @@ export const QRStage3D = React.memo(function QRStage3D({
               accessibilityLabel="Flip card to view code metadata"
               accessibilityRole="button"
               onPress={handleFlip}
-              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              style={{ backgroundColor: colors.secondaryBackground, borderColor: colors.border, borderWidth: 1 }}
               className="flex-row items-center gap-1 px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
             >
-              <LiquidGlassView
-                blurLevel="subtle"
-                tintColor={colors.glassSurfaceSubtle}
-                isInteractive
-                specular={false}
-                style={StyleSheet.absoluteFill}
-              />
               <Ionicons
                 name="sync-outline"
                 size={14}
@@ -159,8 +154,11 @@ export const QRStage3D = React.memo(function QRStage3D({
             </Pressable>
           </View>
 
-          {/* QR Code Glass Container */}
-          <View className="self-center bg-white p-5 rounded-4xl relative">
+          {/* QR Code Container */}
+          <View
+            style={{ borderColor: colors.border, borderWidth: 1 }}
+            className="self-center bg-white p-5 rounded-4xl relative shadow-sm"
+          >
             <QRCode
               value={validValue}
               size={STAGE_SIZE * 0.55}
@@ -197,13 +195,15 @@ export const QRStage3D = React.memo(function QRStage3D({
           pointerEvents={isFlipped ? "auto" : "none"}
           style={[
             backAnimatedStyle,
-            { backgroundColor: colors.glassSurfaceHigh },
+            { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
           ]}
-          className="absolute w-full h-full rounded-5xl overflow-hidden p-6 justify-between"
+          className="absolute w-full h-full rounded-4xl overflow-hidden p-6 justify-between shadow-sm"
         >
           <LiquidGlassView
             blurLevel="card"
-            tintColor={colors.glassSurfaceHigh}
+            glassTint="light"
+            colorScheme="light"
+            tintColor={colors.surface}
             specular={false}
             style={StyleSheet.absoluteFill}
           />
@@ -216,16 +216,9 @@ export const QRStage3D = React.memo(function QRStage3D({
               accessibilityLabel="Flip card to view QR code"
               accessibilityRole="button"
               onPress={handleFlip}
-              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              style={{ backgroundColor: colors.secondaryBackground, borderColor: colors.border, borderWidth: 1 }}
               className="flex-row items-center gap-1 px-3 py-1.5 rounded-full overflow-hidden relative active:opacity-70"
             >
-              <LiquidGlassView
-                blurLevel="subtle"
-                tintColor={colors.glassSurfaceSubtle}
-                isInteractive
-                specular={false}
-                style={StyleSheet.absoluteFill}
-              />
               <Ionicons
                 name="sync-outline"
                 size={14}

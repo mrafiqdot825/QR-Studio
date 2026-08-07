@@ -63,8 +63,8 @@ function TabItem({
         accessibilityRole="button"
         accessibilityLabel={route.name}
         accessibilityState={isFocused ? { selected: true } : {}}>
-        <View style={[styles.pill, isFocused && { backgroundColor: withAlpha(Palette.cyan, 0.16) }]}>
-          <Ionicons name={iconName} size={isFocused ? 22 : 20} color={colors.secondaryText} />
+        <View style={[styles.pill, isFocused && { backgroundColor: withAlpha(colors.accent, 0.12) }]}>
+          <Ionicons name={iconName} size={isFocused ? 22 : 20} color={isFocused ? colors.accent : colors.secondaryText} />
         </View>
       </Pressable>
     </Animated.View>

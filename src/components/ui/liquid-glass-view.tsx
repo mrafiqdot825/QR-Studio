@@ -62,7 +62,7 @@ export function LiquidGlassView({
       <GlassView
         glassEffectStyle={glassStyle ?? GLASS_STYLE_BY_BLUR_LEVEL[blurLevel]}
         tintColor={tintColor}
-        colorScheme={colorScheme ?? 'dark'}
+        colorScheme={colorScheme ?? 'light'}
         isInteractive={isInteractive}
         style={style}
         pointerEvents={passthroughPointerEvents}
@@ -75,7 +75,7 @@ export function LiquidGlassView({
     <View style={style} pointerEvents={passthroughPointerEvents} {...props}>
       <BlurView
         intensity={BlurTokens[blurLevel]}
-        tint={glassTint ?? 'dark'}
+        tint={glassTint ?? 'light'}
         style={StyleSheet.absoluteFill}
         pointerEvents="none"
       />

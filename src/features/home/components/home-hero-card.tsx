@@ -142,7 +142,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
   const qrCodeElement = useMemo(
     () => (
       <QRCode
-        value="https://qrify.me/pro-studio"
+        value="https://qrstudio.me/pro-studio"
         size={Math.min(width * 0.48, 190)}
         color={activePreset.qrColor}
         backgroundColor="transparent"
@@ -191,7 +191,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
           />
         </View>
         {/* Stats Strip */}
-        <View className="flex-row items-center mt-2 pt-2 border-t border-black/5">
+        <View style={{ borderColor: colors.border }} className="flex-row items-center mt-2 pt-2 border-t">
           {HERO_STATS.map((stat, index) => (
             <View key={stat.label} className="flex-row items-center">
               {index > 0 && (
@@ -224,7 +224,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             pointerEvents="none"
           >
             <LinearGradient
-              colors={[withAlpha(activePreset.accentColor, 0.4), "transparent"]}
+              colors={[withAlpha(colors.accent, 0.12), "transparent"]}
               style={styles.heroGlowFill}
               start={{ x: 0.5, y: 0.5 }}
               end={{ x: 1, y: 1 }}
@@ -235,8 +235,8 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             <GlassShimmer />
             {/* QR Code Container with Active Preset Colors */}
             <View
-              style={{ backgroundColor: activePreset.qrBg }}
-              className="p-5 rounded-4xl mb-4 border border-black/[0.06] items-center justify-center"
+              style={{ backgroundColor: activePreset.qrBg, borderColor: colors.border }}
+              className="p-5 rounded-4xl mb-4 border items-center justify-center shadow-sm"
             >
               {qrCodeElement}
             </View>
@@ -249,7 +249,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
             </Text>
 
             {/* Interactive Theme Swatch Bar */}
-            <View className="flex-row items-center gap-2 mt-4 pt-3 border-t border-black/5 w-full justify-center">
+            <View style={{ borderColor: colors.border }} className="flex-row items-center gap-2 mt-4 pt-3 border-t w-full justify-center">
               {PRESET_QUICK_CHOICES.map((id) => (
                 <PresetSwatchItem
                   key={id}

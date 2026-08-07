@@ -25,7 +25,7 @@ export const GlassBadge = React.memo(function GlassBadge({
   const isWarning = variant === 'warning';
 
   const badgeColor = isPrimary
-    ? Palette.cyan
+    ? colors.accent
     : isSuccess
     ? Palette.emerald
     : isWarning
@@ -33,8 +33,8 @@ export const GlassBadge = React.memo(function GlassBadge({
     : colors.secondaryText;
 
   const isTinted = isPrimary || isSuccess || isWarning;
-  const overlayColor = isTinted ? withAlpha(badgeColor, 0.16) : colors.glassSurfaceSubtle;
-  const borderColor = isTinted ? withAlpha(badgeColor, 0.3) : colors.hairline;
+  const overlayColor = isTinted ? withAlpha(badgeColor, 0.12) : colors.glassSurfaceSubtle;
+  const borderColor = isTinted ? withAlpha(badgeColor, 0.25) : colors.border;
 
   return (
     <View

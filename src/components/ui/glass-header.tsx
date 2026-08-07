@@ -17,7 +17,7 @@ interface GlassHeaderProps {
 }
 
 export const GlassHeader = React.memo(function GlassHeader({
-  title = 'QRify',
+  title = 'QR Studio',
   showBack = false,
   onBack,
   onOpenScanner,
@@ -34,9 +34,9 @@ export const GlassHeader = React.memo(function GlassHeader({
 
   return (
     <View
-      style={[shadows.subtle, { backgroundColor: colors.glassSurface, borderColor: colors.border }]}
+      style={[shadows.subtle, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}
       className={`w-full z-50 border-b relative overflow-hidden ${className}`}>
-      <LiquidGlassView blurLevel="header" tintColor={colors.glassSurface} style={StyleSheet.absoluteFill} />
+      <LiquidGlassView blurLevel="header" glassTint="light" colorScheme="light" tintColor={colors.glassSurfaceHigh} style={StyleSheet.absoluteFill} />
 
       <View className="flex-row items-center justify-between px-5 py-3.5 w-full">
         <View className="flex-row items-center gap-3">
@@ -46,12 +46,12 @@ export const GlassHeader = React.memo(function GlassHeader({
                 triggerHaptic();
                 if (onBack) onBack();
               }}
-              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline }}
+              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
               className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
-              <Ionicons name="arrow-back" size={20} color={Palette.cyan} />
+              <Ionicons name="arrow-back" size={20} color={colors.primaryText} />
             </Pressable>
           ) : null}
-          <Text className="text-accent text-2xl font-extrabold tracking-tighter">{title}</Text>
+          <Text className="text-on-surface text-2xl font-extrabold tracking-tighter">{title}</Text>
         </View>
 
         <View className="flex-row items-center gap-2.5">
@@ -61,8 +61,9 @@ export const GlassHeader = React.memo(function GlassHeader({
                 triggerHaptic();
                 onOpenScanner();
               }}
-              className="w-9 h-9 rounded-full items-center justify-center bg-primary/10 border border-primary/20 active:scale-95">
-              <Ionicons name="scan-outline" size={18} color={Palette.cyan} />
+              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
+              className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
+              <Ionicons name="scan-outline" size={18} color={colors.accent} />
             </Pressable>
           )}
 
@@ -72,7 +73,7 @@ export const GlassHeader = React.memo(function GlassHeader({
                 triggerHaptic();
                 onOpenSettings();
               }}
-              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline }}
+              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
               className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
               <Ionicons name="settings-outline" size={18} color={colors.secondaryText} />
             </Pressable>

@@ -4,6 +4,7 @@ import { APP_CONFIG } from '@/config/app.config';
 import { Palette } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Logger } from '@/services/logger/logger.service';
+import { withAlpha } from '@/utils/color';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { memo } from 'react';
@@ -12,7 +13,7 @@ import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 export const DeveloperInfoCard: React.FC = memo(() => {
   const { colors } = useTheme();
   const handleOpenEmail = React.useCallback(async (email: string) => {
-    const subject = encodeURIComponent('QRify App Support & Inquiry');
+    const subject = encodeURIComponent('QR Studio App Support & Inquiry');
     const mailtoUrl = `mailto:${email}?subject=${subject}`;
     const webGmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}`;
 
@@ -61,7 +62,7 @@ export const DeveloperInfoCard: React.FC = memo(() => {
       {/* HEADER WITH LOGO & APP VERSION */}
       <View className="flex-row items-center gap-4">
         <LinearGradient
-          colors={['#145CA8', '#062045']}
+          colors={['#3E6FA6', '#1E2A38']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           className="w-14 h-14 rounded-3xl items-center justify-center border border-white/20">
@@ -70,11 +71,11 @@ export const DeveloperInfoCard: React.FC = memo(() => {
 
         <View className="gap-1 flex-1">
           <View className="flex-row items-center justify-between">
-            <Text className="text-on-surface text-xl font-extrabold tracking-tight">QRify Studio</Text>
+            <Text className="text-on-surface text-xl font-extrabold tracking-tight">QR Studio</Text>
             <GlassBadge label={`v${APP_CONFIG.version}`} variant="primary" />
           </View>
           <Text className="text-on-surface-variant text-xs font-medium">
-            Liquid Glass Edition • Expo SDK 57
+            Alice Blue Edition • Expo SDK 57
           </Text>
         </View>
       </View>
@@ -87,8 +88,8 @@ export const DeveloperInfoCard: React.FC = memo(() => {
       <View style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }} className="p-4 rounded-3xl border gap-3">
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-2.5">
-            <View className="w-8 h-8 rounded-full bg-primary/10 items-center justify-center">
-              <Ionicons name="code-slash" size={16} color={Palette.cyan} />
+            <View style={{ backgroundColor: withAlpha(colors.accent, 0.10) }} className="w-8 h-8 rounded-full items-center justify-center">
+              <Ionicons name="code-slash" size={16} color={colors.accent} />
             </View>
             <View>
               <Text className="text-on-surface text-xs font-bold">Senior Mobile Engineer</Text>
@@ -104,8 +105,9 @@ export const DeveloperInfoCard: React.FC = memo(() => {
             accessibilityLabel="Contact Support Email"
             accessibilityRole="button"
             onPress={() => handleOpenEmail(APP_CONFIG.supportEmail)}
-            className="flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 active:scale-95">
-            <Ionicons name="mail-outline" size={14} color={Palette.cyan} />
+            style={{ backgroundColor: withAlpha(colors.accent, 0.10), borderColor: withAlpha(colors.accent, 0.20) }}
+            className="flex-1 flex-row items-center justify-center gap-1.5 py-2.5 rounded-2xl border active:scale-95">
+            <Ionicons name="mail-outline" size={14} color={colors.accent} />
             <Text className="text-accent text-xs font-bold">Support Email</Text>
           </Pressable>
 

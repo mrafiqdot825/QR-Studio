@@ -1,6 +1,7 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Palette } from "@/constants/theme";
 import { useModals } from "@/hooks/use-modals";
+import { useTheme } from "@/hooks/use-theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useMemo } from "react";
@@ -58,6 +59,7 @@ QuickActionItem.displayName = "QuickActionItem";
 
 export const QuickActionsBar: React.FC = React.memo(() => {
   const router = useRouter();
+  const { colors } = useTheme();
   const { openScanner } = useModals();
 
   const handleNavigateStudio = React.useCallback(
@@ -84,8 +86,8 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         title: "QR Studio",
         subtitle: "Custom colors & eyes",
         icon: "create-outline",
-        color: Palette.cyan,
-        bgAlpha: "rgba(85, 214, 255, 0.1)",
+        color: colors.accent,
+        bgAlpha: "rgba(62, 111, 166, 0.1)",
         onPress: handleNavigateStudio,
       },
       {
@@ -94,7 +96,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         subtitle: "Instant auto scan",
         icon: "scan-outline",
         color: Palette.emerald,
-        bgAlpha: "rgba(57, 217, 138, 0.1)",
+        bgAlpha: "rgba(46, 125, 50, 0.1)",
         onPress: openScanner,
       },
       {
@@ -102,8 +104,8 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         title: "Template Gallery",
         subtitle: "Pre-designed cards",
         icon: "color-palette-outline",
-        color: Palette.softBlue,
-        bgAlpha: "rgba(115, 184, 255, 0.1)",
+        color: colors.accent,
+        bgAlpha: "rgba(62, 111, 166, 0.1)",
         onPress: handleNavigateExplore,
       },
       {
@@ -112,11 +114,11 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         subtitle: "1-Tap Wi-Fi share",
         icon: "wifi-outline",
         color: Palette.amber,
-        bgAlpha: "rgba(246, 196, 83, 0.1)",
+        bgAlpha: "rgba(237, 108, 2, 0.1)",
         onPress: handleNavigateWifi,
       },
     ],
-    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, openScanner]
+    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, openScanner, colors.accent]
   );
 
   return (
@@ -147,6 +149,6 @@ QuickActionsBar.displayName = "QuickActionsBar";
 
 const styles = StyleSheet.create({
   actionCard: {
-    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0px 4px 16px rgba(30, 42, 56, 0.06)",
   },
 });

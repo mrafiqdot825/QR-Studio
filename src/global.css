@@ -7,31 +7,31 @@
 /*
  * RGB triplets (no `rgb()` wrapper) so Tailwind can compose them as
  * `rgb(var(--color-x) / <alpha-value>)` and still support opacity modifiers.
- * Kept loosely in sync with MidnightScheme in src/constants/theme/colors.ts —
+ * Kept in sync with AliceBlueScheme in src/constants/theme/colors.ts —
  * update both when changing the palette.
  */
 :root {
-  --color-background: 3 21 40;
-  --color-bg-secondary: 6 32 69;
-  --color-surface: 8 48 96;
-  --color-surface-low: 4 23 47;
-  --color-surface-high: 10 65 123;
-  --color-surface-highest: 20 92 168;
-  --color-on-surface: 255 255 255;
-  --color-on-surface-variant: 212 227 245;
-  --color-outline: 156 178 201;
-  --color-outline-variant: 255 255 255;
-  --color-primary-container: 8 48 96;
-  --color-secondary-container: 6 32 69;
-  --color-tertiary-container: 6 32 69;
+  --color-background: 240 248 255; /* #F0F8FF */
+  --color-bg-secondary: 230 240 250; /* #E6F0FA */
+  --color-surface: 255 255 255; /* #FFFFFF */
+  --color-surface-low: 248 251 255;
+  --color-surface-high: 255 255 255;
+  --color-surface-highest: 255 255 255;
+  --color-on-surface: 30 42 56; /* #1E2A38 */
+  --color-on-surface-variant: 92 107 122; /* #5C6B7A */
+  --color-outline: 214 228 240; /* #D6E4F0 */
+  --color-outline-variant: 226 236 245;
+  --color-primary-container: 255 255 255;
+  --color-secondary-container: 240 248 255;
+  --color-tertiary-container: 240 248 255;
 
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-specular: rgba(255, 255, 255, 0.18);
-  --bg-primary: #031528;
-  --bg-secondary: #062045;
-  --text-primary: #FFFFFF;
-  --text-secondary: #D4E3F5;
+  --glass-border: #D6E4F0;
+  --glass-bg: rgba(255, 255, 255, 0.90);
+  --glass-specular: rgba(255, 255, 255, 0.80);
+  --bg-primary: #F0F8FF;
+  --bg-secondary: #E6F0FA;
+  --text-primary: #1E2A38;
+  --text-secondary: #5C6B7A;
 }
 
 html, body {
@@ -42,4 +42,5 @@ html, body {
   padding: 0;
   overflow-x: hidden;
 }
+
 

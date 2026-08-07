@@ -3,6 +3,7 @@ import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassButton } from "@/components/ui/glass-button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { QRTemplate } from "@/features/templates/constants/templates";
+import { useTheme } from "@/hooks/use-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { memo, useCallback } from "react";
 import { Text, View } from "react-native";
@@ -15,6 +16,7 @@ interface TemplateCardProps {
 
 export const TemplateCard: React.FC<TemplateCardProps> = memo(
   ({ template, onUseTemplate }) => {
+    const { colors } = useTheme();
     const handlePress = useCallback(() => {
       onUseTemplate(template);
     }, [onUseTemplate, template]);
@@ -46,11 +48,11 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(
               />
             </View>
           </View>
-          <View className="p-2 rounded-2xl bg-white">
+          <View style={{ borderColor: colors.border, borderWidth: 1 }} className="p-2 rounded-2xl bg-white shadow-sm">
             <QRCode
               value={template.sampleValue}
               size={48}
-              color="#111827"
+              color="#1E2A38"
               backgroundColor="transparent"
             />
           </View>

@@ -1,26 +1,24 @@
 import { StyleSheet } from 'react-native';
 
-// Uses `boxShadow` (New Architecture) instead of the legacy `shadow*` props —
-// `shadow*` logs a deprecation warning on every style flattening pass, and under
-// this app's animation-heavy re-render volume that warning volume was enough to
-// exhaust the Hermes JS heap via the console/inspector's JSON serialization path.
-export const MidnightShadows = StyleSheet.create({
+export const AliceBlueShadows = StyleSheet.create({
   subtle: {
-    boxShadow: '0px 8px 18px rgba(0, 0, 0, 0.18)',
+    boxShadow: '0px 4px 16px rgba(30, 42, 56, 0.08)',
     elevation: 2,
   },
   dock: {
-    boxShadow: '0px 12px 30px rgba(0, 0, 0, 0.22)',
-    elevation: 10,
+    boxShadow: '0px 6px 20px rgba(30, 42, 56, 0.10)',
+    elevation: 6,
   },
   modal: {
-    boxShadow: '0px 20px 45px rgba(0, 0, 0, 0.30)',
-    elevation: 16,
+    boxShadow: '0px 10px 28px rgba(30, 42, 56, 0.12)',
+    elevation: 12,
   },
   glowBlue: {
-    boxShadow: '0px 8px 18px rgba(85, 214, 255, 0.35)',
-    elevation: 8,
+    boxShadow: '0px 4px 16px rgba(62, 111, 166, 0.15)',
+    elevation: 4,
   },
 });
 
-export const Shadows = MidnightShadows;
+export const MidnightShadows = AliceBlueShadows;
+export const Shadows = AliceBlueShadows;
+

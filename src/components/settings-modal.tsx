@@ -1,12 +1,12 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import React, { useState } from 'react';
-import { Platform, Switch, Text, View } from 'react-native';
-
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassModal } from '@/components/ui/glass-modal';
 import { APP_CONFIG } from '@/config/app.config';
 import { useTheme } from '@/hooks/use-theme';
+import { withAlpha } from '@/utils/color';
+import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
+import React, { useState } from 'react';
+import { Platform, Switch, Text, View } from 'react-native';
 
 interface SettingsModalProps {
   visible: boolean;
@@ -36,8 +36,8 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
 
           <View className="flex-row items-center justify-between py-1">
             <View className="flex-row items-center gap-3">
-              <View className="w-8 h-8 rounded-xl bg-blue-500/10 items-center justify-center">
-                <Ionicons name="phone-portrait-outline" size={16} color="#55D6FF" />
+              <View style={{ backgroundColor: withAlpha(colors.accent, 0.10) }} className="w-8 h-8 rounded-xl items-center justify-center">
+                <Ionicons name="phone-portrait-outline" size={16} color={colors.accent} />
               </View>
               <View>
                 <Text className="text-on-surface font-bold text-sm">Haptic Feedback</Text>
@@ -48,14 +48,14 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
               accessibilityLabel="Toggle haptic feedback"
               value={hapticsEnabled}
               onValueChange={toggleHaptics}
-              trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
+              trackColor={{ false: colors.border, true: colors.accent }}
             />
           </View>
 
           <View style={{ borderColor: colors.border }} className="flex-row items-center justify-between py-1 border-t">
             <View className="flex-row items-center gap-3">
-              <View className="w-8 h-8 rounded-xl bg-violet-500/10 items-center justify-center">
-                <Ionicons name="sparkles-outline" size={16} color="#73B8FF" />
+              <View style={{ backgroundColor: withAlpha(colors.accent, 0.10) }} className="w-8 h-8 rounded-xl items-center justify-center">
+                <Ionicons name="sparkles-outline" size={16} color={colors.accent} />
               </View>
               <View>
                 <Text className="text-on-surface font-bold text-sm">Ultra HD Vector Engine</Text>
@@ -66,14 +66,14 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
               accessibilityLabel="Toggle ultra HD vector engine"
               value={highQualityExports}
               onValueChange={setHighQualityExports}
-              trackColor={{ false: 'rgba(255, 255, 255, 0.16)', true: '#55D6FF' }}
+              trackColor={{ false: colors.border, true: colors.accent }}
             />
           </View>
         </GlassCard>
 
         {/* ABOUT APP FOOTER */}
         <View className="items-center py-2 gap-1">
-          <Text className="text-on-surface font-extrabold text-xs">{APP_CONFIG.name} — Liquid Glass Edition</Text>
+          <Text className="text-on-surface font-extrabold text-xs">{APP_CONFIG.name} — Alice Blue Edition</Text>
           <Text className="text-on-surface-variant text-[11px]">Version {APP_CONFIG.version} • Expo SDK 57</Text>
         </View>
       </View>

@@ -66,31 +66,32 @@ export const GlassButton = React.memo(function GlassButton({
   const isGhost = variant === 'ghost';
   const isGlass = variant === 'glass';
 
-  const iconColor = isPrimary ? '#FFFFFF' : Palette.cyan;
+  const iconColor = isPrimary ? '#FFFFFF' : colors.accent;
 
-  const surfaceStyle = isSecondary
-    ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }
+  const surfaceStyle = isPrimary
+    ? { backgroundColor: disabled ? colors.disabledBg : colors.accent }
+    : isSecondary
+    ? { backgroundColor: colors.surface, borderColor: colors.border }
     : isGlass
-    ? { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.hairline }
+    ? { backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }
     : undefined;
 
   return (
-    <Animated.View className="rounded-full" style={[animatedStyle, style]}>
+    <Animated.View className="rounded-2xl" style={[animatedStyle, style]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={disabled}
         style={surfaceStyle}
-        className={`px-6 py-3.5 rounded-full flex-row items-center justify-center gap-2 relative overflow-hidden ${
+        className={`px-6 py-3.5 rounded-2xl flex-row items-center justify-center gap-2 relative overflow-hidden ${
           isPrimary
-            ? 'bg-primary'
+            ? ''
             : isSecondary || isGlass
             ? 'border'
             : 'bg-transparent'
         } ${className}`}
         {...props}>
-
 
         {icon && iconPosition === 'left' && (
           <Ionicons name={icon} size={18} color={iconColor} />
@@ -100,7 +101,8 @@ export const GlassButton = React.memo(function GlassButton({
           <Text
             className={`font-bold text-sm tracking-wide ${
               isPrimary ? 'text-white' : 'text-on-surface'
-            }`}>
+            }`}
+            style={disabled ? { color: colors.disabledText } : undefined}>
             {title}
           </Text>
         ) : (

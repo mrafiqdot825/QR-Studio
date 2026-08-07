@@ -41,7 +41,7 @@ export function GlassInput({
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      borderColor: focusProgress.value === 1 ? Palette.cyan : colors.border,
+      borderColor: focusProgress.value === 1 ? colors.accent : colors.border,
       borderWidth: focusProgress.value === 1 ? 1.5 : 1,
     };
   });
@@ -68,15 +68,15 @@ export function GlassInput({
       ) : null}
 
       <Animated.View
-        style={[shadows.subtle, { backgroundColor: colors.glassSurface }, animatedStyle, style]}
+        style={[shadows.subtle, { backgroundColor: colors.surface }, animatedStyle, style]}
         className="flex-row items-center px-4 py-3 rounded-2xl overflow-hidden relative gap-2.5">
-        <LiquidGlassView blurLevel="card" tintColor={colors.glassSurface} specularInset={12} style={StyleSheet.absoluteFill} />
+        <LiquidGlassView blurLevel="card" tintColor={colors.surface} specular={false} style={StyleSheet.absoluteFill} />
 
         {icon && (
           <Ionicons
             name={icon}
             size={18}
-            color={isFocused ? Palette.cyan : colors.secondaryText}
+            color={isFocused ? colors.accent : colors.secondaryText}
           />
         )}
 
@@ -84,6 +84,8 @@ export function GlassInput({
           className="flex-1 text-on-surface font-medium text-sm p-0 m-0"
           placeholder={placeholder}
           placeholderTextColor={colors.secondaryText}
+          selectionColor={colors.accent}
+          cursorColor={colors.accent}
           value={value}
           onChangeText={onChangeText}
           onFocus={handleFocus}

@@ -1,7 +1,9 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassChip } from '@/components/ui/glass-chip';
 import { Palette } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { QRType } from '@/types/qr';
+import { withAlpha } from '@/utils/color';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -62,6 +64,7 @@ const QRTypeCardItem = React.memo(
     extraStyle: object;
     onSelect: (type: QRType) => void;
   }) => {
+    const { colors } = useTheme();
     const handlePress = React.useCallback(() => {
       onSelect(typeObj.id);
     }, [onSelect, typeObj.id]);
@@ -71,25 +74,31 @@ const QRTypeCardItem = React.memo(
         onPress={handlePress}
         interactive
         hasGlow={isSelected}
-        style={[extraStyle, isSelected ? { borderColor: Palette.cyan } : undefined]}
-        className={`p-4 ${
-          isSelected ? 'border-primary border-2' : ''
-        }`}>
+        style={[
+          extraStyle,
+          {
+            backgroundColor: isSelected ? colors.surface : colors.glassSurfaceSubtle,
+            borderColor: isSelected ? colors.accent : colors.border,
+            borderWidth: isSelected ? 2 : 1,
+          },
+        ]}
+        className="p-4 rounded-3xl">
         <View className="gap-2">
           <View className="flex-row items-center justify-between">
             <View
-              className={`w-10 h-10 rounded-2xl items-center justify-center ${
-                isSelected ? 'bg-primary' : 'bg-primary/10'
-              }`}>
+              style={{
+                backgroundColor: isSelected ? colors.accent : withAlpha(colors.accent, 0.10),
+              }}
+              className="w-10 h-10 rounded-2xl items-center justify-center">
               <Ionicons
                 name={typeObj.icon}
                 size={20}
-                color={isSelected ? '#FFFFFF' : '#55D6FF'}
+                color={isSelected ? '#FFFFFF' : colors.accent}
               />
             </View>
 
             {isSelected && (
-              <View className="w-2.5 h-2.5 rounded-full bg-primary" />
+              <View style={{ backgroundColor: colors.accent }} className="w-2.5 h-2.5 rounded-full" />
             )}
           </View>
 

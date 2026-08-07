@@ -66,19 +66,17 @@ export const GlassChip = React.memo(function GlassChip({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         style={
-          !selected
-            ? { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }
-            : undefined
+          selected
+            ? { backgroundColor: colors.accent, borderColor: colors.accent }
+            : { backgroundColor: colors.surface, borderColor: colors.border }
         }
-        className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 overflow-hidden relative ${
-          selected ? "bg-primary" : "border"
-        } ${className}`}
+        className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 overflow-hidden relative border ${className}`}
       >
         {icon && (
           <Ionicons
             name={icon}
             size={16}
-            color={selected ? "#FFFFFF" : Palette.cyan}
+            color={selected ? "#FFFFFF" : colors.accent}
           />
         )}
 

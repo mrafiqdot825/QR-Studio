@@ -23,9 +23,9 @@ export const GlassCard = React.memo(function GlassCard({
   className = '',
   onPress,
   interactive = false,
-  glassTint = 'dark',
+  glassTint = 'light',
   hasGlow = false,
-  glowColor = Palette.cyan,
+  glowColor = Palette.accent,
   isInteractive,
   style,
   ...props
@@ -96,7 +96,7 @@ export const GlassCard = React.memo(function GlassCard({
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           style={containerStyle}
-          className={`rounded-4xl overflow-hidden relative ${className}`}
+          className={`rounded-3xl overflow-hidden relative ${className}`}
           {...props}>
           <LiquidGlassView
             blurLevel="card"
@@ -115,7 +115,7 @@ export const GlassCard = React.memo(function GlassCard({
   return (
     <View
       style={containerStyle}
-      className={`rounded-4xl overflow-hidden relative ${className}`}
+      className={`rounded-3xl overflow-hidden relative ${className}`}
       {...props}>
       <LiquidGlassView
         blurLevel="card"

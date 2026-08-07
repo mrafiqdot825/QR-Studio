@@ -79,7 +79,7 @@ function CustomizationStudioControlsImpl({
           Center Brand Badge
         </Text>
         <View className="flex-row gap-2">
-          {(['none', 'qrify', 'shield', 'star'] as const).map((logoItem) => (
+          {(['none', 'qrstudio', 'shield', 'star'] as const).map((logoItem) => (
             <GlassChip
               key={logoItem}
               label={logoItem.toUpperCase()}

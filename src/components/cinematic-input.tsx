@@ -155,7 +155,7 @@ export const CinematicInput = React.memo(function CinematicInput({
             <GlassInput
               label="RECIPIENT EMAIL"
               icon="mail-outline"
-              placeholder="contact@qrify.me"
+              placeholder="contact@qrstudio.me"
               value={emailTo}
               onChangeText={setEmailTo}
               keyboardType="email-address"
@@ -164,7 +164,7 @@ export const CinematicInput = React.memo(function CinematicInput({
             <GlassInput
               label="SUBJECT LINE"
               icon="create-outline"
-              placeholder="Inquiry regarding QRify"
+              placeholder="Inquiry regarding QR Studio"
               value={emailSubject}
               onChangeText={setEmailSubject}
             />

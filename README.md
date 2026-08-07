@@ -1,6 +1,6 @@
-# QRify 
+# QR Studio 
 
-**QRify** is a sleek, modern, cinematic QR Code generator app built with React Native and Expo SDK 57. Featuring liquid glassmorphism, interactive 3D stages, customizable theme presets, instant multi-format exports (PNG/SVG), custom logo embedding, and rich haptic feedback.
+**QR Studio** is a sleek, modern, cinematic QR Code generator app built with React Native and Expo SDK 57. Featuring liquid glassmorphism, interactive 3D stages, customizable theme presets, instant multi-format exports (PNG/SVG), custom logo embedding, and rich haptic feedback.
 
 ---
 
@@ -64,12 +64,12 @@ Before starting, ensure you have the following installed on your development mac
 
 ## Step-by-Step Instructions Flow
 
-Follow these step-by-step instructions to get QRify up and running:
+Follow these step-by-step instructions to get QR Studio up and running:
 
 ### 1. Clone or Download Repository
 Open your terminal and navigate to your working directory:
 ```bash
-cd "QRify"
+cd "QR Studio"
 ```
 
 ### 2. Install Dependencies
@@ -124,7 +124,7 @@ Once the terminal bundler menu opens, you can choose how to run the app:
 ## Project Structure
 
 ```text
-QRify/
+QR Studio/
 ├── src/
 │   ├── app/                   # Expo Router screens (file-based navigation)
 │   │   ├── _layout.tsx        # Root layout & providers

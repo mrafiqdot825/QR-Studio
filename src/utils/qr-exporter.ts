@@ -51,10 +51,10 @@ export function getQRBase64(qrRef: React.RefObject<any>): Promise<string> {
  * Creates an SVG markup string for the QR Code
  */
 export function generateSVGContent(payloadValue: string, fgColor: string = '#000000'): string {
-  const safePayload = payloadValue || 'https://qrify.me';
+  const safePayload = payloadValue || 'https://qrstudio.me';
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="100%" height="100%">
-  <!-- QRify Vector Export -->
+  <!-- QR Studio Vector Export -->
   <rect width="256" height="256" fill="#FFFFFF" rx="16"/>
   <text x="128" y="240" font-family="system-ui, sans-serif" font-size="10" fill="${fgColor}" text-anchor="middle" opacity="0.6">
     ${safePayload.length > 30 ? safePayload.substring(0, 30) + '...' : safePayload}
@@ -111,14 +111,14 @@ export async function saveToGallery(qrRef: React.RefObject<any>): Promise<Export
     if (Platform.OS === 'web') {
       const link = document.createElement('a');
       link.href = `data:image/png;base64,${base64Data}`;
-      link.download = `QRify-${Date.now()}.png`;
+      link.download = `QRStudio-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       return { success: true, message: 'PNG image downloaded to computer.' };
     }
 
-    const tempFilename = `qrify-export-${Date.now()}.png`;
+    const tempFilename = `qrstudio-export-${Date.now()}.png`;
     tempUri = await writeTempFile(base64Data, tempFilename, true);
 
     // Attempt direct save via MediaLibrary
@@ -185,7 +185,7 @@ export async function shareToWhatsApp(
     }
 
     const base64Data = await getQRBase64(qrRef);
-    tempUri = await writeTempFile(base64Data, `qrify-whatsapp-${Date.now()}.png`, true);
+    tempUri = await writeTempFile(base64Data, `qrstudio-whatsapp-${Date.now()}.png`, true);
 
     const waDeepLink = `whatsapp://send?text=${encodeURIComponent(textMsg)}`;
     const canOpenWA = await Linking.canOpenURL(waDeepLink);
@@ -230,7 +230,7 @@ export async function shareToInstagram(
     }
 
     const base64Data = await getQRBase64(qrRef);
-    tempUri = await writeTempFile(base64Data, `qrify-instagram-${Date.now()}.png`, true);
+    tempUri = await writeTempFile(base64Data, `qrstudio-instagram-${Date.now()}.png`, true);
 
     const igDeepLink = 'instagram://app';
     const canOpenIG = await Linking.canOpenURL(igDeepLink);
@@ -275,7 +275,7 @@ export async function shareGeneral(
     if (Platform.OS === 'web') {
       if (typeof navigator !== 'undefined' && navigator.share) {
         await navigator.share({
-          title: 'QRify Code',
+          title: 'QR Studio Code',
           text: payloadValue,
           url: window.location.href,
         });
@@ -285,7 +285,7 @@ export async function shareGeneral(
         const base64Data = await getQRBase64(qrRef);
         const link = document.createElement('a');
         link.href = `data:image/png;base64,${base64Data}`;
-        link.download = `QRify-${Date.now()}.png`;
+        link.download = `QRStudio-${Date.now()}.png`;
         link.click();
         return { success: true, message: 'Downloaded QR code file.' };
       }
@@ -314,7 +314,7 @@ export async function shareGeneral(
       content = await getQRBase64(qrRef);
     }
 
-    tempUri = await writeTempFile(content, `qrify-code-${Date.now()}.${ext}`, isBase64);
+    tempUri = await writeTempFile(content, `qrstudio-code-${Date.now()}.${ext}`, isBase64);
 
     const sharingAvailable = await Sharing.isAvailableAsync();
     if (!sharingAvailable) {

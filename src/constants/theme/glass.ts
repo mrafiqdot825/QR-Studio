@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { AppScheme, MidnightScheme, Palette } from './colors';
+import { AliceBlueScheme, AppScheme, Palette } from './colors';
 
 export interface GlassMaterial {
   backgroundColor: string;
@@ -42,7 +42,7 @@ function buildMaterials(scheme: AppScheme): Record<'card' | 'cardHigh' | 'pill' 
   };
 }
 
-export const GlassMaterials = buildMaterials(MidnightScheme);
+export const GlassMaterials = buildMaterials(AliceBlueScheme);
 
 function buildGlassStyles(scheme: AppScheme) {
   return StyleSheet.create({
@@ -63,12 +63,13 @@ function buildGlassStyles(scheme: AppScheme) {
       backgroundColor: scheme.specularTop,
     },
     ambientGlowPrimary: {
-      shadowColor: Palette.cyan,
-      shadowOffset: { width: 0, height: 12 },
-      shadowOpacity: 0.15,
-      shadowRadius: 24,
+      shadowColor: Palette.accent,
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.10,
+      shadowRadius: 16,
     },
   });
 }
 
-export const GlassStyles = buildGlassStyles(MidnightScheme);
+export const GlassStyles = buildGlassStyles(AliceBlueScheme);
+

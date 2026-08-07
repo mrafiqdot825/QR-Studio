@@ -39,7 +39,7 @@ function AppNavigation() {
         card: colors.surface,
         text: colors.primaryText,
         border: colors.border,
-        primary: '#062045',
+        primary: '#3E6FA6',
       },
     }),
     [colors.background, colors.surface, colors.primaryText, colors.border]
@@ -52,7 +52,7 @@ function AppNavigation() {
 
   return (
     <ThemeProvider value={navTheme}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <AnimatedSplashOverlay />
       <Tabs
         tabBar={renderTabBar}
