@@ -64,7 +64,7 @@ function CustomizationStudioControlsImpl({
           {(['square', 'rounded', 'circle'] as const).map((eye) => (
             <GlassChip
               key={eye}
-              label={eye.toUpperCase()}
+              label={eye === 'rounded' ? 'ROUND' : eye.toUpperCase()}
               selected={options.eyeStyle === eye}
               onPress={() => updateOption('eyeStyle', eye)}
               className="flex-1 justify-center"

@@ -1,9 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
-
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassInput } from '@/components/ui/glass-input';
 import { QRType } from '@/types/qr';
+import React from 'react';
+import { View } from 'react-native';
 
 interface CinematicInputProps {
   type: QRType;
@@ -119,14 +118,14 @@ export const CinematicInput = React.memo(function CinematicInput({
             <GlassInput
               label="FULL NAME"
               icon="person-outline"
-              placeholder="Alex Morgan"
+              placeholder="MRafiqdot"
               value={vName}
               onChangeText={setVName}
             />
             <GlassInput
               label="PHONE NUMBER"
               icon="call-outline"
-              placeholder="+1 (555) 000-1122"
+              placeholder="+923129185825"
               value={vPhone}
               onChangeText={setVPhone}
               keyboardType="phone-pad"
@@ -134,7 +133,7 @@ export const CinematicInput = React.memo(function CinematicInput({
             <GlassInput
               label="EMAIL ADDRESS"
               icon="mail-outline"
-              placeholder="alex@company.com"
+              placeholder="mrafiqdot825@gmail.com"
               value={vEmail}
               onChangeText={setVEmail}
               keyboardType="email-address"
@@ -155,7 +154,7 @@ export const CinematicInput = React.memo(function CinematicInput({
             <GlassInput
               label="RECIPIENT EMAIL"
               icon="mail-outline"
-              placeholder="contact@qrstudio.me"
+              placeholder="mrafiqdot825@gmail.com"
               value={emailTo}
               onChangeText={setEmailTo}
               keyboardType="email-address"
@@ -175,7 +174,7 @@ export const CinematicInput = React.memo(function CinematicInput({
           <GlassInput
             label="TARGET PHONE NUMBER"
             icon="call-outline"
-            placeholder="+1 415 555 0199"
+            placeholder="+923129185825"
             value={phoneNum}
             onChangeText={setPhoneNum}
             keyboardType="phone-pad"

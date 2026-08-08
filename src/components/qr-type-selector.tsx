@@ -1,6 +1,5 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassChip } from '@/components/ui/glass-chip';
-import { Palette } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { QRType } from '@/types/qr';
 import { withAlpha } from '@/utils/color';
