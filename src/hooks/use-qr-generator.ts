@@ -1,18 +1,45 @@
-import { PresetId, CustomizationOptions, QRType } from '@/types/qr';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CustomizationOptions, PresetId, QRType } from '@/types/qr';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 export interface UseQRGeneratorProps {
   initialType?: QRType;
+  initialValue?: string;
 }
 
 export const useQRGenerator = (props?: UseQRGeneratorProps) => {
   const [selectedType, setSelectedType] = useState<QRType>(props?.initialType || 'url');
+  const [prevType, setPrevType] = useState(props?.initialType);
+  const [prevValue, setPrevValue] = useState(props?.initialValue);
 
-  useEffect(() => {
+  // Inputs
+  const [url, setUrl] = useState(
+    props?.initialType === 'url' && props?.initialValue
+      ? props.initialValue
+      : 'https://mrafiq.vercel.app'
+  );
+  const [text, setText] = useState(
+    props?.initialType === 'text' && props?.initialValue
+      ? props.initialValue
+      : 'Hello from QR Studio! This is  Muhammad Rafiq'
+  );
+
+  // Sync state when props change
+  if (props?.initialType !== prevType || props?.initialValue !== prevValue) {
+    setPrevType(props?.initialType);
+    setPrevValue(props?.initialValue);
+
     if (props?.initialType) {
       setSelectedType(props.initialType);
     }
-  }, [props?.initialType]);
+    if (props?.initialValue) {
+      if (props.initialType === 'text') {
+        setText(props.initialValue);
+      } else if (props.initialType === 'url') {
+        setUrl(props.initialValue);
+      }
+    }
+  }
+
   const [presetId, setPresetId] = useState<PresetId>('minimal-white');
 
   const [customOpts, setCustomOpts] = useState<CustomizationOptions>({
@@ -23,27 +50,23 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     padding: 16,
   });
 
-  // Inputs
-  const [url, setUrl] = useState('https://qrstudio.me/business-pro');
-  const [text, setText] = useState('Hello from Liquid Glass Studio');
-
   // WiFi
   const [wifiSSID, setWifiSSID] = useState('GuestOffice_5G');
   const [wifiPass, setWifiPass] = useState('LiquidGlass2026!');
   const [wifiEnc, setWifiEnc] = useState<'WPA' | 'WEP' | 'nopass'>('WPA');
 
   // VCard
-  const [vName, setVName] = useState('Alex Morgan');
-  const [vPhone, setVPhone] = useState('+1 415 555 0199');
-  const [vEmail, setVEmail] = useState('alex.morgan@qrstudio.me');
-  const [vOrg, setVOrg] = useState('Liquid Design Studio');
+  const [vName, setVName] = useState('Muhammad Rafiq');
+  const [vPhone, setVPhone] = useState('+923129185825');
+  const [vEmail, setVEmail] = useState('mrafiqdot825@gmail.com');
+  const [vOrg, setVOrg] = useState('MRafiqDev');
 
   // Email
-  const [emailTo, setEmailTo] = useState('contact@qrstudio.me');
+  const [emailTo, setEmailTo] = useState('mrafiqdot825@gmail.com');
   const [emailSubject, setEmailSubject] = useState('Inquiry via QR Studio');
 
   // Phone
-  const [phoneNum, setPhoneNum] = useState('+1 415 555 0199');
+  const [phoneNum, setPhoneNum] = useState('+923129185825');
 
   const qrRef = useRef<any>(null);
 

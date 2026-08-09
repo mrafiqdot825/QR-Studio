@@ -1,8 +1,12 @@
+import { PlainTextEditorModal } from '@/components/plain-text-editor-modal';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassInput } from '@/components/ui/glass-input';
+import { Palette } from '@/constants/theme';
 import { QRType } from '@/types/qr';
-import React from 'react';
-import { View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
+import React, { useCallback, useState } from 'react';
+import { Platform, Pressable, Text, View } from 'react-native';
 
 interface CinematicInputProps {
   type: QRType;
@@ -64,6 +68,19 @@ export const CinematicInput = React.memo(function CinematicInput({
   setPhoneNum,
   onClear,
 }: CinematicInputProps) {
+  const [editorOpen, setEditorOpen] = useState(false);
+
+  const openEditor = useCallback(() => {
+    if (Platform.OS !== 'web') {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+    }
+    setEditorOpen(true);
+  }, []);
+
+  const closeEditor = useCallback(() => {
+    setEditorOpen(false);
+  }, []);
+
   return (
     <GlassCard className="p-5 my-3 w-full">
       <View className="gap-4">
@@ -81,16 +98,40 @@ export const CinematicInput = React.memo(function CinematicInput({
         )}
 
         {type === 'text' && (
-          <GlassInput
-            label="CUSTOM MESSAGE"
-            icon="document-text-outline"
-            placeholder="Type your announcement or note..."
-            value={value}
-            onChangeText={onChangeValue}
-            multiline
-            numberOfLines={3}
-            onClear={onClear}
-          />
+          <View className="gap-2">
+            <GlassInput
+              label="CUSTOM MESSAGE"
+              icon="document-text-outline"
+              placeholder="Type your announcement, note or plain text..."
+              value={value}
+              onChangeText={onChangeValue}
+              multiline
+              numberOfLines={3}
+              onClear={onClear}
+            />
+
+            <View className="flex-row items-center justify-between pt-1">
+              <Text className="text-on-surface-variant text-xs">
+                {value ? `${value.length} characters` : '0 characters'}
+              </Text>
+
+              <Pressable
+                accessibilityLabel="Expand full text editor"
+                accessibilityRole="button"
+                onPress={openEditor}
+                className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 active:scale-95">
+                <Ionicons name="expand-outline" size={14} color={Palette.cyan} />
+                <Text className="text-accent text-xs font-bold">Expand Mobile Editor</Text>
+              </Pressable>
+            </View>
+
+            <PlainTextEditorModal
+              visible={editorOpen}
+              onClose={closeEditor}
+              value={value}
+              onChangeValue={onChangeValue}
+            />
+          </View>
         )}
 
         {type === 'wifi' && (

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
@@ -22,8 +23,10 @@ interface ScannerModalProps {
 }
 
 export function ScannerModal({ visible, onClose }: ScannerModalProps) {
+  const router = useRouter();
   const { colors, shadows } = useTheme();
   const [torch, setTorch] = useState(false);
+  const [scanType, setScanType] = useState<'text' | 'url'>('text');
   const scanLineY = useSharedValue(0);
 
   useEffect(() => {
@@ -46,17 +49,70 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
     transform: [{ translateY: scanLineY.value }],
   }));
 
-  const handleSimulateScan = () => {
+  const handleSimulateScan = (typeOverride?: 'text' | 'url') => {
     if (Platform.OS !== 'web') {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     }
-    const scannedCode = 'https://qrstudio.me/demo-scanned-access';
 
-    Alert.alert(
-      'QR Code Scanned!',
-      `Payload: ${scannedCode}`,
-      [{ text: 'Done', onPress: onClose }]
-    );
+    const currentType = typeOverride || scanType;
+    const scannedCode =
+      currentType === 'text'
+        ? 'Important Plain Text Note:\nScanned directly from QR Studio Camera Scanner!\n\nUse this mobile text editor to modify or re-generate your QR code.'
+        : 'https://qrstudio.me/demo-scanned-access';
+
+    if (currentType === 'text') {
+      Alert.alert(
+        'Plain Text QR Code Scanned!',
+        `Scanned Text:\n"${scannedCode}"`,
+        [
+          {
+            text: 'Open in Mobile Text Editor',
+            style: 'default',
+            onPress: () => {
+              onClose();
+              router.navigate({
+                pathname: '/studio',
+                params: {
+                  initialType: 'text',
+                  initialValue: scannedCode,
+                },
+              });
+            },
+          },
+          {
+            text: 'Copy Text',
+            onPress: () => {
+              if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                navigator.clipboard.writeText(scannedCode).catch(() => {});
+              }
+              onClose();
+            },
+          },
+          { text: 'Cancel', style: 'cancel', onPress: onClose },
+        ]
+      );
+    } else {
+      Alert.alert(
+        'URL QR Code Scanned!',
+        `Payload: ${scannedCode}`,
+        [
+          {
+            text: 'Open in Studio',
+            onPress: () => {
+              onClose();
+              router.navigate({
+                pathname: '/studio',
+                params: {
+                  initialType: 'url',
+                  initialValue: scannedCode,
+                },
+              });
+            },
+          },
+          { text: 'Done', onPress: onClose },
+        ]
+      );
+    }
   };
 
   if (!visible) return null;
@@ -124,16 +180,34 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
         </View>
 
         {/* BOTTOM ACTION BAR */}
-        <View className="pb-8 items-center gap-3">
-          <Pressable
-            accessibilityLabel="Test scan payload"
-            accessibilityRole="button"
-            onPress={handleSimulateScan}
-            style={[styles.scanButtonShadow, { backgroundColor: colors.accent }]}
-            className="flex-row items-center gap-2 px-8 py-4 rounded-full active:scale-95">
-            <Ionicons name="scan" size={20} color="#FFFFFF" />
-            <Text className="text-white font-extrabold text-sm tracking-wider">TEST SCAN PAYLOAD</Text>
-          </Pressable>
+        <View className="pb-8 items-center gap-3 w-full">
+          <View className="flex-row items-center justify-center gap-3">
+            <Pressable
+              accessibilityLabel="Scan Plain Text Code"
+              accessibilityRole="button"
+              onPress={() => {
+                setScanType('text');
+                handleSimulateScan('text');
+              }}
+              style={[styles.scanButtonShadow, { backgroundColor: Palette.cyan }]}
+              className="flex-row items-center gap-2 px-5 py-3.5 rounded-full active:scale-95">
+              <Ionicons name="document-text" size={18} color="#FFFFFF" />
+              <Text className="text-white font-extrabold text-xs tracking-wider">SCAN PLAIN TEXT</Text>
+            </Pressable>
+
+            <Pressable
+              accessibilityLabel="Scan URL Code"
+              accessibilityRole="button"
+              onPress={() => {
+                setScanType('url');
+                handleSimulateScan('url');
+              }}
+              style={[styles.scanButtonShadow, { backgroundColor: colors.accent }]}
+              className="flex-row items-center gap-2 px-5 py-3.5 rounded-full active:scale-95">
+              <Ionicons name="link" size={18} color="#FFFFFF" />
+              <Text className="text-white font-extrabold text-xs tracking-wider">SCAN URL</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>

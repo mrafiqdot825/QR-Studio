@@ -15,8 +15,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function StudioScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ initialType?: string }>();
+  const params = useLocalSearchParams<{ initialType?: string; initialValue?: string }>();
   const initialType = (params.initialType as QRType) || "url";
+  const initialValue = params.initialValue;
 
   const {
     selectedType,
@@ -29,7 +30,7 @@ export default function StudioScreen() {
     qrRef,
     handleClearInputs,
     formFields,
-  } = useQRGenerator({ initialType });
+  } = useQRGenerator({ initialType, initialValue });
 
   const [exportOpen, setExportOpen] = useState(false);
   const openExport = useCallback(() => setExportOpen(true), []);
