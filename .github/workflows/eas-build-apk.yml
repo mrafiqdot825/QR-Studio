@@ -6,6 +6,8 @@ on:
       - main
       - master
     paths:
+      - 'package.json'
+      - 'package-lock.json'
       - 'eas.json'
   workflow_dispatch:
 
