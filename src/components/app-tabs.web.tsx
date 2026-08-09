@@ -1,6 +1,6 @@
 import { BlurTokens } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import { Pressable, StyleSheet, View } from 'react-native';
 

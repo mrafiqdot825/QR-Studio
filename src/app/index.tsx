@@ -7,7 +7,7 @@ import { HomeHeroCard } from "@/features/home/components/home-hero-card";
 import { HomeProBanner } from "@/features/home/components/home-pro-banner";
 import { QuickActionsBar } from "@/features/home/components/quick-actions-bar";
 import { QRType } from "@/types/qr";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";

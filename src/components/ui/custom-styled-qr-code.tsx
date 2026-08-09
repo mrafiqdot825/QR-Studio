@@ -20,7 +20,7 @@ export interface CustomStyledQRCodeProps extends SvgProps {
   getRef?: (ref: any) => void;
 }
 
-export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
+export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(({
   value = '',
   size = 200,
   color = '#1E2D3E',
@@ -48,35 +48,90 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
     }
   }, [value, ecl]);
 
-  if (!qrData) return null;
-
-  const numModules = qrData.size;
-  const cellSize = size / numModules;
+  const numModules = qrData?.size || 0;
+  const cellSize = size / (numModules || 1);
 
   // Determine logo bounds in matrix grid if logo exists
   const showLogo = !!logo;
   const logoTotalSize = logoSize + logoMargin * 2;
-  const logoModules = showLogo ? Math.ceil(logoTotalSize / cellSize) : 0;
+  const logoModules = showLogo && cellSize > 0 ? Math.ceil(logoTotalSize / cellSize) : 0;
   const centerModule = Math.floor(numModules / 2);
   const logoStart = centerModule - Math.floor(logoModules / 2);
   const logoEnd = logoStart + logoModules - 1;
 
-  const isEyeCell = (row: number, col: number) => {
-    if (row < 7 && col < 7) return true;
-    if (row < 7 && col >= numModules - 7) return true;
-    if (row >= numModules - 7 && col < 7) return true;
-    return false;
-  };
+  const dataModules = useMemo(() => {
+    if (!qrData || numModules === 0) return [];
 
-  const isLogoCell = (row: number, col: number) => {
-    if (!showLogo) return false;
-    return (
-      row >= logoStart &&
-      row <= logoEnd &&
-      col >= logoStart &&
-      col <= logoEnd
-    );
-  };
+    const isEyeCell = (row: number, col: number) => {
+      if (row < 7 && col < 7) return true;
+      if (row < 7 && col >= numModules - 7) return true;
+      if (row >= numModules - 7 && col < 7) return true;
+      return false;
+    };
+
+    const isLogoCell = (row: number, col: number) => {
+      if (!showLogo) return false;
+      return (
+        row >= logoStart &&
+        row <= logoEnd &&
+        col >= logoStart &&
+        col <= logoEnd
+      );
+    };
+
+    const modules: React.ReactNode[] = [];
+    for (let row = 0; row < numModules; row++) {
+      for (let col = 0; col < numModules; col++) {
+        if (isEyeCell(row, col) || isLogoCell(row, col)) continue;
+
+        const isDark = qrData.data[row * numModules + col] === 1;
+        if (!isDark) continue;
+
+        const x = col * cellSize;
+        const y = row * cellSize;
+        const key = `mod-${row}-${col}`;
+
+        if (moduleShape === 'dots') {
+          modules.push(
+            <Circle
+              key={key}
+              cx={x + cellSize / 2}
+              cy={y + cellSize / 2}
+              r={cellSize * 0.44}
+              fill={color}
+            />
+          );
+        } else if (moduleShape === 'rounded') {
+          modules.push(
+            <Rect
+              key={key}
+              x={x + cellSize * 0.05}
+              y={y + cellSize * 0.05}
+              width={cellSize * 0.9}
+              height={cellSize * 0.9}
+              rx={cellSize * 0.35}
+              ry={cellSize * 0.35}
+              fill={color}
+            />
+          );
+        } else {
+          modules.push(
+            <Rect
+              key={key}
+              x={x}
+              y={y}
+              width={cellSize + 0.1}
+              height={cellSize + 0.1}
+              fill={color}
+            />
+          );
+        }
+      }
+    }
+    return modules;
+  }, [qrData, numModules, cellSize, moduleShape, color, showLogo, logoStart, logoEnd]);
+
+  if (!qrData) return null;
 
   // Render a single Eye (Finder Pattern) at position (r0, c0)
   const renderEye = (r0: number, c0: number, key: string) => {
@@ -87,21 +142,18 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
     if (eyeStyle === 'circle') {
       return (
         <G key={key}>
-          {/* Outer Circle Frame */}
           <Circle
             cx={x + eyeSize / 2}
             cy={y + eyeSize / 2}
             r={eyeSize / 2}
             fill={color}
           />
-          {/* Inner Circle Cutout */}
           <Circle
             cx={x + eyeSize / 2}
             cy={y + eyeSize / 2}
             r={(5 * cellSize) / 2}
             fill={backgroundColor === 'transparent' ? '#FFFFFF' : backgroundColor}
           />
-          {/* Center Core Circle */}
           <Circle
             cx={x + eyeSize / 2}
             cy={y + eyeSize / 2}
@@ -115,7 +167,6 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
     if (eyeStyle === 'rounded') {
       return (
         <G key={key}>
-          {/* Outer Rounded Frame */}
           <Rect
             x={x}
             y={y}
@@ -125,7 +176,6 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
             ry={cellSize * 2.2}
             fill={color}
           />
-          {/* Inner Cutout */}
           <Rect
             x={x + cellSize}
             y={y + cellSize}
@@ -135,7 +185,6 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
             ry={cellSize * 1.5}
             fill={backgroundColor === 'transparent' ? '#FFFFFF' : backgroundColor}
           />
-          {/* Center Core */}
           <Rect
             x={x + 2 * cellSize}
             y={y + 2 * cellSize}
@@ -152,9 +201,7 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
     // Square Eye
     return (
       <G key={key}>
-        {/* Outer Square Frame */}
         <Rect x={x} y={y} width={eyeSize} height={eyeSize} fill={color} />
-        {/* Inner Cutout */}
         <Rect
           x={x + cellSize}
           y={y + cellSize}
@@ -162,7 +209,6 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
           height={5 * cellSize}
           fill={backgroundColor === 'transparent' ? '#FFFFFF' : backgroundColor}
         />
-        {/* Center Core */}
         <Rect
           x={x + 2 * cellSize}
           y={y + 2 * cellSize}
@@ -173,57 +219,6 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
       </G>
     );
   };
-
-  // Render Data Modules
-  const dataModules: React.ReactNode[] = [];
-  for (let row = 0; row < numModules; row++) {
-    for (let col = 0; col < numModules; col++) {
-      if (isEyeCell(row, col) || isLogoCell(row, col)) continue;
-
-      const isDark = qrData.data[row * numModules + col] === 1;
-      if (!isDark) continue;
-
-      const x = col * cellSize;
-      const y = row * cellSize;
-      const key = `mod-${row}-${col}`;
-
-      if (moduleShape === 'dots') {
-        dataModules.push(
-          <Circle
-            key={key}
-            cx={x + cellSize / 2}
-            cy={y + cellSize / 2}
-            r={cellSize * 0.44}
-            fill={color}
-          />
-        );
-      } else if (moduleShape === 'rounded') {
-        dataModules.push(
-          <Rect
-            key={key}
-            x={x + cellSize * 0.05}
-            y={y + cellSize * 0.05}
-            width={cellSize * 0.9}
-            height={cellSize * 0.9}
-            rx={cellSize * 0.35}
-            ry={cellSize * 0.35}
-            fill={color}
-          />
-        );
-      } else {
-        dataModules.push(
-          <Rect
-            key={key}
-            x={x}
-            y={y}
-            width={cellSize + 0.1}
-            height={cellSize + 0.1}
-            fill={color}
-          />
-        );
-      }
-    }
-  }
 
   // Render Logo if present
   const renderLogo = () => {
@@ -290,4 +285,7 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = ({
       {renderLogo()}
     </Svg>
   );
-};
+});
+
+CustomStyledQRCode.displayName = 'CustomStyledQRCode';
+

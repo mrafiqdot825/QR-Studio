@@ -1,7 +1,7 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { CinematicPresets, PresetId } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';

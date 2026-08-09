@@ -3,7 +3,7 @@ import { GlassModal } from '@/components/ui/glass-modal';
 import { APP_CONFIG } from '@/config/app.config';
 import { useTheme } from '@/hooks/use-theme';
 import { withAlpha } from '@/utils/color';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
 import { Platform, Switch, Text, View } from 'react-native';

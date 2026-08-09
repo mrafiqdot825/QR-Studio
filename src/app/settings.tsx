@@ -3,7 +3,7 @@ import { GlassContainer } from '@/components/ui/glass-container';
 import { DeveloperInfoCard } from '@/features/settings/components/developer-info-card';
 import { PoliciesCard } from '@/features/settings/components/policies-card';
 import { useTheme } from '@/hooks/use-theme';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
 import { Platform, ScrollView, Switch, Text, View } from 'react-native';

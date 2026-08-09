@@ -4,7 +4,7 @@ import { Palette } from "@/constants/theme";
 import { TEMPLATES_LIST } from "@/features/templates/constants/templates";
 import { useTheme } from "@/hooks/use-theme";
 import { withAlpha } from "@/utils/color";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";

@@ -5,7 +5,7 @@ import { Palette } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Logger } from '@/services/logger/logger.service';
 import { withAlpha } from '@/utils/color';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { memo } from 'react';
 import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';

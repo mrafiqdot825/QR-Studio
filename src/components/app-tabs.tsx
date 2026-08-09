@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { GlassContainer } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import React from 'react';

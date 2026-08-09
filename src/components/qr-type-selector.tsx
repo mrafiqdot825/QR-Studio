@@ -3,7 +3,7 @@ import { GlassChip } from '@/components/ui/glass-chip';
 import { useTheme } from '@/hooks/use-theme';
 import { QRType } from '@/types/qr';
 import { withAlpha } from '@/utils/color';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 

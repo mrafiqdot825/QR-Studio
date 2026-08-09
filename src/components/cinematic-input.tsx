@@ -3,7 +3,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GlassInput } from '@/components/ui/glass-input';
 import { Palette } from '@/constants/theme';
 import { QRType } from '@/types/qr';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
 import React, { useCallback, useState } from 'react';
 import { Platform, Pressable, Text, View } from 'react-native';

@@ -11,7 +11,7 @@ import {
   shareToInstagram,
   shareToWhatsApp,
 } from '@/utils/qr-exporter';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Platform, Text, View } from 'react-native';

@@ -2,7 +2,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Palette } from "@/constants/theme";
 import { useModals } from "@/hooks/use-modals";
 import { useTheme } from "@/hooks/use-theme";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
