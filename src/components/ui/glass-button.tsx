@@ -77,7 +77,7 @@ export const GlassButton = React.memo(function GlassButton({
     : undefined;
 
   return (
-    <Animated.View className="rounded-2xl" style={[animatedStyle, style]}>
+    <Animated.View className={`rounded-2xl ${className}`} style={[animatedStyle, style]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
@@ -90,7 +90,7 @@ export const GlassButton = React.memo(function GlassButton({
             : isSecondary || isGlass
             ? 'border'
             : 'bg-transparent'
-        } ${className}`}
+        }`}
         {...props}>
 
         {icon && iconPosition === 'left' && (

@@ -78,9 +78,26 @@ export const QuickActionsBar: React.FC = React.memo(() => {
       }),
     [router]
   );
+  const handleNavigateMedia = React.useCallback(
+    () =>
+      router.navigate({
+        pathname: "/studio",
+        params: { initialType: "media" },
+      }),
+    [router]
+  );
 
   const ACTIONS: QuickAction[] = useMemo(
     () => [
+      {
+        id: "media",
+        title: "Media & Gallery",
+        subtitle: "Upload photo/video",
+        icon: "images-outline",
+        color: Palette.cyan,
+        bgAlpha: "rgba(0, 184, 212, 0.1)",
+        onPress: handleNavigateMedia,
+      },
       {
         id: "studio",
         title: "QR Studio",
@@ -118,7 +135,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         onPress: handleNavigateWifi,
       },
     ],
-    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, openScanner, colors.accent]
+    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, handleNavigateMedia, openScanner, colors.accent]
   );
 
   return (

@@ -60,7 +60,7 @@ export const GlassChip = React.memo(function GlassChip({
   };
 
   return (
-    <Animated.View className="rounded-full" style={[animatedStyle, style]}>
+    <Animated.View className={`rounded-full ${className}`} style={[animatedStyle, style]}>
       <Pressable
         onPress={handlePress}
         onPressIn={handlePressIn}
@@ -70,7 +70,7 @@ export const GlassChip = React.memo(function GlassChip({
             ? { backgroundColor: colors.accent, borderColor: colors.accent }
             : { backgroundColor: colors.surface, borderColor: colors.border }
         }
-        className={`px-4 py-2.5 rounded-full flex-row items-center justify-center gap-2 overflow-hidden relative border ${className}`}
+        className="px-3.5 py-2.5 rounded-full flex-row items-center justify-center gap-1.5 overflow-hidden relative border"
       >
         {icon && (
           <Ionicons
@@ -84,6 +84,7 @@ export const GlassChip = React.memo(function GlassChip({
           className={`text-xs font-bold ${
             selected ? "text-white" : "text-on-surface"
           }`}
+          numberOfLines={1}
         >
           {label}
         </Text>

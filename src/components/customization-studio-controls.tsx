@@ -14,7 +14,7 @@ interface CustomizationStudioControlsProps {
   onChangeOptions: React.Dispatch<React.SetStateAction<CustomizationOptions>>;
 }
 
-function CustomizationStudioControlsImpl({
+export const CustomizationStudioControls = React.memo(function CustomizationStudioControls({
   options,
   onChangeOptions,
 }: CustomizationStudioControlsProps) {
@@ -24,6 +24,10 @@ function CustomizationStudioControlsImpl({
     },
     [onChangeOptions]
   );
+
+  const currentModuleShape = options?.moduleShape || 'rounded';
+  const currentEyeStyle = options?.eyeStyle || 'rounded';
+  const currentLogo = options?.logo || 'none';
 
   return (
     <GlassCard className="p-5 my-3 w-full gap-5">
@@ -42,13 +46,14 @@ function CustomizationStudioControlsImpl({
         <Text className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
           Module Shape
         </Text>
-        <View className="flex-row gap-2">
+        <View className="flex-row gap-2 w-full">
           {(['square', 'rounded', 'dots'] as const).map((shape) => (
             <GlassChip
               key={shape}
               label={shape.toUpperCase()}
-              selected={options.moduleShape === shape}
+              selected={currentModuleShape === shape}
               onPress={() => updateOption('moduleShape', shape)}
+              style={{ flex: 1 }}
               className="flex-1 justify-center"
             />
           ))}
@@ -60,13 +65,14 @@ function CustomizationStudioControlsImpl({
         <Text className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
           Eye Corner Style
         </Text>
-        <View className="flex-row gap-2">
+        <View className="flex-row gap-2 w-full">
           {(['square', 'rounded', 'circle'] as const).map((eye) => (
             <GlassChip
               key={eye}
               label={eye === 'rounded' ? 'ROUND' : eye.toUpperCase()}
-              selected={options.eyeStyle === eye}
+              selected={currentEyeStyle === eye}
               onPress={() => updateOption('eyeStyle', eye)}
+              style={{ flex: 1 }}
               className="flex-1 justify-center"
             />
           ))}
@@ -78,13 +84,14 @@ function CustomizationStudioControlsImpl({
         <Text className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
           Center Brand Badge
         </Text>
-        <View className="flex-row gap-2">
+        <View className="flex-row gap-2 w-full flex-wrap sm:flex-nowrap">
           {(['none', 'qrstudio', 'shield', 'star'] as const).map((logoItem) => (
             <GlassChip
               key={logoItem}
               label={logoItem.toUpperCase()}
-              selected={options.logo === logoItem}
+              selected={currentLogo === logoItem}
               onPress={() => updateOption('logo', logoItem as any)}
+              style={{ flex: 1, minWidth: 65 }}
               className="flex-1 justify-center"
             />
           ))}
@@ -92,19 +99,5 @@ function CustomizationStudioControlsImpl({
       </View>
     </GlassCard>
   );
-}
+});
 
-// This panel only reads moduleShape/eyeStyle/logo, but its parent hands it the whole
-// CustomizationOptions object — a fresh reference every time fgColor/bgColor/padding
-// change too. A plain memo would still re-render on those unrelated updates, so compare
-// only the fields this component actually renders.
-export const CustomizationStudioControls = React.memo(
-  CustomizationStudioControlsImpl,
-  (prev, next) =>
-    prev.options.moduleShape === next.options.moduleShape &&
-    prev.options.eyeStyle === next.options.eyeStyle &&
-    prev.options.logo === next.options.logo &&
-    prev.options.fgColor === next.options.fgColor &&
-    prev.options.bgColor === next.options.bgColor &&
-    prev.onChangeOptions === next.onChangeOptions
-);

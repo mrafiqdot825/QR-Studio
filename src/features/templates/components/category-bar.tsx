@@ -41,6 +41,7 @@ export const CategoryBar: React.FC<CategoryBarProps> = memo(({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
+      className="w-full"
       contentContainerStyle={{ gap: 8, paddingVertical: 8 }}>
       {TEMPLATE_CATEGORIES.map((cat) => (
         <CategoryChipItem

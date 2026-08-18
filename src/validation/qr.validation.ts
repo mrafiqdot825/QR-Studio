@@ -40,6 +40,12 @@ export const validateQRPayload = (type: QRType, value: string): ValidationResult
       }
       return { isValid: false, errorMessage: 'Please enter a valid phone number.' };
     }
+    case 'media': {
+      if (!value || value.trim().length === 0) {
+        return { isValid: false, errorMessage: 'Please pick at least one image or video.' };
+      }
+      return { isValid: true };
+    }
     case 'wifi':
     case 'vcard':
     case 'text':

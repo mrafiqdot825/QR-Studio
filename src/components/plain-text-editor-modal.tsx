@@ -17,6 +17,7 @@ import { GlassBadge } from '@/components/ui/glass-badge';
 import { GlassButton } from '@/components/ui/glass-button';
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { useTheme } from '@/hooks/use-theme';
+import { openInDefaultTextEditor } from '@/utils/qr-exporter';
 
 interface PlainTextEditorModalProps {
   visible: boolean;
@@ -58,6 +59,13 @@ export const PlainTextEditorModal = React.memo(function PlainTextEditorModal({
     if (typeof navigator !== 'undefined' && navigator.clipboard && value) {
       navigator.clipboard.writeText(value).catch(() => {});
     }
+  }, [value]);
+
+  const handleOpenPhoneEditor = useCallback(async () => {
+    if (Platform.OS !== 'web') {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+    }
+    await openInDefaultTextEditor(value);
   }, [value]);
 
   if (!visible) return null;
@@ -183,7 +191,13 @@ export const PlainTextEditorModal = React.memo(function PlainTextEditorModal({
           {/* Footer Actions */}
           <View
             style={{ borderColor: colors.border, backgroundColor: colors.surface }}
-            className="p-4 border-t flex-row items-center justify-end gap-3 z-10">
+            className="p-4 border-t flex-row items-center justify-between gap-3 z-10">
+            <GlassButton
+              title="Open in Phone Editor"
+              icon="open-outline"
+              variant="secondary"
+              onPress={handleOpenPhoneEditor}
+            />
             <GlassButton
               title="Save & Use Text"
               icon="checkmark-circle-outline"

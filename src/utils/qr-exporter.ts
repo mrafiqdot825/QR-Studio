@@ -338,3 +338,56 @@ export async function shareGeneral(
     };
   }
 }
+
+/**
+ * Opens plain text in the phone's default text editor (e.g. Notes, Keep, Files, TextEdit)
+ */
+export async function openInDefaultTextEditor(text: string): Promise<ExportResult> {
+  let tempUri: string | undefined;
+  try {
+    const textContent = text || 'Plain text content from QR Studio';
+
+    if (Platform.OS === 'web') {
+      const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `scanned-text-${Date.now()}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      return { success: true, message: 'Downloaded plain text file.' };
+    }
+
+    const tempFilename = `scanned-note-${Date.now()}.txt`;
+    tempUri = await writeTempFile(textContent, tempFilename, false);
+
+    const sharingAvailable = await Sharing.isAvailableAsync();
+    if (sharingAvailable) {
+      await Sharing.shareAsync(tempUri, {
+        mimeType: 'text/plain',
+        dialogTitle: 'Open with Phone Text Editor',
+        UTI: 'public.plain-text',
+      });
+      await cleanupTempFile(tempUri);
+      return {
+        success: true,
+        message: 'Opened in phone text editor choices.',
+      };
+    }
+
+    await cleanupTempFile(tempUri);
+    return {
+      success: false,
+      message: 'Sharing plain text is not supported on this device.',
+    };
+  } catch (error: any) {
+    if (tempUri) await cleanupTempFile(tempUri);
+    return {
+      success: false,
+      message: error?.message || 'Failed to open text in default editor.',
+    };
+  }
+}
+

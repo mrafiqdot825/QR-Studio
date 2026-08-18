@@ -30,6 +30,15 @@ export default function StudioScreen() {
     qrRef,
     handleClearInputs,
     formFields,
+    mediaItems,
+    mediaShareUrl,
+    isUploadingMedia,
+    uploadProgress,
+    uploadStatus,
+    uploadError,
+    handlePickMedia,
+    handleRemoveMediaItem,
+    handleUploadMediaToCloud,
   } = useQRGenerator({ initialType, initialValue });
 
   const [exportOpen, setExportOpen] = useState(false);
@@ -106,6 +115,15 @@ export default function StudioScreen() {
               setEmailSubject={formFields.setEmailSubject}
               phoneNum={formFields.phoneNum}
               setPhoneNum={formFields.setPhoneNum}
+              mediaItems={mediaItems}
+              mediaShareUrl={mediaShareUrl}
+              isUploadingMedia={isUploadingMedia}
+              uploadProgress={uploadProgress}
+              uploadStatus={uploadStatus}
+              uploadError={uploadError}
+              onPickMedia={handlePickMedia}
+              onRemoveMediaItem={handleRemoveMediaItem}
+              onUploadMediaToCloud={handleUploadMediaToCloud}
               onClear={handleClearInputs}
             />
             {/* Live 3D Stage Hero */}

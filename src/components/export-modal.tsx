@@ -6,6 +6,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { withAlpha } from '@/utils/color';
 import {
   ExportFormat,
+  openInDefaultTextEditor,
   saveToGallery,
   shareGeneral,
   shareToInstagram,
@@ -85,6 +86,16 @@ export function ExportModal({
     setExportingText('Preparing Instagram share...');
 
     const res = await shareToInstagram(qrRef as any);
+    setIsExporting(false);
+    setToastMsg(res.message);
+  };
+
+  const handleOpenTextEditor = async () => {
+    triggerHaptics();
+    setIsExporting(true);
+    setExportingText('Opening text in phone editor...');
+
+    const res = await openInDefaultTextEditor(payloadValue);
     setIsExporting(false);
     setToastMsg(res.message);
   };
@@ -271,6 +282,28 @@ export function ExportModal({
                   </Text>
                   <Text className="text-on-surface-variant text-[11px]" numberOfLines={1}>
                     Post to Stories or DM
+                  </Text>
+                </View>
+              </View>
+            </GlassCard>
+
+            {/* PHONE DEFAULT TEXT EDITOR */}
+            <GlassCard
+              onPress={handleOpenTextEditor}
+              interactive
+              style={{ flexBasis: '48%', flexGrow: 1 }}
+              className="p-3.5 gap-2"
+            >
+              <View className="flex-row items-center gap-2.5">
+                <View className="w-9 h-9 rounded-xl bg-emerald-500/15 items-center justify-center">
+                  <Ionicons name="document-text-outline" size={18} color={Palette.emerald} />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-on-surface font-extrabold text-sm" numberOfLines={1}>
+                    Phone Text Editor
+                  </Text>
+                  <Text className="text-on-surface-variant text-[11px]" numberOfLines={1}>
+                    Notes, Keep, or Files
                   </Text>
                 </View>
               </View>

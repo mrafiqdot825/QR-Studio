@@ -16,6 +16,7 @@ import { GlassBadge } from '@/components/ui/glass-badge';
 import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, Shadows } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { openInDefaultTextEditor } from '@/utils/qr-exporter';
 
 interface ScannerModalProps {
   visible: boolean;
@@ -66,8 +67,15 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
         `Scanned Text:\n"${scannedCode}"`,
         [
           {
-            text: 'Open in Mobile Text Editor',
+            text: 'Open in Phone Default Editor',
             style: 'default',
+            onPress: async () => {
+              onClose();
+              await openInDefaultTextEditor(scannedCode);
+            },
+          },
+          {
+            text: 'Open in App Text Editor',
             onPress: () => {
               onClose();
               router.navigate({

@@ -23,13 +23,13 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(
 
     return (
       <GlassCard className="w-full p-5 gap-4">
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center gap-3">
+        <View className="flex-row items-center justify-between gap-3">
+          <View className="flex-row items-center gap-3 flex-1">
             <LinearGradient
               colors={template.gradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              className="w-12 h-12 rounded-2xl items-center justify-center border border-black/[0.04]"
+              className="w-12 h-12 rounded-2xl items-center justify-center border border-black/[0.04] shrink-0"
             >
               <Ionicons
                 name={template.icon as any}
@@ -38,17 +38,19 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(
               />
             </LinearGradient>
 
-            <View className="gap-1">
-              <Text className="text-on-surface text-base font-extrabold">
+            <View className="gap-1 flex-1">
+              <Text className="text-on-surface text-base font-extrabold" numberOfLines={1}>
                 {template.title}
               </Text>
-              <GlassBadge
-                label={template.category.toUpperCase()}
-                variant="primary"
-              />
+              <View className="self-start">
+                <GlassBadge
+                  label={template.category.toUpperCase()}
+                  variant="primary"
+                />
+              </View>
             </View>
           </View>
-          <View style={{ borderColor: colors.border, borderWidth: 1 }} className="p-2 rounded-2xl bg-white shadow-sm">
+          <View style={{ borderColor: colors.border, borderWidth: 1 }} className="p-2 rounded-2xl bg-white shadow-sm shrink-0">
             <QRCode
               value={template.sampleValue}
               size={48}
