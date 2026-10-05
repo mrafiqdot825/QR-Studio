@@ -1,0 +1,15 @@
+executionPrerequisite: >-
+  App is in Explore on the Template Gallery screen.
+steps:
+  - await:
+      visible:
+        text: Template Gallery
+  - wait: 1500
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.75
+      toX: 0.5
+      toY: 0.40
+      durationMs: 700
+  - wait: 3500

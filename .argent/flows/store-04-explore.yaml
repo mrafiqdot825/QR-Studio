@@ -1,0 +1,12 @@
+steps:
+  - launch: com.rafiqdev.qrstudio
+  - await:
+      visible:
+        text: Scan-Stopping
+  - tap:
+      text: Explore Gallery
+  - await:
+      visible:
+        text: Template Gallery
+  - await:
+      idle: true

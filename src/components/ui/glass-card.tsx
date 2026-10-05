@@ -18,37 +18,37 @@ interface GlassCardProps extends ViewProps {
   isInteractive?: boolean;
 }
 
-export const GlassCard = React.memo(function GlassCard({
+interface InteractiveGlassCardProps extends GlassCardProps {
+  containerStyle: any;
+  outerLayoutStyle?: ViewStyle;
+  colors: any;
+  resolvedInteractive: boolean;
+}
+
+const InteractiveGlassCard = React.memo(function InteractiveGlassCard({
   children,
   className = '',
   onPress,
-  interactive = false,
   glassTint = 'light',
-  hasGlow = false,
-  glowColor = Palette.accent,
-  isInteractive,
-  style,
+  containerStyle,
+  outerLayoutStyle,
+  colors,
+  resolvedInteractive,
+  style: _style,
   ...props
-}: GlassCardProps) {
-  const { colors } = useTheme();
+}: InteractiveGlassCardProps) {
   const scale = useSharedValue(1);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    };
-  });
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
 
   const handlePressIn = () => {
-    if (interactive || onPress) {
-      scale.value = withSpring(0.97, SpringConfigs.gentle);
-    }
+    scale.value = withSpring(0.97, SpringConfigs.gentle);
   };
 
   const handlePressOut = () => {
-    if (interactive || onPress) {
-      scale.value = withSpring(1, SpringConfigs.gentle);
-    }
+    scale.value = withSpring(1, SpringConfigs.gentle);
   };
 
   const handlePress = () => {
@@ -60,15 +60,48 @@ export const GlassCard = React.memo(function GlassCard({
     }
   };
 
-  const containerStyle = React.useMemo(() => [
-    { backgroundColor: colors.glassSurface },
-    style,
-  ], [colors.glassSurface, style]);
+  return (
+    <Animated.View style={[animatedStyle, outerLayoutStyle]}>
+      <Pressable
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={containerStyle}
+        className={`rounded-3xl overflow-hidden relative ${className}`}
+        {...props}>
+        <LiquidGlassView
+          blurLevel="card"
+          glassTint={glassTint}
+          tintColor={colors.glassSurface}
+          isInteractive={resolvedInteractive}
+          specular={false}
+          style={StyleSheet.absoluteFill}
+        />
+        {children}
+      </Pressable>
+    </Animated.View>
+  );
+});
 
-  // Only the flex-sizing properties (not borders/shadows/backgrounds, which
-  // belong on the rounded Pressable below) need to reach this outer wrapper —
-  // it's the element that actually participates in a parent's flex-wrap grid,
-  // so a caller's flexBasis/flexGrow must land here to size the item correctly.
+export const GlassCard = React.memo(function GlassCard({
+  children,
+  className = '',
+  onPress,
+  interactive = false,
+  glassTint = 'light',
+  hasGlow: _hasGlow = false,
+  glowColor: _glowColor = Palette.accent,
+  isInteractive,
+  style,
+  ...props
+}: GlassCardProps) {
+  const { colors } = useTheme();
+
+  const containerStyle = React.useMemo(
+    () => [{ backgroundColor: colors.glassSurface }, style],
+    [colors.glassSurface, style]
+  );
+
   const outerLayoutStyle = React.useMemo((): ViewStyle | undefined => {
     if (!style) return undefined;
     const flat = (StyleSheet.flatten(style) ?? {}) as ViewStyle;
@@ -90,25 +123,18 @@ export const GlassCard = React.memo(function GlassCard({
 
   if (onPress || interactive) {
     return (
-      <Animated.View style={[animatedStyle, outerLayoutStyle]}>
-        <Pressable
-          onPress={handlePress}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          style={containerStyle}
-          className={`rounded-3xl overflow-hidden relative ${className}`}
-          {...props}>
-          <LiquidGlassView
-            blurLevel="card"
-            glassTint={glassTint}
-            tintColor={colors.glassSurface}
-            isInteractive={resolvedInteractive}
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-          {children}
-        </Pressable>
-      </Animated.View>
+      <InteractiveGlassCard
+        className={className}
+        onPress={onPress}
+        glassTint={glassTint}
+        containerStyle={containerStyle}
+        outerLayoutStyle={outerLayoutStyle}
+        colors={colors}
+        resolvedInteractive={resolvedInteractive}
+        style={style}
+        {...props}>
+        {children}
+      </InteractiveGlassCard>
     );
   }
 

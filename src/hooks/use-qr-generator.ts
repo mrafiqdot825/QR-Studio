@@ -1,7 +1,7 @@
 import { CustomizationOptions, MediaItem, PresetId, QRType } from '@/types/qr';
 import { uploadAsync } from 'expo-file-system/legacy';
 import * as ImagePicker from 'expo-image-picker';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 
 export interface UseQRGeneratorProps {
@@ -11,8 +11,6 @@ export interface UseQRGeneratorProps {
 
 export const useQRGenerator = (props?: UseQRGeneratorProps) => {
   const [selectedType, setSelectedType] = useState<QRType>(props?.initialType || 'url');
-  const [prevType, setPrevType] = useState(props?.initialType);
-  const [prevValue, setPrevValue] = useState(props?.initialValue);
 
   // Inputs
   const [url, setUrl] = useState(
@@ -34,11 +32,20 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'completed' | 'failed'>('idle');
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // Sync state when props change
-  if (props?.initialType !== prevType || props?.initialValue !== prevValue) {
-    setPrevType(props?.initialType);
-    setPrevValue(props?.initialValue);
+  // Sync state when navigation props change (React-recommended pattern for props-driven state)
+  const [prevProps, setPrevProps] = useState({
+    type: props?.initialType,
+    value: props?.initialValue,
+  });
 
+  if (
+    props?.initialType !== prevProps.type ||
+    props?.initialValue !== prevProps.value
+  ) {
+    setPrevProps({
+      type: props?.initialType,
+      value: props?.initialValue,
+    });
     if (props?.initialType) {
       setSelectedType(props.initialType);
     }
@@ -322,6 +329,8 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     setUploadError(null);
   }, []);
 
+  const deferredPayloadValue = useDeferredValue(payloadValue);
+
   return {
     selectedType,
     setSelectedType,
@@ -330,6 +339,7 @@ export const useQRGenerator = (props?: UseQRGeneratorProps) => {
     customOpts,
     setCustomOpts,
     payloadValue,
+    deferredPayloadValue,
     qrRef,
     handleClearInputs,
     // Media Controls

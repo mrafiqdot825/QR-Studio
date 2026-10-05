@@ -9,7 +9,6 @@ import {
   Text,
   View,
 } from "react-native";
-import QRCode from "react-native-qrcode-svg";
 import { CustomStyledQRCode } from "@/components/ui/custom-styled-qr-code";
 import Animated, {
   interpolate,
@@ -177,14 +176,14 @@ export const QRStage3D = React.memo(function QRStage3D({
               value={validValue}
               size={STAGE_SIZE * 0.55}
               color={effectiveQrColor}
-              backgroundColor="transparent"
+              backgroundColor={options?.bgColor || "#FFFFFF"}
               moduleShape={options?.moduleShape || 'rounded'}
               eyeStyle={options?.eyeStyle || 'rounded'}
+              logoPreset={options?.logo}
               getRef={handleSetQrRef}
               quietZone={options?.moduleShape === 'dots' ? 4 : options?.moduleShape === 'rounded' ? 2 : 0}
               {...(showLogo
                 ? {
-                    logo: require("@/assets/images/icon.png"),
                     logoSize: STAGE_SIZE * 0.14,
                     logoBackgroundColor: "#FFFFFF",
                     logoMargin: 2,

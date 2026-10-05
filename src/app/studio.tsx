@@ -7,9 +7,10 @@ import { QRTypeSelector } from "@/components/qr-type-selector";
 import { ThemePresetsBar } from "@/components/theme-presets-bar";
 import { GlassContainer } from "@/components/ui/glass-container";
 import { useQRGenerator } from "@/hooks/use-qr-generator";
-import { PresetId, QRType } from "@/types/qr";
+import { CinematicPresets, PresetId } from "@/constants/theme";
+import { QRType } from "@/types/qr";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -27,6 +28,7 @@ export default function StudioScreen() {
     customOpts,
     setCustomOpts,
     payloadValue,
+    deferredPayloadValue,
     qrRef,
     handleClearInputs,
     formFields,
@@ -45,10 +47,17 @@ export default function StudioScreen() {
   const openExport = useCallback(() => setExportOpen(true), []);
   const closeExport = useCallback(() => setExportOpen(false), []);
 
+  const effectiveQrColor = useMemo(() => {
+    if (customOpts.fgColor) return customOpts.fgColor;
+    const preset = CinematicPresets.find((p) => p.id === presetId);
+    return preset?.qrColor || '#1E2A38';
+  }, [customOpts.fgColor, presetId]);
+
   const handleSelectPreset = useCallback(
     (id: PresetId) => {
       setPresetId(id);
-      setCustomOpts((prev) => ({ ...prev, fgColor: undefined }));
+      const found = CinematicPresets.find((p) => p.id === id);
+      setCustomOpts((prev) => ({ ...prev, fgColor: found?.qrColor }));
     },
     [setPresetId, setCustomOpts]
   );
@@ -128,12 +137,12 @@ export default function StudioScreen() {
             />
             {/* Live 3D Stage Hero */}
             <QRStage3D
-              value={payloadValue}
+              value={deferredPayloadValue}
               presetId={presetId}
               qrRef={qrRef}
               typeLabel={selectedType}
               title="Live QR Preview"
-              fgColor={customOpts.fgColor}
+              fgColor={effectiveQrColor}
               options={customOpts}
               onExport={openExport}
             />
@@ -161,7 +170,7 @@ export default function StudioScreen() {
           qrRef={qrRef}
           presetId={presetId}
           typeLabel={selectedType}
-          fgColor={customOpts.fgColor}
+          fgColor={effectiveQrColor}
           options={customOpts}
         />
       </SafeAreaView>

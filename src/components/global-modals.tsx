@@ -8,8 +8,8 @@ export const GlobalModals: React.FC = () => {
 
   return (
     <>
-      <ScannerModal visible={scannerOpen} onClose={closeScanner} />
-      <SettingsModal visible={settingsOpen} onClose={closeSettings} />
+      {scannerOpen && <ScannerModal visible={scannerOpen} onClose={closeScanner} />}
+      {settingsOpen && <SettingsModal visible={settingsOpen} onClose={closeSettings} />}
     </>
   );
 };

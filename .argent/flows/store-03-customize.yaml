@@ -1,0 +1,19 @@
+steps:
+  - launch: com.rafiqdev.qrstudio
+  - await:
+      visible:
+        text: Scan-Stopping
+  - tap:
+      text: Create QR Now
+  - await:
+      visible:
+        text: Live QR Preview
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.75
+      toX: 0.5
+      toY: 0.35
+      durationMs: 600
+  - await:
+      idle: true

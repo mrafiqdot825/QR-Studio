@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import Svg, { Rect, Circle, G, Image, SvgProps } from 'react-native-svg';
+import Svg, { Rect, Circle, G, Image, Path, SvgProps } from 'react-native-svg';
 import QRCodeGenerator from 'qrcode';
-import { EyeStyle, ModuleShape } from '@/types/qr';
+import { EyeStyle, LogoPreset, ModuleShape } from '@/types/qr';
 
 export interface CustomStyledQRCodeProps extends SvgProps {
   value: string;
@@ -11,6 +11,7 @@ export interface CustomStyledQRCodeProps extends SvgProps {
   moduleShape?: ModuleShape;
   eyeStyle?: EyeStyle;
   logo?: any;
+  logoPreset?: LogoPreset;
   logoSize?: number;
   logoBackgroundColor?: string;
   logoMargin?: number;
@@ -28,6 +29,7 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
   moduleShape = 'square',
   eyeStyle = 'square',
   logo,
+  logoPreset = 'none',
   logoSize = size * 0.2,
   logoBackgroundColor = '#FFFFFF',
   logoMargin = 2,
@@ -52,7 +54,7 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
   const cellSize = size / (numModules || 1);
 
   // Determine logo bounds in matrix grid if logo exists
-  const showLogo = !!logo;
+  const showLogo = !!logo || (!!logoPreset && logoPreset !== 'none');
   const logoTotalSize = logoSize + logoMargin * 2;
   const logoModules = showLogo && cellSize > 0 ? Math.ceil(logoTotalSize / cellSize) : 0;
   const centerModule = Math.floor(numModules / 2);
@@ -228,6 +230,52 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
     const bgX = logoX - logoMargin;
     const bgY = logoY - logoMargin;
     const bgSize = logoSize + logoMargin * 2;
+    const iconScale = (logoSize * 0.65) / 24;
+    const iconOffset = (logoSize - logoSize * 0.65) / 2;
+
+    const renderVectorIcon = () => {
+      if (logoPreset === 'star') {
+        return (
+          <G transform={`translate(${logoX + iconOffset}, ${logoY + iconOffset}) scale(${iconScale})`}>
+            <Path
+              d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+              fill={color}
+            />
+          </G>
+        );
+      }
+      if (logoPreset === 'shield') {
+        return (
+          <G transform={`translate(${logoX + iconOffset}, ${logoY + iconOffset}) scale(${iconScale})`}>
+            <Path
+              d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+              fill={color}
+            />
+          </G>
+        );
+      }
+      if (logoPreset === 'heart') {
+        return (
+          <G transform={`translate(${logoX + iconOffset}, ${logoY + iconOffset}) scale(${iconScale})`}>
+            <Path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              fill={color}
+            />
+          </G>
+        );
+      }
+      if (logoPreset === 'qrstudio') {
+        return (
+          <G transform={`translate(${logoX + iconOffset}, ${logoY + iconOffset}) scale(${iconScale})`}>
+            <Path
+              d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm0 5h3v3h-3v-3zm-5-5h3v8h-3v-8z"
+              fill={color}
+            />
+          </G>
+        );
+      }
+      return null;
+    };
 
     return (
       <G key="logo-group">
@@ -240,14 +288,18 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
           ry={logoRadius}
           fill={logoBackgroundColor}
         />
-        <Image
-          x={logoX}
-          y={logoY}
-          width={logoSize}
-          height={logoSize}
-          preserveAspectRatio="xMidYMid slice"
-          href={logo}
-        />
+        {logo ? (
+          <Image
+            x={logoX}
+            y={logoY}
+            width={logoSize}
+            height={logoSize}
+            preserveAspectRatio="xMidYMid slice"
+            href={logo}
+          />
+        ) : (
+          renderVectorIcon()
+        )}
       </G>
     );
   };

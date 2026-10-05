@@ -1,0 +1,13 @@
+executionPrerequisite: >-
+  App freshly restarted by goldie, settled on the home screen.
+steps:
+  - await:
+      visible:
+        text: Scan-Stopping
+  - wait: 2000
+  - tap:
+      text: Create QR Now
+  - await:
+      visible:
+        text: Live QR Preview
+  - wait: 2500

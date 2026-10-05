@@ -1,0 +1,7 @@
+steps:
+  - launch: com.rafiqdev.qrstudio
+  - await:
+      visible:
+        text: Scan-Stopping
+  - await:
+      idle: true

@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useIsFocused, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
-import QRCode from "react-native-qrcode-svg";
+import { CustomStyledQRCode } from "@/components/ui/custom-styled-qr-code";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -141,11 +141,13 @@ export const HomeHeroCard: React.FC = React.memo(() => {
 
   const qrCodeElement = useMemo(
     () => (
-      <QRCode
+      <CustomStyledQRCode
         value="https://qrstudio.me/pro-studio"
         size={Math.min(width * 0.48, 190)}
         color={activePreset.qrColor}
-        backgroundColor="transparent"
+        backgroundColor="#FFFFFF"
+        moduleShape="rounded"
+        eyeStyle="rounded"
       />
     ),
     [activePreset.qrColor]

@@ -1,7 +1,7 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassModal } from '@/components/ui/glass-modal';
 import { GlassToast } from '@/components/ui/glass-toast';
-import { Palette, PresetId } from '@/constants/theme';
+import { CinematicPresets, Palette, PresetId } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { withAlpha } from '@/utils/color';
 import {
@@ -14,7 +14,7 @@ import {
 } from '@/utils/qr-exporter';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, Platform, Text, View } from 'react-native';
 
 import { CustomizationOptions } from '@/types/qr';
@@ -35,16 +35,35 @@ export function ExportModal({
   onClose,
   payloadValue,
   qrRef,
-  presetId: _presetId,
+  presetId,
   typeLabel: _typeLabel,
-  fgColor = '#1E2A38',
-  options: _options,
+  fgColor,
+  options,
 }: ExportModalProps) {
   const { colors } = useTheme();
   const [isExporting, setIsExporting] = useState(false);
   const [exportingText, setExportingText] = useState('Rendering QR Code...');
   const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('png');
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  const effectiveFgColor = useMemo(() => {
+    if (fgColor) return fgColor;
+    if (options?.fgColor) return options.fgColor;
+    const preset = CinematicPresets.find((p) => p.id === presetId);
+    return preset?.qrColor || '#1E2A38';
+  }, [fgColor, options?.fgColor, presetId]);
+
+  const exportOpts = useMemo(
+    () => ({
+      payloadValue,
+      fgColor: effectiveFgColor,
+      bgColor: options?.bgColor || '#FFFFFF',
+      moduleShape: options?.moduleShape,
+      eyeStyle: options?.eyeStyle,
+      logo: options?.logo,
+    }),
+    [payloadValue, effectiveFgColor, options]
+  );
 
   const triggerHaptics = useCallback(() => {
     if (Platform.OS !== 'web') {
@@ -65,7 +84,7 @@ export function ExportModal({
     setIsExporting(true);
     setExportingText('Saving QR image to photo gallery...');
 
-    const res = await saveToGallery(qrRef as any);
+    const res = await saveToGallery(qrRef as any, exportOpts);
     setIsExporting(false);
     setToastMsg(res.message);
   };
@@ -75,7 +94,7 @@ export function ExportModal({
     setIsExporting(true);
     setExportingText('Preparing WhatsApp share...');
 
-    const res = await shareToWhatsApp(qrRef as any, payloadValue);
+    const res = await shareToWhatsApp(qrRef as any, payloadValue, exportOpts);
     setIsExporting(false);
     setToastMsg(res.message);
   };
@@ -85,7 +104,7 @@ export function ExportModal({
     setIsExporting(true);
     setExportingText('Preparing Instagram share...');
 
-    const res = await shareToInstagram(qrRef as any);
+    const res = await shareToInstagram(qrRef as any, exportOpts);
     setIsExporting(false);
     setToastMsg(res.message);
   };
@@ -106,7 +125,7 @@ export function ExportModal({
     setIsExporting(true);
     setExportingText(`Exporting ${fmt.toUpperCase()} format...`);
 
-    const res = await shareGeneral(qrRef as any, fmt, payloadValue, fgColor);
+    const res = await shareGeneral(qrRef as any, fmt, payloadValue, effectiveFgColor, options);
     setIsExporting(false);
     setToastMsg(res.message);
   };

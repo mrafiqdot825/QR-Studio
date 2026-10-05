@@ -6,7 +6,7 @@ import {
   TEMPLATES_LIST,
 } from "@/features/templates/constants/templates";
 import { useRouter } from "expo-router";
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { FlatList, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -26,30 +26,34 @@ export default function ExploreScreen() {
         params: { initialType: template.type },
       });
     },
-    [router]
+    [router],
   );
 
   const renderItem = useCallback(
     ({ item }: { item: QRTemplate }) => (
-      <View style={{ width: '100%', maxWidth: 640, alignSelf: 'center' }} className="mb-4">
+      <View
+        style={{ width: "100%", maxWidth: 640, alignSelf: "center" }}
+        className="mb-4"
+      >
         <TemplateCard template={item} onUseTemplate={handleUseTemplate} />
       </View>
     ),
-    [handleUseTemplate]
+    [handleUseTemplate],
   );
 
   const keyExtractor = useCallback((item: QRTemplate) => item.id, []);
 
   const ListHeaderComponent = useMemo(
     () => (
-      <View style={{ width: '100%', maxWidth: 640, alignSelf: 'center' }}>
+      <View style={{ width: "100%", maxWidth: 640, alignSelf: "center" }}>
         {/* Header Section */}
         <View className="my-3 w-full">
           <Text className="text-on-surface text-3xl font-extrabold tracking-tight">
             Template Gallery
           </Text>
           <Text className="text-on-surface-variant text-sm mt-1 leading-5">
-            Pre-designed luxury light templates for business, hospitality, and events.
+            Pre-designed luxury light templates for business, hospitality, and
+            events.
           </Text>
         </View>
         {/* Category Filter Chips */}
@@ -60,7 +64,7 @@ export default function ExploreScreen() {
         <View className="h-3" />
       </View>
     ),
-    [selectedCat]
+    [selectedCat],
   );
 
   return (

@@ -8,6 +8,7 @@
     "scheme": "qrstudio",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "bundleIdentifier": "com.rafiqdev.qrstudio",
       "icon": "./assets/images/icon.png",
       "jsEngine": "hermes"
     },

@@ -7,7 +7,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { memo, useCallback } from "react";
 import { Text, View } from "react-native";
-import QRCode from "react-native-qrcode-svg";
+import { CustomStyledQRCode } from "@/components/ui/custom-styled-qr-code";
 
 interface TemplateCardProps {
   template: QRTemplate;
@@ -51,11 +51,13 @@ export const TemplateCard: React.FC<TemplateCardProps> = memo(
             </View>
           </View>
           <View style={{ borderColor: colors.border, borderWidth: 1 }} className="p-2 rounded-2xl bg-white shadow-sm shrink-0">
-            <QRCode
+            <CustomStyledQRCode
               value={template.sampleValue}
               size={48}
-              color="#1E2A38"
-              backgroundColor="transparent"
+              color={template.color || "#1E2A38"}
+              backgroundColor="#FFFFFF"
+              moduleShape="rounded"
+              eyeStyle="rounded"
             />
           </View>
         </View>
