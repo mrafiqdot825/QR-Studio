@@ -15,7 +15,6 @@ import {
 
 import { GlassBadge } from '@/components/ui/glass-badge';
 import { GlassButton } from '@/components/ui/glass-button';
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { useTheme } from '@/hooks/use-theme';
 import { openInDefaultTextEditor } from '@/utils/qr-exporter';
 
@@ -79,33 +78,19 @@ export const PlainTextEditorModal = React.memo(function PlainTextEditorModal({
           accessibilityLabel="Backdrop"
           accessibilityRole="button"
           onPress={onClose}
-          className="absolute inset-0">
-          <LiquidGlassView
-            blurLevel="modal"
-            glassTint="dark"
-            colorScheme="dark"
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-        </Pressable>
+          className="absolute inset-0 bg-black/40"
+        />
 
         <View
           style={[
             shadows.modal,
             {
-              backgroundColor: colors.glassSurfaceHigh,
+              backgroundColor: colors.surface,
               borderColor: colors.border,
               borderWidth: 1,
             },
           ]}
           className="w-full max-w-[640px] h-[85%] rounded-t-3xl overflow-hidden relative flex-col">
-          <LiquidGlassView
-            blurLevel="card"
-            tintColor={colors.glassSurfaceHigh}
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-
           {/* Sheet Handle */}
           <View style={{ backgroundColor: colors.border }} className="w-12 h-1.5 rounded-full self-center mt-3 mb-1" />
 

@@ -11,7 +11,7 @@ import { CinematicPresets, PresetId } from "@/constants/theme";
 import { QRType } from "@/types/qr";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function StudioScreen() {
@@ -32,15 +32,6 @@ export default function StudioScreen() {
     qrRef,
     handleClearInputs,
     formFields,
-    mediaItems,
-    mediaShareUrl,
-    isUploadingMedia,
-    uploadProgress,
-    uploadStatus,
-    uploadError,
-    handlePickMedia,
-    handleRemoveMediaItem,
-    handleUploadMediaToCloud,
   } = useQRGenerator({ initialType, initialValue });
 
   const [exportOpen, setExportOpen] = useState(false);
@@ -80,6 +71,9 @@ export default function StudioScreen() {
           }}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
+          scrollEventThrottle={16}
+          removeClippedSubviews={Platform.OS !== "web"}
+          overScrollMode="never"
         >
           <View className="w-full max-w-[640px]">
             {/* Header Section */}
@@ -124,15 +118,6 @@ export default function StudioScreen() {
               setEmailSubject={formFields.setEmailSubject}
               phoneNum={formFields.phoneNum}
               setPhoneNum={formFields.setPhoneNum}
-              mediaItems={mediaItems}
-              mediaShareUrl={mediaShareUrl}
-              isUploadingMedia={isUploadingMedia}
-              uploadProgress={uploadProgress}
-              uploadStatus={uploadStatus}
-              uploadError={uploadError}
-              onPickMedia={handlePickMedia}
-              onRemoveMediaItem={handleRemoveMediaItem}
-              onUploadMediaToCloud={handleUploadMediaToCloud}
               onClear={handleClearInputs}
             />
             {/* Live 3D Stage Hero */}
@@ -153,7 +138,7 @@ export default function StudioScreen() {
               options={customOpts}
               onChangeOptions={setCustomOpts}
             />
-            {/* Theme Gallery & Color Picker */}
+            {/* Theme Presets & Color Picker */}
             <ThemePresetsBar
               selectedPresetId={presetId}
               onSelectPreset={handleSelectPreset}

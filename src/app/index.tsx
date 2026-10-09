@@ -10,7 +10,7 @@ import { QRType } from "@/types/qr";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Platform, Pressable, ScrollView, Text, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -50,6 +50,9 @@ export default function HomeScreen() {
             paddingBottom: 120,
           }}
           showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          removeClippedSubviews={Platform.OS !== "web"}
+          overScrollMode="never"
         >
           <View className="w-full max-w-[640px]">
             {/* HERO LANDING SECTION */}

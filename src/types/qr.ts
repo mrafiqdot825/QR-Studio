@@ -2,24 +2,8 @@ import { PresetId } from '@/constants/theme';
 
 export type { PresetId };
 
-export type QRType = 'url' | 'text' | 'wifi' | 'vcard' | 'email' | 'phone' | 'media';
+export type QRType = 'url' | 'text' | 'wifi' | 'vcard' | 'email' | 'phone';
 
-export interface MediaItem {
-  id: string;
-  uri: string;
-  name: string;
-  type: 'image' | 'video';
-  mimeType?: string;
-  fileSize?: number;
-  duration?: number;
-  uploadUrl?: string;
-}
-
-export interface MediaConfig {
-  items: MediaItem[];
-  shareUrl?: string;
-  uploadStatus?: 'idle' | 'uploading' | 'completed' | 'failed';
-}
 
 export interface WIFIConfig {
   ssid: string;

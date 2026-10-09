@@ -3,10 +3,11 @@ steps:
   - await:
       visible:
         text: Scan-Stopping
+  - echo: "Profile tab in bottom navigation bar"
   - tap:
-      id: settings
+      text: Profile
   - await:
       visible:
-        text: Settings & Policies
+        text: Profile & Settings
   - await:
       idle: true

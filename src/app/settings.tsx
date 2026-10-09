@@ -33,13 +33,16 @@ export default function SettingsScreen() {
             paddingTop: 12,
             paddingBottom: 120,
           }}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          removeClippedSubviews={Platform.OS !== 'web'}
+          overScrollMode="never">
           <View className="w-full max-w-[640px]">
             {/* Header Section */}
             <View className="my-3">
-              <Text className="text-on-surface text-3xl font-extrabold tracking-tight">Settings & Policies</Text>
+              <Text className="text-on-surface text-3xl font-extrabold tracking-tight">Profile & Settings</Text>
               <Text className="text-on-surface-variant text-sm mt-1">
-                Developer information, legal governance, and app preferences.
+                Developer profile, legal governance, and app preferences.
               </Text>
             </View>
 

@@ -1,9 +1,9 @@
 executionPrerequisite: >-
-  App is in Explore on the Template Gallery screen.
+  App is in Explore on the Explore Templates screen.
 steps:
   - await:
       visible:
-        text: Template Gallery
+        text: Explore Templates
   - wait: 1500
   - tool: gesture-swipe
     args:

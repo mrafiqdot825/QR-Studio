@@ -16,7 +16,6 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -66,39 +65,23 @@ export function GlassModal({
   return (
     <Modal transparent visible={visible} onRequestClose={onClose} animationType="fade">
       <View className="flex-1 justify-end items-center relative">
-        {/* Backdrop Blur */}
+        {/* Backdrop Scrim */}
         <Pressable
           accessibilityLabel="Close modal overlay"
           accessibilityRole="button"
           onPress={onClose}
-          className="absolute inset-0 bg-black/10">
-          <LiquidGlassView
-            blurLevel="modal"
-            glassTint="light"
-            colorScheme="light"
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-        </Pressable>
+          className="absolute inset-0 bg-black/40"
+        />
 
-        {/* Floating Glass Container */}
+        {/* Floating Solid Container */}
         <Animated.View
           style={[
             shadows.modal,
-            { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border, borderWidth: 1 },
+            { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
             animatedStyle,
             isSheet ? styles.sheetRadius : styles.modalRadius,
           ]}
           className="w-full max-w-[540px] overflow-hidden mb-0 sm:mb-6 relative max-h-[85%]">
-          <LiquidGlassView
-            blurLevel="card"
-            glassTint="light"
-            colorScheme="light"
-            tintColor={colors.glassSurfaceHigh}
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-
           {/* Sheet Handle */}
           {isSheet && <View style={{ backgroundColor: colors.border }} className="w-12 h-1.5 rounded-full self-center mt-3 mb-1" />}
 
@@ -118,7 +101,7 @@ export function GlassModal({
                 }
                 onClose();
               }}
-              style={{ backgroundColor: colors.glassSurfaceSubtle }}
+              style={{ backgroundColor: colors.secondaryBackground }}
               className="w-8 h-8 rounded-full items-center justify-center active:opacity-70">
               <Ionicons name="close" size={18} color={colors.secondaryText} />
             </Pressable>
@@ -139,16 +122,15 @@ export function GlassModal({
 }
 
 const styles = StyleSheet.create({
-  sheetRadius: {
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    borderBottomLeftRadius: Platform.OS === 'web' ? 28 : 0,
-    borderBottomRightRadius: Platform.OS === 'web' ? 28 : 0,
-  },
-  modalRadius: {
-    borderRadius: 24,
-  },
   contentContainer: {
     padding: 24,
+    paddingTop: 16,
+  },
+  sheetRadius: {
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
+  modalRadius: {
+    borderRadius: 32,
   },
 });

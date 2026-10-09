@@ -78,26 +78,17 @@ export const QuickActionsBar: React.FC = React.memo(() => {
       }),
     [router]
   );
-  const handleNavigateMedia = React.useCallback(
+  const handleNavigateVCard = React.useCallback(
     () =>
       router.navigate({
         pathname: "/studio",
-        params: { initialType: "media" },
+        params: { initialType: "vcard" },
       }),
     [router]
   );
 
   const ACTIONS: QuickAction[] = useMemo(
     () => [
-      {
-        id: "media",
-        title: "Media & Gallery",
-        subtitle: "Upload photo/video",
-        icon: "images-outline",
-        color: Palette.cyan,
-        bgAlpha: "rgba(0, 184, 212, 0.1)",
-        onPress: handleNavigateMedia,
-      },
       {
         id: "studio",
         title: "QR Studio",
@@ -117,8 +108,17 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         onPress: openScanner,
       },
       {
+        id: "vcard",
+        title: "Digital VCard",
+        subtitle: "Share contact card",
+        icon: "person-outline",
+        color: Palette.cyan,
+        bgAlpha: "rgba(0, 184, 212, 0.1)",
+        onPress: handleNavigateVCard,
+      },
+      {
         id: "templates",
-        title: "Template Gallery",
+        title: "Explore Templates",
         subtitle: "Pre-designed cards",
         icon: "color-palette-outline",
         color: colors.accent,
@@ -135,7 +135,7 @@ export const QuickActionsBar: React.FC = React.memo(() => {
         onPress: handleNavigateWifi,
       },
     ],
-    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, handleNavigateMedia, openScanner, colors.accent]
+    [handleNavigateStudio, handleNavigateExplore, handleNavigateWifi, handleNavigateVCard, openScanner, colors.accent]
   );
 
   return (

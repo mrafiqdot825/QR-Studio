@@ -186,7 +186,7 @@ export const HomeHeroCard: React.FC = React.memo(() => {
           />
 
           <GlassButton
-            title="Explore Gallery"
+            title="Explore Templates"
             icon="grid-outline"
             variant="secondary"
             onPress={handleNavigateExplore}

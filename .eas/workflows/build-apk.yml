@@ -1,16 +1,21 @@
-name: Build Android APK on Push
+name: Submit Android
 
 on:
   push:
-    branches:
-      - main
-      - master
-  workflow_dispatch: {}
+    branches: ["main"]
 
 jobs:
-  build_apk:
-    name: Build Android APK
+  build_android:
+    name: Build Android app
     type: build
     params:
       platform: android
-      profile: preview
+      profile: production
+
+  submit_android:
+    name: Submit to Google Play Store
+    needs: [build_android]
+    type: submit
+    params:
+      profile: production
+      build_id: ${{ needs.build_android.outputs.build_id }}

@@ -61,8 +61,9 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
   const logoStart = centerModule - Math.floor(logoModules / 2);
   const logoEnd = logoStart + logoModules - 1;
 
-  const dataModules = useMemo(() => {
-    if (!qrData || numModules === 0) return [];
+  // Single consolidated SVG path for all QR data modules instead of 500+ React nodes
+  const dataPathString = useMemo(() => {
+    if (!qrData || numModules === 0) return '';
 
     const isEyeCell = (row: number, col: number) => {
       if (row < 7 && col < 7) return true;
@@ -81,57 +82,60 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
       );
     };
 
-    const modules: React.ReactNode[] = [];
-    for (let row = 0; row < numModules; row++) {
-      for (let col = 0; col < numModules; col++) {
-        if (isEyeCell(row, col) || isLogoCell(row, col)) continue;
+    let d = '';
 
-        const isDark = qrData.data[row * numModules + col] === 1;
-        if (!isDark) continue;
+    if (moduleShape === 'dots') {
+      const r = cellSize * 0.44;
+      const d2 = (r * 2).toFixed(2);
+      const rf = r.toFixed(2);
 
-        const x = col * cellSize;
-        const y = row * cellSize;
-        const key = `mod-${row}-${col}`;
+      for (let row = 0; row < numModules; row++) {
+        for (let col = 0; col < numModules; col++) {
+          if (isEyeCell(row, col) || isLogoCell(row, col)) continue;
+          if (qrData.data[row * numModules + col] !== 1) continue;
 
-        if (moduleShape === 'dots') {
-          modules.push(
-            <Circle
-              key={key}
-              cx={x + cellSize / 2}
-              cy={y + cellSize / 2}
-              r={cellSize * 0.44}
-              fill={color}
-            />
-          );
-        } else if (moduleShape === 'rounded') {
-          modules.push(
-            <Rect
-              key={key}
-              x={x + cellSize * 0.05}
-              y={y + cellSize * 0.05}
-              width={cellSize * 0.9}
-              height={cellSize * 0.9}
-              rx={cellSize * 0.35}
-              ry={cellSize * 0.35}
-              fill={color}
-            />
-          );
-        } else {
-          modules.push(
-            <Rect
-              key={key}
-              x={x}
-              y={y}
-              width={cellSize + 0.1}
-              height={cellSize + 0.1}
-              fill={color}
-            />
-          );
+          const cx = col * cellSize + cellSize / 2;
+          const cy = row * cellSize + cellSize / 2;
+          d += `M${(cx - r).toFixed(2)},${cy.toFixed(2)}a${rf},${rf} 0 1,0 ${d2},0a${rf},${rf} 0 1,0 -${d2},0 `;
+        }
+      }
+    } else if (moduleShape === 'rounded') {
+      const rx = cellSize * 0.35;
+      const ry = cellSize * 0.35;
+      const w = cellSize * 0.9;
+      const h = cellSize * 0.9;
+      const rxf = rx.toFixed(2);
+      const ryf = ry.toFixed(2);
+      const wf = (w - 2 * rx).toFixed(2);
+      const hf = (h - 2 * ry).toFixed(2);
+
+      for (let row = 0; row < numModules; row++) {
+        for (let col = 0; col < numModules; col++) {
+          if (isEyeCell(row, col) || isLogoCell(row, col)) continue;
+          if (qrData.data[row * numModules + col] !== 1) continue;
+
+          const x = col * cellSize + cellSize * 0.05;
+          const y = row * cellSize + cellSize * 0.05;
+          d += `M${(x + rx).toFixed(2)},${y.toFixed(2)}h${wf}a${rxf},${ryf} 0 0 1 ${rxf},${ryf}v${hf}a${rxf},${ryf} 0 0 1 -${rxf},${ryf}h-${wf}a${rxf},${ryf} 0 0 1 -${rxf},-${ryf}v-${hf}a${rxf},${ryf} 0 0 1 ${rxf},-${ryf}z `;
+        }
+      }
+    } else {
+      const s = (cellSize + 0.05).toFixed(2);
+
+      for (let row = 0; row < numModules; row++) {
+        for (let col = 0; col < numModules; col++) {
+          if (isEyeCell(row, col) || isLogoCell(row, col)) continue;
+          if (qrData.data[row * numModules + col] !== 1) continue;
+
+          const x = (col * cellSize).toFixed(2);
+          const y = (row * cellSize).toFixed(2);
+          d += `M${x},${y}h${s}v${s}h-${s}z `;
         }
       }
     }
-    return modules;
-  }, [qrData, numModules, cellSize, moduleShape, color, showLogo, logoStart, logoEnd]);
+
+    return d;
+  }, [qrData, numModules, cellSize, moduleShape, showLogo, logoStart, logoEnd]);
 
   if (!qrData) return null;
 
@@ -264,16 +268,6 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
           </G>
         );
       }
-      if (logoPreset === 'qrstudio') {
-        return (
-          <G transform={`translate(${logoX + iconOffset}, ${logoY + iconOffset}) scale(${iconScale})`}>
-            <Path
-              d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm0 5h3v3h-3v-3zm-5-5h3v8h-3v-8z"
-              fill={color}
-            />
-          </G>
-        );
-      }
       return null;
     };
 
@@ -330,8 +324,10 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
       {renderEye(0, numModules - 7, 'eye-tr')}
       {renderEye(numModules - 7, 0, 'eye-bl')}
 
-      {/* Data Modules */}
-      {dataModules}
+      {/* Consolidated Data Path (1 single native SVG node instead of 500+ Rect/Circle nodes) */}
+      {dataPathString ? (
+        <Path d={dataPathString} fill={color} />
+      ) : null}
 
       {/* Center Logo */}
       {renderLogo()}
@@ -340,4 +336,3 @@ export const CustomStyledQRCode: React.FC<CustomStyledQRCodeProps> = React.memo(
 });
 
 CustomStyledQRCode.displayName = 'CustomStyledQRCode';
-

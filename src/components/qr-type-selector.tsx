@@ -18,7 +18,6 @@ interface QRTypeConfig {
 
 export const QR_TYPES: QRTypeConfig[] = [
   { id: 'url', label: 'Website Link', icon: 'link-outline', desc: 'Direct visitors to any website or landing page.' },
-  { id: 'media', label: 'Media & Gallery', icon: 'images-outline', desc: 'Upload images or videos and generate shareable QR code.' },
   { id: 'wifi', label: 'Wi-Fi Network', icon: 'wifi-outline', desc: 'Allow guests to join Wi-Fi without typing passwords.' },
   { id: 'vcard', label: 'Digital VCard', icon: 'person-outline', desc: 'Share your contact card, phone, and company info.' },
   { id: 'email', label: 'Send Email', icon: 'mail-outline', desc: 'Compose pre-filled emails to your target address.' },

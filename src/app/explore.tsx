@@ -49,7 +49,7 @@ export default function ExploreScreen() {
         {/* Header Section */}
         <View className="my-3 w-full">
           <Text className="text-on-surface text-3xl font-extrabold tracking-tight">
-            Template Gallery
+            Explore Templates
           </Text>
           <Text className="text-on-surface-variant text-sm mt-1 leading-5">
             Pre-designed luxury light templates for business, hospitality, and
@@ -81,9 +81,10 @@ export default function ExploreScreen() {
             paddingBottom: 120,
           }}
           showsVerticalScrollIndicator={false}
-          initialNumToRender={4}
-          maxToRenderPerBatch={4}
-          windowSize={5}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={30}
+          windowSize={7}
           removeClippedSubviews={Platform.OS !== "web"}
         />
       </SafeAreaView>

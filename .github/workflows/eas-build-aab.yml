@@ -1,0 +1,55 @@
+name: EAS Build & Release Android App Bundle (.aab)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      auto_submit:
+        description: 'Automatically submit .aab to Google Play Store after build'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-aab:
+    name: Build Android .AAB for Google Play Store
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Expo & EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          packager: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck & Quality Verification
+        run: |
+          npx tsc --noEmit
+          npx eslint "src/**/*.{ts,tsx}"
+
+      - name: Build Android App Bundle (.aab) via EAS Production
+        run: eas build --platform android --profile production --non-interactive
+
+      - name: Submit .aab to Google Play Store (Optional)
+        if: ${{ github.event.inputs.auto_submit == 'true' }}
+        run: eas submit --platform android --profile production --non-interactive
+

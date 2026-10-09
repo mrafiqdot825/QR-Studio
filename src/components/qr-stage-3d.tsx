@@ -19,7 +19,6 @@ import Animated, {
 
 import { GlassBadge } from "@/components/ui/glass-badge";
 import { GlassShimmer } from "@/components/ui/glass-shimmer";
-import { LiquidGlassView } from "@/components/ui/liquid-glass-view";
 import {
   CinematicPresets,
   Palette,
@@ -134,16 +133,6 @@ export const QRStage3D = React.memo(function QRStage3D({
           ]}
           className="absolute w-full h-full rounded-4xl overflow-hidden p-6 justify-between shadow-sm"
         >
-          <LiquidGlassView
-            blurLevel="card"
-            glassTint="light"
-            colorScheme="light"
-            tintColor={colors.surface}
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-          <GlassShimmer />
-
           {/* Top Bar */}
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center gap-2">
@@ -215,15 +204,6 @@ export const QRStage3D = React.memo(function QRStage3D({
           ]}
           className="absolute w-full h-full rounded-4xl overflow-hidden p-6 justify-between shadow-sm"
         >
-          <LiquidGlassView
-            blurLevel="card"
-            glassTint="light"
-            colorScheme="light"
-            tintColor={colors.surface}
-            specular={false}
-            style={StyleSheet.absoluteFill}
-          />
-
           <View className="flex-row items-center justify-between">
             <Text className="text-on-surface text-base font-bold">
               Code Intelligence

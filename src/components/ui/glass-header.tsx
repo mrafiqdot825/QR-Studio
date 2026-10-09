@@ -1,10 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
-import { Palette } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassHeaderProps {
@@ -34,10 +32,8 @@ export const GlassHeader = React.memo(function GlassHeader({
 
   return (
     <View
-      style={[shadows.subtle, { backgroundColor: colors.glassSurfaceHigh, borderColor: colors.border }]}
+      style={[shadows.subtle, { backgroundColor: colors.surface, borderColor: colors.border }]}
       className={`w-full z-50 border-b relative overflow-hidden ${className}`}>
-      <LiquidGlassView blurLevel="header" glassTint="light" colorScheme="light" tintColor={colors.glassSurfaceHigh} style={StyleSheet.absoluteFill} />
-
       <View className="flex-row items-center justify-between px-5 py-3.5 w-full">
         <View className="flex-row items-center gap-3">
           {showBack ? (
@@ -46,7 +42,7 @@ export const GlassHeader = React.memo(function GlassHeader({
                 triggerHaptic();
                 if (onBack) onBack();
               }}
-              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
+              style={{ backgroundColor: colors.secondaryBackground, borderColor: colors.border }}
               className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
               <Ionicons name="arrow-back" size={20} color={colors.primaryText} />
             </Pressable>
@@ -61,7 +57,7 @@ export const GlassHeader = React.memo(function GlassHeader({
                 triggerHaptic();
                 onOpenScanner();
               }}
-              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
+              style={{ backgroundColor: colors.secondaryBackground, borderColor: colors.border }}
               className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
               <Ionicons name="scan-outline" size={18} color={colors.accent} />
             </Pressable>
@@ -73,7 +69,7 @@ export const GlassHeader = React.memo(function GlassHeader({
                 triggerHaptic();
                 onOpenSettings();
               }}
-              style={{ backgroundColor: colors.glassSurfaceSubtle, borderColor: colors.border }}
+              style={{ backgroundColor: colors.secondaryBackground, borderColor: colors.border }}
               className="w-9 h-9 rounded-full items-center justify-center border active:scale-95">
               <Ionicons name="settings-outline" size={18} color={colors.secondaryText} />
             </Pressable>

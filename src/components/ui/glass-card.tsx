@@ -3,7 +3,6 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -29,11 +28,8 @@ const InteractiveGlassCard = React.memo(function InteractiveGlassCard({
   children,
   className = '',
   onPress,
-  glassTint = 'light',
   containerStyle,
   outerLayoutStyle,
-  colors,
-  resolvedInteractive,
   style: _style,
   ...props
 }: InteractiveGlassCardProps) {
@@ -69,14 +65,6 @@ const InteractiveGlassCard = React.memo(function InteractiveGlassCard({
         style={containerStyle}
         className={`rounded-3xl overflow-hidden relative ${className}`}
         {...props}>
-        <LiquidGlassView
-          blurLevel="card"
-          glassTint={glassTint}
-          tintColor={colors.glassSurface}
-          isInteractive={resolvedInteractive}
-          specular={false}
-          style={StyleSheet.absoluteFill}
-        />
         {children}
       </Pressable>
     </Animated.View>
@@ -88,7 +76,7 @@ export const GlassCard = React.memo(function GlassCard({
   className = '',
   onPress,
   interactive = false,
-  glassTint = 'light',
+  glassTint: _glassTint = 'light',
   hasGlow: _hasGlow = false,
   glowColor: _glowColor = Palette.accent,
   isInteractive,
@@ -98,8 +86,8 @@ export const GlassCard = React.memo(function GlassCard({
   const { colors } = useTheme();
 
   const containerStyle = React.useMemo(
-    () => [{ backgroundColor: colors.glassSurface }, style],
-    [colors.glassSurface, style]
+    () => [{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }, style],
+    [colors.surface, colors.border, style]
   );
 
   const outerLayoutStyle = React.useMemo((): ViewStyle | undefined => {
@@ -126,7 +114,6 @@ export const GlassCard = React.memo(function GlassCard({
       <InteractiveGlassCard
         className={className}
         onPress={onPress}
-        glassTint={glassTint}
         containerStyle={containerStyle}
         outerLayoutStyle={outerLayoutStyle}
         colors={colors}
@@ -143,13 +130,6 @@ export const GlassCard = React.memo(function GlassCard({
       style={containerStyle}
       className={`rounded-3xl overflow-hidden relative ${className}`}
       {...props}>
-      <LiquidGlassView
-        blurLevel="card"
-        glassTint={glassTint}
-        tintColor={colors.glassSurface}
-        specular={false}
-        style={StyleSheet.absoluteFill}
-      />
       {children}
     </View>
   );

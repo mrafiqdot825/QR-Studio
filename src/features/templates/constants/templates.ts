@@ -106,7 +106,7 @@ export const TEMPLATES_LIST: QRTemplate[] = [
     id: '8',
     category: 'Social',
     title: 'Multi-Link Hub',
-    desc: 'Connect all social media channels into one QR code landing page.',
+    desc: 'Connect all social channels into one QR code landing page.',
     type: 'url',
     icon: 'share-social-outline',
     gradient: ['#FAF5FF', '#E9D5FF'],

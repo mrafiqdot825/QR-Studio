@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -54,10 +53,8 @@ export function GlassToast({ visible, message, type = 'success', onHide }: Glass
       style={[shadows.dock, animatedStyle, styles.toastPosition]}
       className="z-50 self-center max-w-[90%] rounded-full">
       <View
-        style={{ backgroundColor: colors.glassSurfaceHigh, borderColor: colors.hairline }}
+        style={{ backgroundColor: colors.surface, borderColor: colors.border }}
         className="flex-row items-center gap-2.5 px-5 py-3 rounded-full border overflow-hidden relative">
-        <LiquidGlassView blurLevel="card" tintColor={colors.glassSurfaceHigh} specularInset={10} style={StyleSheet.absoluteFill} />
-
         <Ionicons name={iconName} size={18} color={iconColor} />
         <Text className="text-on-surface text-xs font-bold">{message}</Text>
       </View>
@@ -68,7 +65,6 @@ export function GlassToast({ visible, message, type = 'success', onHide }: Glass
 const styles = StyleSheet.create({
   toastPosition: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 60 : 40,
-    alignSelf: 'center',
+    top: Platform.OS === 'ios' ? 56 : 28,
   },
 });

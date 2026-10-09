@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import {
   Platform,
   Pressable,
-  StyleSheet,
   Text,
   TextInput,
   TextInputProps,
@@ -12,8 +11,7 @@ import {
 } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
-import { Palette, SpringConfigs } from '@/constants/theme';
+import { SpringConfigs } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 interface GlassInputProps extends Omit<TextInputProps, 'style'> {
@@ -70,8 +68,6 @@ export function GlassInput({
       <Animated.View
         style={[shadows.subtle, { backgroundColor: colors.surface }, animatedStyle, style]}
         className="flex-row items-center px-4 py-3 rounded-2xl overflow-hidden relative gap-2.5">
-        <LiquidGlassView blurLevel="card" tintColor={colors.surface} specular={false} pointerEvents="none" style={StyleSheet.absoluteFill} />
-
         {icon && (
           <Ionicons
             name={icon}
@@ -81,30 +77,31 @@ export function GlassInput({
         )}
 
         <TextInput
-          className="flex-1 text-on-surface font-medium text-sm p-0 m-0"
-          placeholder={placeholder}
-          placeholderTextColor={colors.secondaryText}
-          selectionColor={colors.accent}
-          cursorColor={colors.accent}
           value={value}
           onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor={colors.tertiaryText}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          className="flex-1 text-on-surface text-base py-0"
+          style={{ color: colors.primaryText }}
           {...props}
         />
 
-        {value && value.length > 0 && onClear && (
+        {value && onClear ? (
           <Pressable
+            accessibilityLabel="Clear input"
+            accessibilityRole="button"
             onPress={() => {
               if (Platform.OS !== 'web') {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
               }
               onClear();
             }}
-            className="p-1 rounded-full active:bg-black/5">
-            <Ionicons name="close-circle" size={18} color={colors.secondaryText} />
+            className="w-6 h-6 rounded-full items-center justify-center bg-black/5 dark:bg-white/10 active:opacity-60">
+            <Ionicons name="close-circle" size={16} color={colors.secondaryText} />
           </Pressable>
-        )}
+        ) : null}
       </Animated.View>
     </View>
   );

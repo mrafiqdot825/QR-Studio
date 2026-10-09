@@ -123,7 +123,7 @@ export const FeaturedTemplatesStrip: React.FC = React.memo(() => {
           accessibilityRole="button"
           className="flex-row items-center gap-1"
         >
-          <Text className="text-accent text-xs font-bold">Gallery</Text>
+          <Text className="text-accent text-xs font-bold">See All</Text>
           <Ionicons name="chevron-forward" size={14} color={colors.accent} />
         </Pressable>
       </View>

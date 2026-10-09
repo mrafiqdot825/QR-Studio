@@ -1,6 +1,7 @@
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import { LiquidGlassTabBar } from '@/components/app-tabs';
 import { GlobalModals } from '@/components/global-modals';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 import '@/global.css';
 import { useTheme } from '@/hooks/use-theme';
 import { AppProvider } from '@/providers/app-provider';
@@ -11,13 +12,7 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 
-import { LogBox } from 'react-native';
 
-// Ignore harmless Expo Go Android media library permission notification
-LogBox.ignoreLogs([
-  'Due to changes in Androids permission requirements',
-  'Expo Go can no longer provide full access to the media library',
-]);
 
 // Configure Reanimated Logger per official documentation to disable strict mode reading/writing value warnings
 configureReanimatedLogger({
@@ -79,9 +74,15 @@ function AppNavigation() {
           }}
         />
         <Tabs.Screen
+          name="inbox"
+          options={{
+            title: 'Inbox',
+          }}
+        />
+        <Tabs.Screen
           name="settings"
           options={{
-            title: 'Settings',
+            title: 'Profile',
           }}
         />
       </Tabs>
@@ -93,9 +94,11 @@ function AppNavigation() {
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AppProvider>
-        <AppNavigation />
-      </AppProvider>
+      <ErrorBoundary>
+        <AppProvider>
+          <AppNavigation />
+        </AppProvider>
+      </ErrorBoundary>
     </GestureHandlerRootView>
   );
 }

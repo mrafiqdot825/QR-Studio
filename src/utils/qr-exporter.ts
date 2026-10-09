@@ -360,9 +360,9 @@ export async function cleanupTempFile(fileUri?: string): Promise<void> {
 }
 
 /**
- * Saves QR Image directly to Device Photo Gallery / Camera Roll
+ * Saves QR Image directly to Device Storage / Files via native file export
  */
-export async function saveToGallery(
+export async function saveToFile(
   qrRef?: React.RefObject<any>,
   exportOptions?: {
     payloadValue?: string;
@@ -390,24 +390,6 @@ export async function saveToGallery(
     const tempFilename = `qrstudio-export-${Date.now()}.png`;
     tempUri = await writeTempFile(base64Data, tempFilename, true);
 
-    // Attempt direct save via MediaLibrary
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const MediaLibrary = require('expo-media-library/legacy');
-      const perm = await MediaLibrary.requestPermissionsAsync();
-      if (perm.granted) {
-        await MediaLibrary.createAssetAsync(tempUri);
-        await cleanupTempFile(tempUri);
-        return {
-          success: true,
-          message: 'Saved high-resolution QR code to Photo Gallery!',
-        };
-      }
-    } catch {
-      // MediaLibrary may be restricted in Expo Go Android
-    }
-
-    // Fallback: Open system share sheet which allows saving image to gallery
     const sharingAvailable = await Sharing.isAvailableAsync();
     if (sharingAvailable) {
       await Sharing.shareAsync(tempUri, {
@@ -418,14 +400,14 @@ export async function saveToGallery(
       await cleanupTempFile(tempUri);
       return {
         success: true,
-        message: 'Opened system save options (select Save Image to Gallery)',
+        message: 'Opened system save options (select Save to Files)',
       };
     }
 
     await cleanupTempFile(tempUri);
     return {
       success: false,
-      message: 'Unable to save to gallery directly. Please try System Share Sheet.',
+      message: 'System file saving is not supported on this device.',
     };
   } catch (error: any) {
     if (tempUri) await cleanupTempFile(tempUri);

@@ -4,24 +4,17 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
-    "@react-navigation/native": "^7.3.14",
     "expo": "~57.0.11",
-    "expo-blur": "~57.0.1",
     "expo-constants": "~57.0.7",
     "expo-file-system": "~57.0.1",
-    "expo-glass-effect": "~57.0.1",
     "expo-haptics": "~57.0.1",
     "expo-image": "~57.0.2",
-    "expo-image-picker": "~57.0.9",
     "expo-linear-gradient": "~57.0.1",
     "expo-linking": "~57.0.5",
-    "expo-media-library": "~57.0.1",
     "expo-router": "~57.0.11",
     "expo-sharing": "~57.0.10",
     "expo-splash-screen": "~57.0.5",
     "expo-status-bar": "~57.0.1",
-    "expo-system-ui": "~57.0.2",
-    "expo-web-browser": "~57.0.2",
     "nativewind": "^4.0.36",
     "qrcode": "^1.5.4",
     "react": "19.2.3",
@@ -52,7 +45,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "build:apk": "eas build -p android --profile preview",
-    "build:apk:local": "eas build -p android --profile preview --local"
+    "build:apk:local": "eas build -p android --profile preview --local",
+    "build:aab": "eas build -p android --profile production",
+    "build:aab:local": "eas build -p android --profile production --local"
   },
   "private": true
 }

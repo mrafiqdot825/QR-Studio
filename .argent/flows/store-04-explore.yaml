@@ -4,9 +4,9 @@ steps:
       visible:
         text: Scan-Stopping
   - tap:
-      text: Explore Gallery
+      text: Explore Templates
   - await:
       visible:
-        text: Template Gallery
+        text: Explore Templates
   - await:
       idle: true

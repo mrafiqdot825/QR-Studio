@@ -7,7 +7,7 @@ import { withAlpha } from '@/utils/color';
 import {
   ExportFormat,
   openInDefaultTextEditor,
-  saveToGallery,
+  saveToFile,
   shareGeneral,
   shareToInstagram,
   shareToWhatsApp,
@@ -79,12 +79,12 @@ export function ExportModal({
     [triggerHaptics]
   );
 
-  const handleSaveGallery = async () => {
+  const handleSaveFile = async () => {
     triggerHaptics();
     setIsExporting(true);
-    setExportingText('Saving QR image to photo gallery...');
+    setExportingText('Saving QR image to device files...');
 
-    const res = await saveToGallery(qrRef as any, exportOpts);
+    const res = await saveToFile(qrRef as any, exportOpts);
     setIsExporting(false);
     setToastMsg(res.message);
   };
@@ -136,7 +136,7 @@ export function ExportModal({
 
       <View className="gap-5">
         <Text className="text-on-surface-variant text-xs leading-5">
-          Select vector or high-resolution format, then choose to save directly to your gallery or share to social apps.
+          Select vector or high-resolution format, then save to device files or share to apps.
         </Text>
 
         {isExporting && (
@@ -240,9 +240,9 @@ export function ExportModal({
           </Text>
 
           <View className="flex-row flex-wrap gap-3">
-            {/* SAVE TO GALLERY */}
+            {/* SAVE TO FILES */}
             <GlassCard
-              onPress={handleSaveGallery}
+              onPress={handleSaveFile}
               interactive
               style={{ flexBasis: '48%', flexGrow: 1 }}
               className="p-3.5 gap-2"
@@ -253,10 +253,10 @@ export function ExportModal({
                 </View>
                 <View className="flex-1">
                   <Text className="text-on-surface font-extrabold text-sm" numberOfLines={1}>
-                    Save to Gallery
+                    Save to Files
                   </Text>
                   <Text className="text-on-surface-variant text-[11px]" numberOfLines={1}>
-                    Store in Photos / Camera Roll
+                    Store on device storage
                   </Text>
                 </View>
               </View>

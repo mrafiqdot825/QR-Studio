@@ -4,7 +4,7 @@ const config = {
   appRoot: APP_ROOT,
   appPath: `${APP_ROOT}/ios/build/Build/Products/Release-iphonesimulator/QRStudio.app`,
   bundleId: "com.rafiqdev.qrstudio",
-  devices: ["iphone-6.9"],
+  devices: ["iphone-6.9", "pixel-10-pro"],
   locales: ["en-US"],
   appearance: "light",
   frame: {

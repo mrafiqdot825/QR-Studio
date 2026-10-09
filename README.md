@@ -28,11 +28,11 @@
 
 ## Features
 
-- **Multi-Data QR Generation**: Generate QR codes for URLs, Wi-Fi networks, Plain Text, Contacts (vCard), Emails, SMS, Phone Numbers, and Social Media profiles.
+- **Multi-Data QR Generation**: Generate QR codes for URLs, Wi-Fi networks, Plain Text, Contacts (vCard), Emails, SMS, and Phone Numbers.
 - **Interactive 3D QR Stage**: Dynamic card preview with responsive lighting, glassmorphism UI, and smooth animations powered by React Native Reanimated.
 - **Custom Themes & Styling**: Select from preset color palettes (Cyberpunk, Midnight Neon, Sunset, Glassy White, Obsidian Gold, etc.) or create custom gradient styles.
 - **Logo & Design Customization**: Add custom icons/logos inside the QR code center with adjustable error correction levels.
-- **Export & Share**: Save high-resolution QR codes directly to device photos/gallery, or share via native device share sheets.
+- **Export & Share**: Save high-resolution QR codes directly to device files, or share via native device share sheets.
 - **Cross-Platform**: Optimized for iOS, Android, and Web browsers.
 
 ---
@@ -117,7 +117,7 @@ Once the terminal bundler menu opens, you can choose how to run the app:
    - Adjust logo settings and frame designs.
 4. **Step 4: Live 3D Preview & Export**:
    - Interact with the 3D QR Stage to inspect your code.
-   - Tap **Save to Gallery** or **Share** to download the high-definition image.
+    - Tap **Save to Files** or **Share** to download the high-definition image.
 
 ---
 
@@ -165,7 +165,7 @@ In the project directory, you can run:
 
 ## Troubleshooting & Notes
 
-- **Permissions**: Saving QR codes to photo library requires media library access. When prompted on physical iOS/Android devices, allow gallery permissions.
+- **Permissions**: Zero unnecessary media permissions required. Saving QR codes uses native system file sharing.
 - **Expo SDK Version**: Built for Expo SDK 57 (`v57.0.0`). Check [Expo v57 Docs](https://docs.expo.dev/versions/v57.0.0/) for version-specific guides.
 - **Web Compatibility**: Web builds use static rendering support (`expo start --web`). Native haptics fallback gracefully on web browsers.
 

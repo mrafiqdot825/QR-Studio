@@ -13,7 +13,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { GlassBadge } from '@/components/ui/glass-badge';
-import { LiquidGlassView } from '@/components/ui/liquid-glass-view';
 import { Palette, Shadows } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { openInDefaultTextEditor } from '@/utils/qr-exporter';
@@ -164,8 +163,6 @@ export function ScannerModal({ visible, onClose }: ScannerModalProps) {
         {/* SCANNING TARGET FRAME WITH GLASS SCAN LINE */}
         <View className="self-center items-center justify-center relative">
           <View className="w-64 h-64 rounded-4xl border-2 border-white/40 overflow-hidden relative justify-center items-center bg-white/5">
-            <LiquidGlassView blurLevel="subtle" colorScheme="dark" specular={false} style={StyleSheet.absoluteFill} />
-
             {/* CORNER BRACKETS */}
             <View style={{ borderColor: colors.accent }} className="absolute top-3 left-3 w-6 h-6 border-t-4 border-l-4 rounded-tl-xl" />
             <View style={{ borderColor: colors.accent }} className="absolute top-3 right-3 w-6 h-6 border-t-4 border-r-4 rounded-tr-xl" />
