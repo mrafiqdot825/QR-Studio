@@ -1,4 +1,3 @@
-import '@/global.css';
 import { Platform } from 'react-native';
 import { GlassColors } from './theme/colors';
 export * from './theme/tokens';
